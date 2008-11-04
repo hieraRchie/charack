@@ -1,0 +1,167 @@
+%
+% exemplo genérico de uso da classe mdtufsm.cls
+%
+
+\documentclass[diss]{mdtufsm}
+% um tipo específico de monografia pode ser informado como parâmetro opcional:
+%\documentclass[tese]{mdtufsm}
+% a opção `openright' pode ser usada para forçar inícios de capítulos
+% em páginas ímpares
+% \documentclass[openright]{mdtufsm}
+% para gerar uma versão frente-e-verso, use a opção 'twoside':
+% \documentclass[twoside]{mdtufsm}
+
+\usepackage[T1]{fontenc}        % pacote para conj. de caracteres correto
+%\usepackage[brazil]{babel}      % pacote para acentuação
+\usepackage[latin1]{inputenc}   % pacote para acentuação
+\usepackage{graphicx}           % pacote para importar figuras
+\usepackage{times}              % pacote para usar fonte Adobe Times
+\usepackage{xspace}
+%\usepackage{mathptmx}          % p/ usar fonte Adobe Times nas fórmulas
+
+\newcommand{\cluster}{\textit{cluster}\xspace}
+\newcommand{\clusters}{\textit{clusters}\xspace}
+
+%==============================================================================
+% Identificação do trabalho
+%==============================================================================
+\title{Ferramenta para geração de mundos virtuais pseudo-infinitos para jogos 3D MMO}
+
+\author{Bevilacqua}{Fernando}
+
+\course{Programa de Pós-Graduação em Informática}
+\altcourse{Programa de Pós-Graduação em Informática}
+
+\institute{Centro de Tecnologia}
+\degree{Mestre em Informática}
+
+\trabalhoNumero{Dissertação de Mestrado Nº 2}
+
+% orientador e co-orientador são opcionais (não diga isso pra eles :))
+\advisor[Prof.~Dr.]{Pozzer (UFSM)}{Cesar Tadeu}
+%\coadvisor[Profª~Drª]{Charão (UFSM)}{Andrea Schwertner}
+
+\committee[Prof.~Dr.]{Cavalheiro (UFPel)}{Gerson Geraldo Homrich}
+\committee[Profª~Drª]{Augustin (UFSM)}{Iara}
+
+% a data deve ser a da defesa; se nao especificada, são gerados
+% mes e ano correntes
+\date{22}{Agosto}{2008}
+
+%
+% palavras-chave
+% iniciar todas com letras minúsculas, exceto no caso de abreviaturas
+%
+\keyword{MMO}
+\keyword{mundos virtuais}
+\keyword{geração de terreno}
+\keyword{jogos 3D}
+
+%% Ordem dos elementos pré-textuais segundo a MDT/UFSM
+%% Capa
+%% Folha de rosto
+%% Folha de aprovação
+%% Dedicatória (opc)
+%% Agradecimentos (opc)
+%% Epígrafe (opc)
+%% Resumo
+%% Abstract
+%% Lista de Ilustrações (opc)
+%% Lista de Tabelas (opc)
+%% Lista de Abreviaturas e Siglas (opc)
+%% Lista de Símbolos (opc)
+%% Lista de Anexos e Apêndices (opc)
+%% Sumário
+
+%%=============================================================================
+%% Início do documento
+%%=============================================================================
+\begin{document}
+
+% folha de rosto
+% às vezes é necessário redefinir algum comando logo antes de produzir
+% a folha de rosto:
+% \renewcommand{\coordname}{Coordenadora do Curso}
+
+%%=============================================================================
+%% Capa e folha de rosto
+%%=============================================================================
+\maketitle
+
+%%=============================================================================
+%% Folha de aprovação
+%%=============================================================================
+\makeapprove
+
+%%=============================================================================
+%% Agradecimentos
+%%=============================================================================
+%\chapter*{Agradecimentos}
+
+
+%%=============================================================================
+%% Epígrafe
+%%=============================================================================
+\clearpage
+\begin{flushright}
+\mbox{}\vfill
+{\sffamily\itshape
+``Não sabendo que era impossível, ele foi lá e fez.''}
+--- \textsc{Jean Cocteau}
+\end{flushright}
+
+
+%%=============================================================================
+%% Resumo
+%%=============================================================================
+\begin{abstract}
+Resumo em português aqui.
+\end{abstract}
+
+%%=============================================================================
+%% Abstract
+%%=============================================================================
+% resumo na outra língua
+% como parametros devem ser passados o titulo, o nome do curso
+% e as palavras-chave na outra língua, separadas por vírgulas
+\begin{englishabstract}
+{VXDL: A Language for Interconnection and Resources Specification in Virtual Grids}
+{Programa de Pós-Graduação em Informática}
+{virtualization, virtual grids, virtual clusters, resources description language}
+Grid computing has been defined as an infrastructure integrator of distributed resources. Although it is already used on a large scale in many areas, this type of computational infrastructure is still an area of active research, with many open questions. Today, new research works investigate the application of resources virtualization techniques to perform the composition of virtual grids. These grids can be defined as a high level abstraction of resources (computing and network), through which users have a view of a wide range of interconnected computers, that can be selected and virtually organized. In a virtual grid, as well in a real grid, users and middleware must have tools that allow the composition and management of the infrastructure. Among these tools, there are languages for resource description that allow the specification of components that will be used in the infrastructure. In a virtualized environment, the resources descriptions languages should offer attributes that interact with some peculiarities, such as the possibility of allocate multiple virtual resources (computing and network) on the same physical resource. In this context, this work presents VXDL, a language developed for the interconnections and resources description in virtual grids. The innovations proposed in VXDL allow the description, classification and parameter specification of all desirable components, including network topology and virtual routers. VXDL also allow the specification of a execution timeline, which can assist grid middleware in the tasks of resources sharing and scheduling. To evaluate the proposed language, this work presentes I) a comparative study between VXDL and other resources description languages and II) an analysis of results obtained with the benchmarks execution in virtual infrastructures composed using different VXDL descriptions.
+\end{englishabstract}
+
+%%=============================================================================
+%% Lista de figuras
+%%=============================================================================
+\listoffigures
+
+%%=============================================================================
+%% Lista de tabelas
+%%=============================================================================
+\listoftables
+
+
+%%=============================================================================
+%% Lista de abreviaturas e siglas
+%%=============================================================================
+% o parametro deve ser a abreviatura mais longa
+%\begin{listofabbrv}{AAAA}
+%    \item[API] Application Programming Interface
+%\end{listofabbrv}
+
+%%=============================================================================
+%% Sumário
+%%=============================================================================
+\tableofcontents
+
+\setlength{\baselineskip}{1.5\baselineskip}
+
+\include{texto/introducao}
+\include{texto/revisao}
+\include{texto/implementacao}
+\include{texto/resultado}
+\include{texto/conclusao}
+\setlength{\baselineskip}{\baselineskip}
+\include{texto/referencias}
+\end{document}
