@@ -1,3 +1,20 @@
 \chapter{Implementação} 
 \label{capitulo:implementacao}
 
+-- falar que a implementação está baseada em diversos problemas-chave da dissertação, como o gerenciamento de memória, relevo que não pode ser previsto, montanhas que não é possível ver por causa do view frustum, etc.
+
+\section{Terreno infinito}
+
+-- falar que utilizarmos o conceito de view frustum (daquele artigo frances) como base para os trabalhos. Em suma, vou descrever como que a coisa toda funciona: o usuário só enxerga o que está dentro do campo de visão, falar da janela de visualização do mundo, etc
+
+
+\section{Continentes}
+
+-- falar que utilizamos o  algoritmo maluco do professor dos EUA para fazer a costa. Falar que existe o mundo é gigante o suficiente para fazer com que uma matrix que descreve água/terra seria inviável. Para solucionar esse problema, falar que utilizamos o conceito de isLang local e isLang global. O isLand global dá uma dica se o lugar é água ou terra, e o isLand local utiliza multifractais para fazer o desenho das bordas dos continentes.
+
+-- É importante frisar que essa seção é onde está a nossa contribuição na pesquisa: mundo pseudo-infinito, com relevo gerado on-the-fly e com costas de continentes com multiresolução.
+
+
+\section{Relevo}
+
+-- O relevo é gerado on-the-fly por funções matemáticas (explicar essas funções); falar que isso é totalmente customizável e que a qualquer momento o relevo pode ser mostrado.

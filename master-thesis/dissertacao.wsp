@@ -1,0 +1,12 @@
+[main]
+.\dissertacao.tex
+
+[texfiles]
+.\texto\implementacao.tex
+.\texto\introducao.tex
+.\texto\referencias.tex
+.\texto\resultado.tex
+.\texto\revisao.tex
+.\texto\referencias.bib
+.\texto\conclusao.tex
+
