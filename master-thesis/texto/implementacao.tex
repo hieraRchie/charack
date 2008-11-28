@@ -1,11 +1,58 @@
 \chapter{Implementação} 
 \label{capitulo:implementacao}
 
--- falar que a implementação está baseada em diversos problemas-chave da dissertação, como o gerenciamento de memória, relevo que não pode ser previsto, montanhas que não é possível ver por causa do view frustum, etc.
+%-- falar que a implementação está baseada em diversos problemas-chave da dissertação, como o gerenciamento de memória, relevo que não pode ser previsto, montanhas que não é possível ver por causa do view frustum, etc.
+
+A ideia original do trabalho foi desenvolver um mundo virtual completo, semelhante em grande parte com o mundo real. Dentre as funcionalidades previstas, encontravam-se a divisão do terreno em relevos específicos (desertos, florestas, planícies, etc), cidades/vilas, caminhos entre as cidades, rios e cadeias montanhosas. A combinação de todos esses elementos seria capaz de criar um mundo virtual muito próximo da realidade, fato que seria de suma importância para garantir um bom resultado da ferramenta.
+
+Quando o planejamento foi finalizado, a complexidade de determinadas funcionalidades previstas tornou proibitiva a sua implementação. A grande maioria dos problemas encontrados é uma consequência da abordagem de geração dinâmica de conteúdo sob demanda (a medida que o usuário se move, novos elementos são colocados na tela). A Figura ~\ref{fig:prob_demanda} ilustra o problema da geração de conteúdo sob demanda.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/prob_demanda.png}}
+\caption{Problema da geração de conteúdo sob demanda.}
+\label{fig:prob_demanda}
+\end{figure}
+
+Partindo do fato que o usuário só consegue enxergar aquilo que está dentro do seu campo de visão, todos os algoritmos de geração de conteúdo, seja para relevo, caminhos ou cidades, precisam levar em consideração única e exclusivamente as informações que estão disponíveis dentro desse campo. Essa abordagem é eficiente para a utilização racional de recursos (processar somente o que o usuário está vendo), porém ela aumenta a complexidade dos algoritmos envolvidos na ferramenta.
+
+Para o algoritmo de geração de cadeias montanhosas, por exemplo, não é possível determinar onde a cadeia termina, visto que o mundo fora do campo de visão tecnicamente não existe ainda, porque  ele será gerado conforme o usuário avança pelo terreno. Uma abordagem seria utilizar uma função matemática que descrevesse a cadeia montanhosa, porém essa função não deveria depender de um ponto de início e fim, porque eles poderiam inexistir em um determinado momento. Se a função de geração de cadeias montanhosas não dependesse de um ponto de início e fim, ela precisaria, ao menos, depender da posição do usuário no mundo virtual para que o conteúdo correto fosse gerado. Depender de uma localização implicaria que a cadeia montanhosa gerada pela função fosse pré-posicionada no mundo virtual, o que iria contra o conceito de geração de conteúdo sob demanda.
+
+Além disso, os algoritmos são sensivelmente afetados pelo fato de que as informações que eles recebem em um determinado instante podem desaparecer por completo na próxima iteração, visto que o usuário pode se mover e mudar o conteúdo do campo de visão. Utilizando o exemplo da geração de cadeias montanhosas, uma montanha poderia sofrer uma alteração em sua composição de forma abrupta, apenas porque os pontos que estavam sendo utilizados para a geração do relevo mudaram.
+
+Para contornar esses problemas e focar os esforços de desenvolvimento em soluções pontuais, a geração do mundo virtual foi dividia em três grandes etapas: terreno infinito, continentes e relevo. A geração de conteúdo sob demanda afeta de forma diferenciada cada uma dessas etapas e a descrição da implementação de cada uma delas, junto com os problemas associados, é descrito nas seções seguintes.
+
 
 \section{Terreno infinito}
 
--- falar que utilizarmos o conceito de view frustum (daquele artigo frances) como base para os trabalhos. Em suma, vou descrever como que a coisa toda funciona: o usuário só enxerga o que está dentro do campo de visão, falar da janela de visualização do mundo, etc
+%-- falar que utilizarmos o conceito de view frustum (daquele artigo frances) como base para os trabalhos. Em suma, vou descrever como que a coisa toda funciona: o usuário só enxerga o que está dentro do campo de visão, falar da janela de visualização do mundo, etc
+
+A base para a geração do mundo virtual proposto é a possibilidade do usuário poder andar, de forma infinita, sobre a superfície do mundo e, conforme anda, visualizar novos conteúdos. A medida que o usuário anda, a ferramenta precisa ser capaz de identificar em qual local do mundo o observador se encontra para então gerar os conteúdos à sua volta.
+
+Para solucionar esse problema, utilizou-se uma variação da técnica descrita por ~\cite{infinicity}. Na abordagem dos autores em questão, o mundo virtual pseudo-infinito é divido em células quadradas e, à medida que o usuário anda, as células são adicionadas e/ou removidas do campo de visão. Cada célula possui um conteúdo próprio e auto-contido, ou seja, a célula não precisa de informações de vizinhos para gerar o seu conteúdo. Isso garante que as células não entrem em uma dependência recursiva infinita entre elas para conseguirem gerar o seu conteúdo. Além disso, essa abordagem é vantajosa para garantir o uso racional de recursos, uma vez que só serão carregados para a memória os blocos que o usuário realmente consegue ver.  
+
+Para o posicionamento do usuário no mundo virtual, os autores utilizam um vetor 3D no formato {\tt (x,y,z)}. Conforme o usuário se move horizontalmente pelo mundo, as coordenadas {\tt x} e {\tt y} são atualizadas. Se o usuário se move verticalmente, a coordenada Z é alterada. A abordagem utilizada para a ferramenta dessa dissertação baseou-se nesses conteitos. A figura ~\ref{fig:org_coordenadas} ilustra a organização do mundo virtual.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/org_coordenadas.png}}
+\caption{Organização do sistema de coordenadas do mundo virtual}
+\label{fig:org_coordenadas}
+\end{figure}
+
+A origem do mundo virtual é o ponto {\tt (0,0,0)} e os eixos que definem o plano horizontal são o {\tt X} e {\tt Z}, sendo a altura controlada pelo eixo {\tt Y}. A distância máxima que o usuário consegue percorrer em qualquer um dos eixos é o número máximo suportado por um inteiro de 32 bits com sinal.
+
+O que o jogador consegue ver na tela em um determinado momento é um pedaço do mundo virtual existente. Esse pedaço foi chamado de {\it view frustum}, ou campo de visão. Diferentemente do que foi feito em  ~\cite{infinicity}, no qual o campo de visão é um cone, o campo de visão da presente ferramenta é um quadrado centrado no usuário. A figura ~\ref{fig:campo_visao} ilustra o funcionamento do campo de visão.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/org_coordenadas.png}}
+\caption{Campo de visão do usuário: a área visualizada corresponde a uma fatia do mundo virtual existente.}
+\label{fig:campo_visao}
+\end{figure}
+
+A partir da posição {\tt (x, y, z)} do usuário, a ferramenta calcula qual é o conteúdo visualizável ao redor do referido ponto. Ao chegar na borda limite do mundo, que pode ser a distância máxima de um eixo, por exemplo, o usuário é impedido de avançar e nenhum conteúdo é mostrado além da borda limite.
+
 
 
 \section{Continentes}
