@@ -16,7 +16,7 @@ Quando o planejamento foi finalizado, a complexidade de determinadas funcionalid
 
 Partindo do fato que o usuário só consegue enxergar aquilo que está dentro do seu campo de visão, todos os algoritmos de geração de conteúdo, seja para relevo, caminhos ou cidades, precisam levar em consideração única e exclusivamente as informações que estão disponíveis dentro desse campo. Essa abordagem é eficiente para a utilização racional de recursos (processar somente o que o usuário está vendo), porém ela aumenta a complexidade dos algoritmos envolvidos na ferramenta.
 
-Para o algoritmo de geração de cadeias montanhosas, por exemplo, não é possível determinar onde a cadeia termina, visto que o mundo fora do campo de visão tecnicamente não existe ainda, porque  ele será gerado conforme o usuário avança pelo terreno. Uma abordagem seria utilizar uma função matemática que descrevesse a cadeia montanhosa, porém essa função não deveria depender de um ponto de início e fim, porque eles poderiam inexistir em um determinado momento. Se a função de geração de cadeias montanhosas não dependesse de um ponto de início e fim, ela precisaria, ao menos, depender da posição do usuário no mundo virtual para que o conteúdo correto fosse gerado. Depender de uma localização implicaria que a cadeia montanhosa gerada pela função fosse pré-posicionada no mundo virtual, o que iria contra o conceito de geração de conteúdo sob demanda.
+Para o algoritmo de geração de cadeias montanhosas, por exemplo, não é possível determinar onde a cadeia termina, visto que o mundo fora do campo de visão tecnicamente não existe ainda, ele será gerado conforme o usuário avança pelo terreno. Uma abordagem seria utilizar uma função matemática que descrevesse a cadeia montanhosa, porém essa função não deveria depender de um ponto de início e fim, porque eles poderiam inexistir em um determinado momento. Se a função de geração de cadeias montanhosas não dependesse de um ponto de início e fim, ela precisaria, ao menos, depender da posição do usuário no mundo virtual para que o conteúdo correto fosse gerado. Depender de uma localização implicaria que a cadeia montanhosa gerada pela função fosse pré-posicionada no mundo virtual, o que iria contra o conceito de geração de conteúdo sob demanda.
 
 Além disso, os algoritmos são sensivelmente afetados pelo fato de que as informações que eles recebem em um determinado instante podem desaparecer por completo na próxima iteração, visto que o usuário pode se mover e mudar o conteúdo do campo de visão. Utilizando o exemplo da geração de cadeias montanhosas, uma montanha poderia sofrer uma alteração em sua composição de forma abrupta, apenas porque os pontos que estavam sendo utilizados para a geração do relevo mudaram.
 
@@ -24,6 +24,7 @@ Para contornar esses problemas e focar os esforços de desenvolvimento em soluçõe
 
 
 \section{Terreno infinito}
+\subsection{Abordagem utilizada}
 
 %-- falar que utilizarmos o conceito de view frustum (daquele artigo frances) como base para os trabalhos. Em suma, vou descrever como que a coisa toda funciona: o usuário só enxerga o que está dentro do campo de visão, falar da janela de visualização do mundo, etc
 
@@ -53,6 +54,26 @@ O que o jogador consegue ver na tela em um determinado momento é um pedaço do mu
 
 A partir da posição {\tt (x, y, z)} do usuário, a ferramenta calcula qual é o conteúdo visualizável ao redor do referido ponto. Ao chegar na borda limite do mundo, que pode ser a distância máxima de um eixo, por exemplo, o usuário é impedido de avançar e nenhum conteúdo é mostrado além da borda limite.
 
+Inicialmente planejou-se a utilização de quadrados para dividir o mundo virtual em células, conforme é feito na outra abordagem citada anteriormente. A utilização de células garantiria que o mundo virtual fosse subdivido em blocos menores, o que viabilizaria um melhor controle sobre o que o usuário consegue ver no seu campo de visão e, também, um melhor controle sobre a geração de conteúdo. O maior problema encontrado nessa abordagem, que foi a razão pela qual ela foi abandonada, é a dependência que as células precisam ter entre si para que o terreno infinito seja gerado.
+
+Utilizando o exemplo da geração de relevo, que é tratada em mais detalhes na seção ~\ref{sub:relevo}, se o mundo virtual fosse dividido em células, cada uma delas deveria possuir um relevo perfeitamente nivelado com a célula vizinha, caso contrário o relevo gerado teria diversos "degraus". Analisando o problema um pouco mais a fundo, no caso da geração de montanhas, por exemplo, se na metade de uma célula a ferramenta decidisse que uma cadeia montanhosa deveria começar, a célula vizinha deveria obrigatoriamente ter a continuação dessa cadeia montanhosa, caso contrário a montanha em questão seria fatiada pela metade. A forma de corrigir esse problema é adicionar um nível mínimo de dependência entre as células: o conteúdo de uma célula é gerado com base nas informações da própria célula e também com base em alguma "dica" da célula vizinha. No exemplo da cadeia montanhosa, a célula vizinha ao começo da cadeia saberia que o conteúdo que ela deve gerar é a continuação da cadeia montanhosa, visto que a sua célula vizinha possui o começo da cadeia.
+
+Essa dependência de conteúdo gera um encadeamento recursivo infinito entre as células. Se a célula {\tt A}, por exemplo, for gerar o seu conteúdo, ela irá fazer isso com base nas suas informações e também com base nas informações de sua célula vizinha, {\tt B}. A célula {\tt B}, por sua vez, só poderá informar a {\tt A} o seu próprio relevo quando ela o gerar; para gerar o seu relevo, ela precisa das suas informações e das informações da sua vizinha, {\tt C}, e {\tt C} precisa de {\tt D} e assim por diante. Dessa forma, para gerar o conteúdo de {\tt A}, a ferramenta teria que obrigatoriamente percorrer todas as células do mundo virtual.
+
+Uma saída alternativa para esse problema da recursão infinita é definir um nível de consulta de informações. Embora essa abordagem limite o nível de consulta entre as células vizinhas, ela não soluciona o problema de continuidade de conteúdo. Se o conteúdo de {\tt A} for gerado com seis níveis de recursão, por exemplo, quando o usuário se mover, novas células vizinhas serão consultadas para a geração do conteúdo; se a última célula que {\tt A} consultou foi {\tt G}, depois que o usuário se mover, {\tt G} terá novas informações para o seu relevo, porque agora ela pode solicitar informações de suas vizinhas. Isso fará com que todas as células dependentes de {\tt G} mudem o seu conteúdo, o que resultaria em um relevo diferente a cada movimentação do usuário. Em virtude da complexidade descrita e dos problemas mapeados, a abordagem de divisão do mundo virtual em células foi abandonada e substituída pelo modelo de campo de visão quadrado.
+
+\subsection{Renderização de conteúdo}
+
+Depois que o modelo de controle da geração de terrenos infinitos foi definido, iniciaram-se os trabalhos de computação gráfica para que as informações pudessem ser desenhadas na tela. Embora o mundo virtual tenha coordenadas pseudo-infinitas, o máximo de conteúdo que o usuário enxerga na tela é a área do campo de visão, que possui sempre o mesmo tamanho e coordenadas de desenho. A figura ~\ref{fig:render_campo_visao}, quadrado 1, ilustra as coordenadas envolvidas no desenho do conteúdo do campo de visão.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/render_campo_visao.png}}
+\caption{Mapeamento das coordenadas do mundo virtual para as coordenadas de desenho da tela}
+\label{fig:render_campo_visao}
+\end{figure}
+
+O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it height map}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao}, quadrado 2.
 
 
 \section{Continentes}
@@ -62,6 +83,6 @@ A partir da posição {\tt (x, y, z)} do usuário, a ferramenta calcula qual é o co
 -- É importante frisar que essa seção é onde está a nossa contribuição na pesquisa: mundo pseudo-infinito, com relevo gerado on-the-fly e com costas de continentes com multiresolução.
 
 
-\section{Relevo}
+\section{Relevo}{sub:relevo}
 
 -- O relevo é gerado on-the-fly por funções matemáticas (explicar essas funções); falar que isso é totalmente customizável e que a qualquer momento o relevo pode ser mostrado.
