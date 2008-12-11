@@ -3,18 +3,63 @@
 
 \section{Mundos pseudo-infinitos}
 
--- falar aqui das zilhoes de abordagens para geração de mundos infinitos que nós encontramos. Parece que todo mundo resolveu fazer pesquisa sobre isso de uma hora para outra.
+%-- falar aqui das zilhoes de abordagens para geração de mundos infinitos que nós encontramos. Parece que todo mundo resolveu fazer pesquisa sobre isso de uma hora para outra.
 
--- Aqui vai a explicação sobre o artigo frances sobre geração de cidades pseudo-infinitas (nosso artigo semente), aquela engine para geração de mundos virtuais, aquela outra ferramenta para geração de terrenos infinitos.
+%- p87-greuter (geração de cidades virtuais);
+%- LandscapeGeneration (geração de mundos, ruido do Perlin, fractais para relevo, texturizacao, geração de plantas, cidades, nuvens)
+%- LindaOndrej2007 (ferramenta para geração de mundo circular, VARIOS ruidos do Perlin, fractais e multifractais, colorização)
+%- terrain_generation (geração de terrenos finitos aplicados a um jogo caso de uso)
+%- dollins-thesis (geração procedimental de mundos virtuais muito grandes usando quad-trees e divisões estocásticas)
+%- dramatic_landscapes (dunas de areia e relevos semelhantes com heighmap)
+%- mountains.gi93 (montanhas com rios)
+%- p1463-ong (geração de terreno por algoritmo genéricos, não por fractais e afins)
 
--- http://landscapestudio.omgames.co.uk/screenshots.html
--- http://www.vterrain.org/
--- http://www.pandromeda.com/products/mojoworldpro.php
--- http://wwwcg.in.tum.de/Research/Publications/FractalTerrain
--- http://www.howardzzh.com/research/terrain/
--- http://www.cs.brown.edu/~scd/world/home.html (exatamente o que queremos fazer)
--- http://www.earth3d.org/
+%-- Aqui vai a explicação sobre o artigo frances sobre geração de cidades pseudo-infinitas (nosso artigo semente), aquela engine para geração de mundos virtuais, aquela outra ferramenta para geração de terrenos infinitos.
 
+%-- http://landscapestudio.omgames.co.uk/screenshots.html
+%-- http://www.vterrain.org/
+%-- http://www.pandromeda.com/products/mojoworldpro.php
+%-- http://wwwcg.in.tum.de/Research/Publications/FractalTerrain
+%-- http://www.howardzzh.com/research/terrain/
+%-- http://www.cs.brown.edu/~scd/world/home.html (exatamente o que queremos fazer)
+%-- http://www.earth3d.org/
+%-- http://www.planetside.co.uk/terragen/
+
+A geração de conteúdo procedimentais é um assunto antigo no campo da computação gráfica. A aplicação desse tipo de técnica na geração de um mundo virtual completo foi utilizada por ~\cite{infinicity}, cujo objetivo era gerar uma cidade virtual que fosse visualmente interessante e composta por construções complexas, porém cada uma delas sendo criada a partir de elementos mais simples.
+
+Na abordagem utilizada, os autores dividiram o mundo virtual numa grade composta por diversos quadrados, chamados células. As coordenadas de localização de cada célula, em conjunto com uma semente global, são utilizadas como entrada para uma função de hash ~\cite{wangHash}. O resultado dessa função é utilizado como semente para um pseudo gerador de números aleatórios e irá definir todas as características das construções que estão dentro da célula. Dessa forma, o conteúdo de uma célula é sempre o mesmo, independente de quanto o usuário caminhe pelo mundo virtual e faça a célula em questão entrar ou sair do seu campo de visão. A figura ~\ref{fig:greuter_grade} ilustra a divisão do mundo virtual em células.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/greuter_grade.png}}
+\caption{Mundo virtual dividido em células. Cada uma delas possui uma semente calculada com base em sua posição e com base uma semente global referente à cidade ~\cite{infinicity}}
+\label{fig:greuter_grade}
+\end{figure}
+
+Cada uma das construções existentes é gerada pela mescla de polígonos simples escolhidos aleatoriamente. Utilizando um processo iterativo, partindo do topo até a base, em cada iteração o polígono escolhido é mesclado com o polígono anterior e, então, mais um nível (andar) é criado; esse processo garante que a construção, ao longo das iterações, cresça em altura e em largura de uma forma realística. Depois que a geometria da construção está pronta, ela é texturizada com janelas, sendo que o tipo da janela é escolhido aleatoriamente. A figura ~\ref{fig:greuter_predios} ilustra a geração de construções.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/greuter_predios.png}}
+\caption{Geração de construções: em andar é gerado pela mescla de polígonos escolhidos e centralizados aleatoriamente ~\cite{infinicity}}
+\label{fig:greuter_predios}
+\end{figure}
+
+Para garantir o uso racional de recursos computacionais, como memória e processamento, os autores utilizaram o conceito nomeado por eles de {\it view frustum}, que consiste em restringir à geração de conteúdo somente para as células que estão dentro do campo de visão do usuário. A medida que esse anda pela cidade virtual, novas células vão sendo adicionadas ao campo de visão e seu conteúdo é gerado; quando a célula sai do campo de visão, ela é removida da memória e seus recursos são liberados. As células são posicionadas em loops quadrados ao redor do usuário e são consideradas pertencentes ao campo de visão se estão a uma certa distância do usuário e dentro de um ângulo de 120º de visão. A figura ~\ref{fig:greuter_view} ilustra o funcionamento do campo de visão descrito e a figura ~\ref{fig:greuter_cidade} mostra uma cidade virtual gerada.
+
+\begin{figure}
+\centering
+\resizebox{5cm}{!}{\includegraphics{figuras/greuter_view.png}}
+\caption{Campo de visão do usuário: apenas as células visíveis tem o seu conteúdo gerado ~\cite{infinicity}}
+\label{fig:greuter_view}
+\end{figure}
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/greuter_cidade.png}}
+\caption{Exemplo de cidade virtual gerada ~\cite{infinicity}}
+\label{fig:greuter_cidade}
+\end{figure}
 
 \section{Funções de ruído}
 
@@ -23,7 +68,7 @@
 -- Só utilizamos o noise do Perlin aqui e o conceito de multi-fractal, mas sobre fractais eu vou falar depois.
 
 
-\section{Fractais para geração de relevo}
+\section{Geração de relevo}
 
 -- Falar aqui das 3 formas que encontramos para geração de relevo através de fractais (deposição de sedimentos, alteração do ponto médio e divisão de não sei o que).
 
