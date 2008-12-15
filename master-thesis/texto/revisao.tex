@@ -45,7 +45,7 @@ Cada uma das construções existentes é gerada pela mescla de polígonos simples es
 \label{fig:greuter_predios}
 \end{figure}
 
-Para garantir o uso racional de recursos computacionais, como memória e processamento, os autores utilizaram o conceito nomeado por eles de {\it view frustum}, que consiste em restringir à geração de conteúdo somente para as células que estão dentro do campo de visão do usuário. A medida que esse anda pela cidade virtual, novas células vão sendo adicionadas ao campo de visão e seu conteúdo é gerado; quando a célula sai do campo de visão, ela é removida da memória e seus recursos são liberados. As células são posicionadas em loops quadrados ao redor do usuário e são consideradas pertencentes ao campo de visão se estão a uma certa distância do usuário e dentro de um ângulo de 120º de visão. A figura ~\ref{fig:greuter_view} ilustra o funcionamento do campo de visão descrito e a figura ~\ref{fig:greuter_cidade} mostra uma cidade virtual gerada.
+Para garantir o uso racional de recursos computacionais, como memória e processamento, os autores utilizaram o conceito nomeado por eles de preenchimento por {\it view frustum}, que consiste em restringir à geração de conteúdo somente para as células que estão dentro do campo de visão do usuário. A medida que esse anda pela cidade virtual, novas células vão sendo adicionadas ao campo de visão e seu conteúdo é gerado; quando a célula sai do campo de visão, ela é removida da memória e seus recursos são liberados. As células são posicionadas em loops quadrados ao redor do usuário e são consideradas pertencentes ao campo de visão se estão a uma certa distância do usuário e dentro de um ângulo de 120º de visão. A figura ~\ref{fig:greuter_view} ilustra o funcionamento do campo de visão descrito e a figura ~\ref{fig:greuter_cidade} mostra uma cidade virtual gerada.
 
 \begin{figure}
 \centering
@@ -61,6 +61,37 @@ Para garantir o uso racional de recursos computacionais, como memória e processa
 \label{fig:greuter_cidade}
 \end{figure}
 
+Outro trabalho analisado foi o de ~\cite{LandscapeGeneration} para a construção da ferramenta SkyCastle ~\cite{SkyCastle}, uma {\it engine} para jogos online multijogador com suporte à geração de mundos virtuais gerados proceduralmente. No referido trabalho, o autor foca o problema de mundos virtuais cada vez maiores em jogos de computador e aplicações, o que cria a necessidade de desenvolvimento de ferramentas capazes de ajudar na geração de conteúdos realistas para esses mundos. Para a geração de relevo, o autor utiliza procedimentos parametrizados e sistemas baseados em fractais em uma abordagem de camadas: a aplicação adiciona um mapa de ruído (com amplitude reduzida) ao mapa de altura base em cada iteração. Os mapas de ruído são pré-computados e criados através de funções de ruído de Perlin, abordagem semelhante ao método de geração de relevo por deposição de sedimentos, que será abordado em mais detalhes na seção ~\ref{sec:relevo}.
+
+Depois do assunto de criação de relevo, o autor aborda a funcionalidade de texturização da malha gerada. Um dos métodos apresentados é a utilização de uma imagem com proporções muito grandes, que seria capaz de cobrir o mundo inteiro. Embora essa abordagem passa ser útil para cenários pequenos, ela não é viável para terrenos grandes ou mundos virtuais, uma vez que o tamanho da imagem poderia atingir proporções proibitivas. Para contornar esse problema, a abordagem de reticulados é sugerida~\cite{CSHD03}; nessa abordagem, uma célula de textura é criada de tal forma que ao posicionar várias células, uma do lado da outra, o plano gerado apresenta uma texturização contínua e sem falhas. O resultado obtido com essa abordagem é aceitável, porém ele não é visualmente atraente para o usuário final, uma vez que o terreno apresenta uma continuidade que não existiria no mundo real. Para conseguir um resultado visual melhor, o autor sugere a utilização de uma abordagem proposta por ~\cite{LN03}, que consiste na utilização de um conjunto de texturas pré-definidas em formato de borda juntamente com a texturização em reticulados já citada. O funcionamento do algoritmo resume-se em aplicar as texturas em borda sobre um plano já uniformemente texturizado, porém utilizando transparência nas áreas não desenháveis das texturas em borda. Dessa forma, a sobreposição das bordas sobre o plano texturizado irá produzir uma paisagem menos homogênea, o que gera um resultado visual melhor. A figura ~\ref{fig:tiling} ilustra as texturas em forma de borda e a sua utilização na abordagem descrita.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/tiling.png}}
+\caption{Terreno texturizado com duas camadas: a inferior sendo um bloco escuro e a superior sendo um conjunto de texturas em formato de borda com transparência ~\cite{LandscapeGeneration}}
+\label{fig:tiling}
+\end{figure}
+
+Para ornamentar o mundo virtual, o autor cita a utilização de plantas proceduralmente geradas através de três métodos principais: {\it L-System}~\cite{PL90}, geração baseada em componentes ~\cite{LD98} e árvores parametrizadas ~\cite{WP95}. O algoritmo {\it L-System} consiste na geração de elementos a partir da interpretação de uma cadeia de caracteres, sendo que cada um desses caracteres representa uma estrutura geométrica ou operação (rotação, translação, etc); a cadeia de caracteres resultante é obtida a partir da aplicação sucessiva de regras sobre uma cadeia base. O algorítimo de geração baseada em componentes consiste na interpretação de uma árvore de elementos, sendo cada um desses elementos modificável através de parâmetros; cada componente pode possuir filhos e, também, uma descrição de qual é o elemento que pode ser usado como folha da árvore. Por fim, a geração de árvores parametrizadas é conceitualmente semelhantes à geração por componentes, exceto que a geração é orientada a ramificações; cada ramificação da árvore corresponde à um nível de recursão, sendo o tronco da árvore o nível zero; quando um ramo sofre uma divisão, os filhos resultantes dessa divisão herdam algumas características do pai (como resolução), porém eles adquirem características próprias, como o ângulo de curvatura; ao final do processo, através de um estudo dos parâmetros corretos a serem utilizados (como a quantidade de ramos, o nível de recursão, etc), é possível que uma árvore completa seja gerada.
+
+Outro trabalho analisado é a geração de planetas procedurais através de fractais e combinações deles com outros métodos~\cite{LindaOndrej2007}. Partindo da subdivisão recursiva de um octaedro, a autora cria um mundo esférico que serve como base para a aplicação dos algorítimos de relevo. Através de uma interface, o usuário pode estipular qual algorítimo de relevo ele deseja utilizar, e o resultado desse processo é traduzido em uma lista encadeada que descreve todos os vértices do mundo. Mais informações sobre algorítimos para geração de relevo podem ser encontradas na seção ~\ref{sec:relevo}). Uma lista encadeada foi utilizada para garantir que a malha resultante possa ter seus detalhes aumentados e/ou reduzidos facilmente (através das funções de inserção e remoção de elementos da lista), mesmo que uma lista encadeada não seja a melhor estrutura de dados para busca de um elemento em específico. Depois que a malha é gerada, a autora utiliza uma combinação de técnicas para colorir os pontos da falha; as técnicas variam conforme o resultado desejado, porém todas elas são baseadas na interpolação de cores parametrizada pela altura do ponto sendo analisado. Para garantir um aspecto mais real, utiliza-se em algumas técnicas conjuntamente com ruídos e turbulência, como o ruído de Perlin.
+
+
+%
+% Falar que a água foi gerada com um segundo plano, que é outra esfera centrada na mesma esfera do mundo virtual.
+%
+
+A figura ~\ref{fig:mundo_esferico_relevo} ilustra o relevo obtido com essa abordagem.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/mundo_esferico_relevo.png}}
+\caption{Diferentes relevos gerados pela utilização de fractais e suas combinações ~\cite{LindaOndrej2007}}
+\label{fig:mundo_esferico_relevo}
+\end{figure}
+
+
+
 \section{Funções de ruído}
 
 -- Como utilizamos muito funções de ruido e afins, falar aqui do Perlin e do Musgrave. Falar bastante do livro deles, porque é uma coisa que é bem relacionada com o nosso trabalho e que a gente vai utilizar bastante.
@@ -68,7 +99,7 @@ Para garantir o uso racional de recursos computacionais, como memória e processa
 -- Só utilizamos o noise do Perlin aqui e o conceito de multi-fractal, mas sobre fractais eu vou falar depois.
 
 
-\section{Geração de relevo}
+\section{Geração de relevo}{sec:relevo}
 
 -- Falar aqui das 3 formas que encontramos para geração de relevo através de fractais (deposição de sedimentos, alteração do ponto médio e divisão de não sei o que).
 
