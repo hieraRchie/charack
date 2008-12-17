@@ -94,9 +94,23 @@ Tento em vista que autora explora diversos métodos para geração de relevo, é imp
 \label{fig:mundos_esfericos}
 \end{figure}
 
+Outro trabalho analisado foi a geração de terrenos procedimentais em tempo real com a utilização de fractais afetados por erosão ~\cite{terrain_generation}. Conforme ressaltado pelo autor, o aumento do poder de processamento de computadores domésticos possibilitou que jogos de computador façam uso de simulações de erosão em tempo quase real. Utilizando essa premissa, o autor agregou à geração de relevo por fractais novas características decorrentes da aplicação de erosão, o que teve como resultado mapas mais reais e, ao mesmo tempo, customizáveis. Primeiramente, um mapa de altura foi criado a partir de um diagrama de Voronoi, sendo cada um dos vértices do diagrama chamados de {\it pontos de funcionalidade}; o valor de cada célula no mapa de altura é obtido através de uma combinação linear das distâncias entre os pontos de funcionalidade mais próximos. Depois que o mapa de altura é gerado, ele é combinado com um algorítimo de geração de ruído para produzir montanhas menos pontiagudas e, para remover as linhas bem definidas criadas pelo diagrama de Voronoi, um filtro de perturbação ainda é aplicado. A figura ~\ref{fig:erosao_evolucao} ilustra o processo descrito. 
 
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/erosao_evolucao.png}}
+\caption{(a) Mapa de altura gerado a partir de um diagrama de Voronoi. (b) Aplicações de funções de ruído em (a). (c) Mapa resultante da aplicação de um filtro de perturbação em (b).~\cite{terrain_generation}}
+\label{fig:erosao_evolucao}
+\end{figure}
 
+Para a simulação de erosão no mapa de altura gerado, o autor utiliza um método híbrido de duas técnicas de erosão: a termal e a hidráulica. A erosão termal consiste na simulação de sedimentos se desprendendo de áreas mais altas e deslizando para baixo, na base do relevo. Aplicando uma série de otimizações sobre o algorítimo original proposto por ~\cite{MusgraveErosao}, o autor obteve resultados satisfatórios que podem ser utilizados em uma abordagem em tempo real para jogos. A erosão hidráulica simula a deposição de sedimentos causada pelo transporte de materiais dissolvidos num fluxo de água corrente. Em uma comparação entre os dois métodos, a erosão hidráulica apresentou melhores resultados visuais, porém mesmo a sua implementação otimizada não foi mais rápida que a erosão termal otimizada. O autor criou, então, uma mescla entre as duas técnicas, alterando o método de erosão hidráulica para que ele ficasse mais próximo ao método de erosão termal. O resultado obtido é uma técnica capaz de gerar resultados visuais tão bons quanto o método da erosão hidráulica, porém com o desempenho do método de erosão termal, o que permite que a técnica seja utiliza em tempo real em jogos. A figura ~\ref{fig:erosao_ilustracao} ilustra o resultado final obtido pelo autor.
 
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/erosao_ilustracao.png}}
+\caption{À direita, renderização de um mapa de altura sem a aplicação de erosão; à esquerda, o mesmo mapa com a aplicação de erosão. ~\cite{terrain_generation}}
+\label{fig:erosao_ilustracao}
+\end{figure}
 
 
 
