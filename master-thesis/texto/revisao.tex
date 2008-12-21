@@ -1,7 +1,146 @@
 \chapter{Revisão de Literatura} 
 \label{capitulo:revisao}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Funções de ruído e fractais}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+As formas encontradas na natureza são geralmente complexas e ricas em detalhes. Uma cadeia montanhosa, por exemplo, apresenta variações variações de altitude que às vezes não pode ser representada por uma função matemática, visto que ela não possui um padrão definido (ela é completamente aleatória). Em contra-partida, certas elementos naturais apresentam um padrão bem definido, como as cores na concha de um molusco ou as camadas de cascas de uma árvore.
+
+Para simular elementos naturais e suas peculiaridades em computação gráfica, pode-se utilizar fractais e funções de ruído. Fractais simulam elementos que possuem um padrão definido, enquanto funções de ruído adicionam a aleatoriedade existente no mundo real. Essa seção explana sobre conceitos e técnicas relacionadas a fractais e funções de ruído.
+
+%SurveyProcedutal (fractais, pg. 3, Perlin noise pg. 6)
+%-- Como utilizamos muito funções de ruido e afins, falar aqui do Perlin e do Musgrave. Falar bastante do livro deles, porque é uma coisa que é bem relacionada com o nosso trabalho e que a gente vai utilizar bastante.
+
+%-- Só utilizamos o noise do Perlin aqui e o conceito de multi-fractal, mas sobre fractais eu vou falar depois.
+
+\subsection{Fractais}
+
+Fractais são formas matemáticas geradas recursivamente, sendo que a cada nível de recursão mais e mais detalhes da mesma forma são gerados ~\cite{SurveyProcedural}. As formas geradas são auto-similares e geralmente a cada nível de recursão a forma original é vista novamente, com algumas alterações. Fractais possuem um nível de detalhes infinito, então quando mais próximo ele é visualizado, mais detalhes ele irá gerar. A figura ~\ref{fig:fractais_snowflake} ilustra o funcionamento de um fractal. É possível que fractais sejam utilizados para a geração de diversos elementos, tanto terrenos como plantas ~\cite{fractaisevery}. A utilização de fractais para a geração de relevo é uma técnica comum em computação gráfica, como pode ser visto na seção ~\ref{sec:relevo}.
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/fractais_snowflake.png}}
+\caption{Quatro primeiras iterações do fractal de floco-de-neve de Koch ~\cite{dollins-thesis}}
+\label{fig:fractais_snowflake}
+\end{figure}
+
+Conforme já citado, fractais apresentam um padrão de auto-similaridade, o que garante uma certa homogeneidade. As formas encontradas na natureza, porém, são em sua grande maioria heterogêneas, como a forma de um montanha: quando mais próximo do cume, mais pontiagudas as formas se tornam, ao passo que na base da montanha as formas são suaves e tentem a ser mais planas. Aplicando o conceito de heterogeneidade à fractais obtém-se o que é denominado {\it multifractal}. Em um conceito simples, multifractais são fractais com dimensões e detalhes diferenciados ao longo de sua forma e eles são obtidos fazendo com que o seu detalhamento seja calculado em função de algum outro atributo. Considerando o exemplo da montanha já citada, o nível de suavização da forma pode ser dado em função da altitude da montanha, ou seja, quanto mais próximo do cume, menos suave as formas devem ser.
+
+%TODO: falar aqui dos fractais do Musgrave do livro do Pozzer.
+
+\subsection{Ruído de Perlin}
+
+O ruído de Perlin foi desenvolvido por Ken Perlin in 1982, cujo objetivo inicial era criar texturas com aparência mais natural. A função de ruído de Perlin gera um intervalo de valores que podem ser utilizados para diversos fins, dentre eles uma forma de adicionar aleatoriedade aos relevos gerados procedimentalmente. Os resultados da função de ruído de Perlin são baseados no somatório dos valores de diversas funções redimensionadas, todas elas originadas de uma única função base. Essa função base é obtida a partir da interpolação de valores aleatórios gerados de forma discreta. A figura ~\ref{fig:perlin_espectro} ilustra os pontos gerados e a sua interpolação.
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/perlin_espectro.png}}
+\caption{À direita, valores aleatórios gerados a partir de pontos discretos. À esquerda, interpolação suave dos pontos~\cite{perlinUrl}}
+\label{fig:perlin_espectro}
+\end{figure}
+
+Partindo de um conjunto de pontos discretamente coletados, um espectro de valores é criado. Em seguida, todos os pontos são interpolados entre si, criando um domínio de valores infinito. Para cada parâmetros de entrada que a função de ruído receber, um valor correspondente será encontrado na curva que foi gerada como resultado da interpolação. Para facilitar os cálculos de geração de terreno, por exemplo, pode-se condicionar a função de ruído para que os valores retornados estejam sempre contidos dentro do intervalo {\tt [-1;1]}.
+
+Alterando-se a amplitude e a frequência da função base, obtém-se um conjunto de novas funções em outra escala. A maneira mais comum de obter novas funções em outra escala é dobrando a frequência e reduzindo a amplitude pela metade; cada nova função gerada é chamada de {\it octava}. O resultado da adição dessas diversas funções (octavas), com diferentes amplitude e frequência, é a função de {\bf ruído de Perlin}. A figura ~\ref{fig:perlin_octavas} ilustra graficamente as funções base utilizadas para a criação da função de ruído; as ilustrações de {\it (a)} até {\it (e)} são oitavas, sendo {\it (a)} a oitava de menor frequência e {\it (e)} a oitava de maior frequência. A ilustração {\it (f)} mostra o resultado da soma de todas as oitavas, que é a função de ruído de Perlin propriamente dita.
+
+\begin{figure}
+\centering
+\resizebox{14cm}{!}{\includegraphics{figuras/perlin_octavas.png}}
+\caption{À direita, valores aleatórios gerados a partir de pontos discretos. À esquerda, interpolação suave dos pontos~\cite{perlinUrl}}
+\label{fig:perlin_octavas}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Geração de relevo}
+\label{sec:relevo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%- dramatic_landscapes (dunas de areia e relevos semelhantes com heighmap)
+%- mountains.gi93 (montanhas com rios)
+%- p1463-ong (geração de terreno por algoritmo genéricos, não por fractais e afins)
+
+O elemento mais básico que compõe um mundo virtual é o seu terreno. O terreno é o plano que irá guiar e servir como base para todos os demais elementos que compõem o mundo, como árvores, estradas, cidades, etc. Em computação gráfica, um das formas possíveis de se representar um terreno é através de um mapa de altura ({\it heighmap}). Nessa abordagem, o terreno é representado por uma matriz de pontos, sendo que cada ponto {\tt (i,j)} representa a altura de um ponto do plano. Iterando-se sobre os pontos dessa matriz, conectando cada um deles através de arestas até eles formarem triângulos, é possível renderizar uma malha que pode ser utilizada como um terreno virtual.
+
+Essa seção apresenta diversas técnicas que podem ser utilizadas para a geração de um {\it heightmap} que, quando renderizado, é capaz de produzir relevos muito próximos aos que são encontrados no mundo real.
+
+
+%-- Falar aqui das 3 formas que encontramos para geração de relevo através de fractais (deposição de sedimentos, alteração do ponto médio e divisão de não sei o que).
+
+%-- Falar também sobre os multifractais que tem no livro do Musgrave, que ele usa para geração de costas de continentes muito bonitas.
+
+\subsection{Divisões estocásticas}
+
+Essa técnica consiste na subdivisão recursiva do {\it heighmap} através da utilização de números pseudo-aleatórios. Partindo de uma matriz com todos os pontos tendo a altura zero, o funcionamento do algorítimo é o seguinte: 
+
+\begin{itemize}
+    \item Uma altura escolhida aleatoriamente é atribuída a cada um dos cantos do quadrado. Essa altura é proporcional ao tamanho do quadrado.
+	\item O quadrado é divido em quatro quadrados menores, com as alturas dos cantos de cada quadrado sendo calculada com base na interpolação das alturas dos cantos dos quadrados vizinhos ao quadrado original.
+	\item O algorítimo repete os dois primeiros passos para cada quadrado gerado. A recursão é quebrada quando um certo nível de detalhes é atingido.
+\end{itemize}
+
+O resultado obtido com esse algorítimo é um plano que simula as elevações montanhosas do mundo real. Embora essa abordagem seja eficiente, ela não produz resultado muito realísticos, visto que a variação de altura ao longo dos pontos é linear, o que não é comum na natureza. Além disso, é possível encontrar picos ou bordas muito pontiagudos ao longo dos cantos dos quadrados gerados, o que gera um relevo irreal ~\cite{Lew87}. A figura ~\ref{fig:divisoes_estocasticas} ilustra um relevo gerado a partir de divisões estocásticas.
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/divisoes_estocasticas.png}}
+\caption{À esquerda, {\it heighmap} gerado a partir de divisões estocásticas; à direita, o mesmo {\it heightmap} renderizado em 3D ~\cite{dollins-thesis}}
+\label{fig:divisoes_estocasticas}
+\end{figure}
+
+Existem variações desse algorítimo que visam contornar as imperfeições descritas anteriormente. Uma dessas variações é a subdivisão em forma de diamante, que consiste em rotacionar os novos quadrados gerados em 45º em relação ao quadrado original. Outra variação é afastar os quadrados novos dos cantos altos do quadrado original, recalculando as alturas dos cantos de cada um dos novos quadrados com base em pesos, o que produz um relevo mais suave e sem picos pontiagudos.
+
+
+\subsection{Falhas geológicas}
+
+A geração por falhas geológicas simula a criação de relevo por movimentação de placas tectônicas. Partindo de um terreno com todos os pontos zerados, o algorítimo escolhe aleatoriamente uma linha que divide o terreno em duas partes. Para um dos lados, a altura dos pontos é incrementada em uma certa quantidade, enquanto a altura dos pontos do outro lado é decrementada dessa mesma quantidade. Depois disso, o valor usado para aumentar/diminuir as alturas é reduzido em uma certa quantidade e o algorítimo é repetido. No momento que esse valor chegar a zero o algoritmo termina.
+
+O relevo gerado com esse método não apresenta elevações pontiagudas como no algorítimo de subdivisões estocásticas, porém ele é muito lento para ser utilizado. Depois que a linha divisória é escolhida, todos os pontos da matriz precisam ser atualizados e isso é feito a cada iteração do algorítimo.
+
+\subsection{Deposição de sedimentos}
+
+A geração por deposição de sedimentos simula a criação de relevo por fluxos de lava. Nessa abordagem, pontos de liberação de sedimentos são escolhidos e, em cada um desses pontos, um determinado número de sedimentos é depositado. Cada partícula depositada irá tentar chegar até o ponto mais baixo da região onde foi depositada, rolando por cima das demais partículas. Se a partícula cair em um local no qual todas as posições à sua volta tem a mesma altura, então a partícula para de se movimentar.
+
+Variando-se os pontos de deposição de partículas e a quantidade de elementos depositados em cada ponto, é possível gerar obter-se terrenos visualmente aceitáveis. Novamente o tempo de execução do algorítimo é um problema; para cada partícula depositada, faz-se necessário o calculo de movimentação desse elemento, o que, dependendo do número de iterações, pode ter um custo computacional grande. Além disso, o algorítimo apresenta uma complexidade de implementação maior que os demais já citados.
+
+
+\subsection{Disposição do ponto médio}
+
+Essa técnica consiste em perturbar o ponto médio de um determinado segmento. Em uma abordagem 2D, por exemplo, dado um determinado segmento, o algorítimo acharia o ponto médio desse segmento e, utilizando um número pseudo-aleatório, aumentaria ou diminuiria a altura desse ponto em uma determinada quantidade. Em seguida, essa quantidade utilizada para perturbação é reduzida e o algorítimo é aplicado novamente aos dois novos segmentos gerados a partir da perturbação do ponto médio. A figura ~\ref{fig:midpoint} ilustra o funcionamento do algorítimo.
+
+\begin{figure}
+\centering
+\resizebox{8cm}{!}{\includegraphics{figuras/midpoint.png}}
+\caption{Geração de relevo pela disposição do ponto médio (perspectiva 2D) ~\cite{dollins-thesis}}
+\label{fig:midpoint}
+\end{figure}
+
+
+\subsection{Ruído de Perlin}
+
+Essa técnica consiste em utilizar funções de ruído de Perlin para causar perturbações no {\it heightmap}. A utilização de uma função de ruído de Perlin num {\it heightmap} não produz, por si só, um relevo visualmente parecido com aqueles encontrados na natureza; a combinação de diversas camadas de rúido, porém, é capaz de produzir um efeito mais natural e convincente. Cada uma dessas camadas, chamadas octavas, possui uma amplitude e uma frequência, e a combinação delas é comumente chamada de turbulência de Perlin. A figura ~\ref{fig:perlin_heightmap} 
+
+\begin{figure}
+\centering
+\resizebox{8cm}{!}{\includegraphics{figuras/perlin_heightmap.png}}
+\caption{À direita, {\it heightmap} gerado a partir de ruído de Perlin. À esquerda, {\it heighmap} gerado a partir da combinação de camadas de ruído de Perlin (turbulência). ~\cite{LandscapeGeneration}}
+\label{fig:perlin_heightmap}
+\end{figure}
+
+As características do relevo podem ser ajustadas através da modificação do número de octavas e da frequência de cada uma delas. Quanto maior for a frequência da octava adicionada, maior será a quantidade de detalhes do relevo. Uma variação para a geração de relevo através de ruído de Perlin é a técnica conhecida como ruido de Perlin {\it ridged}, que consiste na utilização de funções com valores absolutos em conjunto com a função de ruído original para produzir um relevo com mais "cristas". Na abordagem original, no intervalo {\tt [-1,1]}, que é o domínio da função de ruído, {\tt -1} indicaria um local muito baixo no mapa, ao passo que {\tt 1} indicaria o cume da montanha mais alta; na versão {\it ridged}, o algorítimo original é modificado para que os valores {\tt -1} e {\tt 1} gerem relevos de baixa altitude, ao passo que o os valores gerados no meio do intervalo {\tt [-1,1]} geram valores de grande altitude. A figura ~\ref{fig:perlin_ridged} ilustra os resultados obtidos com essa abordagem.
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/perlin_ridged.png}}
+\caption{À esquerda, {\it heighmap} gerado a partir da técnica de ruído de Perlin {\it ridged}; à direita, o mesmo {\it heightmap} renderizado em 3D ~\cite{LandscapeGeneration}}
+\label{fig:perlin_ridged}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Mundos pseudo-infinitos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %-- falar aqui das zilhoes de abordagens para geração de mundos infinitos que nós encontramos. Parece que todo mundo resolveu fazer pesquisa sobre isso de uma hora para outra.
 
@@ -10,11 +149,8 @@
 %- LindaOndrej2007 (ferramenta para geração de mundo circular, VARIOS ruidos do Perlin, fractais e multifractais, colorização)
 %- terrain_generation (geração de terrenos finitos aplicados a um jogo caso de uso)
 %- dollins-thesis (geração procedimental de mundos virtuais muito grandes usando quad-trees e divisões estocásticas)
-%- dramatic_landscapes (dunas de areia e relevos semelhantes com heighmap)
-%- mountains.gi93 (montanhas com rios)
-%- p1463-ong (geração de terreno por algoritmo genéricos, não por fractais e afins)
 
-%-- Aqui vai a explicação sobre o artigo frances sobre geração de cidades pseudo-infinitas (nosso artigo semente), aquela engine para geração de mundos virtuais, aquela outra ferramenta para geração de terrenos infinitos.
+%Ferramentas:
 
 %-- http://landscapestudio.omgames.co.uk/screenshots.html
 %-- http://www.vterrain.org/
@@ -41,7 +177,7 @@ Cada uma das construções existentes é gerada pela mescla de polígonos simples es
 \begin{figure}
 \centering
 \resizebox{15cm}{!}{\includegraphics{figuras/greuter_predios.png}}
-\caption{Geração de construções: em andar é gerado pela mescla de polígonos escolhidos e centralizados aleatoriamente ~\cite{infinicity}}
+\caption{Geração de construções: cada andar é gerado pela mescla de polígonos escolhidos e centralizados aleatoriamente ~\cite{infinicity}}
 \label{fig:greuter_predios}
 \end{figure}
 
@@ -61,14 +197,14 @@ Para garantir o uso racional de recursos computacionais, como memória e processa
 \label{fig:greuter_cidade}
 \end{figure}
 
-Outro trabalho analisado foi o de ~\cite{LandscapeGeneration} para a construção da ferramenta SkyCastle ~\cite{SkyCastle}, uma {\it engine} para jogos online multijogador com suporte à geração de mundos virtuais gerados proceduralmente. No referido trabalho, o autor foca o problema de mundos virtuais cada vez maiores em jogos de computador e aplicações, o que cria a necessidade de desenvolvimento de ferramentas capazes de ajudar na geração de conteúdos realistas para esses mundos. Para a geração de relevo, o autor utiliza procedimentos parametrizados e sistemas baseados em fractais em uma abordagem de camadas: a aplicação adiciona um mapa de ruído (com amplitude reduzida) ao mapa de altura base em cada iteração. Os mapas de ruído são pré-computados e criados através de funções de ruído de Perlin, abordagem semelhante ao método de geração de relevo por deposição de sedimentos, que será abordado em mais detalhes na seção ~\ref{sec:relevo}.
+Outro trabalho analisado foi o de ~\cite{LandscapeGeneration} para a construção da ferramenta SkyCastle ~\cite{SkyCastle}, uma {\it engine} para jogos online multijogador com suporte à geração procedimental de mundos virtuais. No referido trabalho, o autor foca o problema de mundos virtuais cada vez maiores em jogos de computador e aplicações, o que cria a necessidade de desenvolvimento de ferramentas capazes de ajudar na geração de conteúdos realistas para esses mundos. Para a geração de relevo, o autor utiliza procedimentos parametrizados e sistemas baseados em fractais em uma abordagem de camadas: a aplicação adiciona um mapa de ruído (com amplitude reduzida) ao mapa de altura base em cada iteração. Os mapas de ruído são pré-computados e criados através de funções de ruído de Perlin, abordagem semelhante ao método de geração de relevo por deposição de sedimentos, que será abordado em mais detalhes na seção ~\ref{sec:relevo}.
 
 Depois do assunto de criação de relevo, o autor aborda a funcionalidade de texturização da malha gerada. Um dos métodos apresentados é a utilização de uma imagem com proporções muito grandes, que seria capaz de cobrir o mundo inteiro. Embora essa abordagem passa ser útil para cenários pequenos, ela não é viável para terrenos grandes ou mundos virtuais, uma vez que o tamanho da imagem poderia atingir proporções proibitivas. Para contornar esse problema, a abordagem de reticulados é sugerida~\cite{CSHD03}; nessa abordagem, uma célula de textura é criada de tal forma que ao posicionar várias células, uma do lado da outra, o plano gerado apresenta uma texturização contínua e sem falhas. O resultado obtido com essa abordagem é aceitável, porém ele não é visualmente atraente para o usuário final, uma vez que o terreno apresenta uma continuidade que não existiria no mundo real. Para conseguir um resultado visual melhor, o autor sugere a utilização de uma abordagem proposta por ~\cite{LN03}, que consiste na utilização de um conjunto de texturas pré-definidas em formato de borda juntamente com a texturização em reticulados já citada. O funcionamento do algoritmo resume-se em aplicar as texturas em borda sobre um plano já uniformemente texturizado, porém utilizando transparência nas áreas não desenháveis das texturas em borda. Dessa forma, a sobreposição das bordas sobre o plano texturizado irá produzir uma paisagem menos homogênea, o que gera um resultado visual melhor. A figura ~\ref{fig:tiling} ilustra as texturas em forma de borda e a sua utilização na abordagem descrita.
 
 \begin{figure}
 \centering
 \resizebox{15cm}{!}{\includegraphics{figuras/tiling.png}}
-\caption{Terreno texturizado com duas camadas: a inferior sendo um bloco escuro e a superior sendo um conjunto de texturas em formato de borda com transparência ~\cite{LandscapeGeneration}}
+\caption{Terreno texturizado com duas camadas: bloco escuro e um conjunto de texturas em formato de borda com transparência ~\cite{LandscapeGeneration}}
 \label{fig:tiling}
 \end{figure}
 
@@ -90,7 +226,7 @@ Tento em vista que autora explora diversos métodos para geração de relevo, é imp
 \begin{figure}
 \centering
 \resizebox{15cm}{!}{\includegraphics{figuras/mundos_esfericos.png}}
-\caption{Planetas gerados com os diversos algorítimos. (a) Geração por falhas aleatórias. (b) Disposição do ponto médio. (c) Disposição do ponto médio multifractal. (d) Ruído de Perlin. (e) Ruído de Persil Multifractal. (f) Ruído de Perlin {\it Ridged}. (g) Ruído de Perlin {\it Ridged} Multifractal.~\cite{LindaOndrej2007}}
+\caption{Planetas gerados com os diversos algorítimos. (a) Falhas aleatórias. (b) Disposição do ponto médio. (c) Disposição do ponto médio multifractal. (d) Ruído de Perlin. (e) Ruído de Persil Multifractal. (f) Ruído de Perlin {\it Ridged}. (g) Ruído de Perlin {\it Ridged} Multifractal.~\cite{LindaOndrej2007}}
 \label{fig:mundos_esfericos}
 \end{figure}
 
@@ -112,18 +248,23 @@ Para a simulação de erosão no mapa de altura gerado, o autor utiliza um método h
 \label{fig:erosao_ilustracao}
 \end{figure}
 
+Outro trabalho analisado foi a geração de mundos virtuais procedimentalmente através de técnicas de subdivisão estocásticas ~\cite{dollins-thesis}. O objetivo do autor foi criar um mundo virtual de grandes proporções, porém gerando o seu conteúdo sob-demanda através procedimentos parametrizáveis e com multi-resolução. Para a geração do relevo do terreno, o autor utiliza sub-divisões de uma {\it quad-tree} em um processo recursivo, como ilustra a figura ~\ref{fig:dollin_quadtree}. A forma do terreno é definida pelo ponto médio de cada uma das células, que na figura são representados pelos círculos pequenos no centro de cada quadrado. Para cada nível de subdivisão, os novos pontos médios das células filho criadas são definidos em função das nove células pai que estão ao redor da célula sendo dividida. A altura dos demais pontos da malha, como os vértices que estão nos cantos das células, é definida pela interpolação dos pontos médios mais próximos. A cada camada de detalhamento, mais células são subdividias, e a célula que sofreu a subdivisão é substituída pelas novas células filho geradas. Na figura ~\ref{fig:dollin_quadtree}, o quadrado localizado no centro representa uma célula que está sofrendo subdivisões e que será substituída pelas quatro células filho resultantes da subdivisão (as células filhos são os quadrados com círculos brancos no centro). Tendo em vista que as subdivisões são baseadas em cálculos estocásticos, o autor necessitou de uma forma de geração de números aleatórios que pudesse prover uma sequência confiável de números ao longo de todo o processo de subdivisão, visto que são vários níveis de detalhes, cada um deles gerando várias células com diversos pontos. Para evitar repetições de números ao longo dos vários níveis de detalhamento, o autor utilizou um gerador de números aleatórios alimentado por três elementos: as coordenadas {\tt X} e {\tt Y} da célula e o nível de detalhe sendo mostrado nesse momento; isso garante que um conjunto de números aleatórios seja gerado de forma satisfatória para cada um das células existentes no mundo virtual, independente do nível de detalhes exigido.
 
 
-\section{Funções de ruído}
+\begin{figure}
+\centering
+\resizebox{8cm}{!}{\includegraphics{figuras/dollin_quadtree.png}}
+\caption{{\it Quad-tree} utilizada para a geração do terreno ~\cite{dollins-thesis}}
+\label{fig:dollin_quadtree}
+\end{figure}
 
--- Como utilizamos muito funções de ruido e afins, falar aqui do Perlin e do Musgrave. Falar bastante do livro deles, porque é uma coisa que é bem relacionada com o nosso trabalho e que a gente vai utilizar bastante.
+Para controlar a instanciação de cada célula, conforme a câmera se movimenta, novas células são instanciadas à frente da câmera e as células atrás da câmera, que estão muito distantes, são removidos. A figura ~\ref{fig:dollin_bintree} ilustra o funcionamento do processo através de uma árvore binária; os nós pai sempre instanciam todos os seus filhos e os nós que estão dentro de um determinada camada (nível da árvore) só serão atualizados quando a câmera atingir o ponto médio da célula pai. Como ilustrado na figura, à medida que a câmera se move para a direita, ultrapassando o ponto médio das células pai, novos nós vão sendo instanciados à direita (à medida que o nó pai entra no campo de visão), ao passo que todos os nós pai que saem do campo de visão são removidos (junto com os seus filhos). A malha final é renderizada a partir das informações conditas nas folhas da árvore, sendo que a altura de cada um desses pontos na malha é definido pela interpolação de seu ponto médio com a vizinhança, como descrito anteriormente.
 
--- Só utilizamos o noise do Perlin aqui e o conceito de multi-fractal, mas sobre fractais eu vou falar depois.
+Para garantir o desempenho no cálculo dos pontos médios da vizinhança, o autor buscou uma forma de pesquisar, com um tempo constante, os nós vizinhos duma determinada célula. Para encontrar os vizinhos imediatos a uma célula, basta que a relação de pai e filho da árvore seja utilizada, o que irá resultar em uma busca de apenas dois ponteiros (um do nó atual até o pai dele e outro do pai até o nó irmão). O problema está no cálculo para encontrar as células vizinhas mais distantes, que podem estar a uma distância arbitrária do nó atual, ou seja, vários ponteiros deverão ser consultados até que os vizinhos desejados sejam encontrados. Uma das soluções encontradas pelo autor para essa busca é utilizar uma tabela hash para indexar todos os nós de uma determinada camada (nível da árvore). Utilizando essa abordagem, o tempo de busca de qualquer nó de uma camada se tornaria constante. Outra solução encontrada é utilizar um vetor bi-dimensional para indexar os nós de uma determinada camada. Conforme apontado pelo autor, quando uma camada deve ser atualizada (porque o ponto médio de uma célula pai foi atingido), a melhor abordagem é a utilização de um vetor; mesmo que o custo para atualizar todos os nós de um vetor seja mais alto do que apenas inserir uma nova entrada na tabela hash, a busca em vetor é mais rápida do que o processo de calcular a chave de hash de cada célula a partir de suas coordenadas.
 
-
-\section{Geração de relevo}{sec:relevo}
-
--- Falar aqui das 3 formas que encontramos para geração de relevo através de fractais (deposição de sedimentos, alteração do ponto médio e divisão de não sei o que).
-
--- Falar também sobre os multifractais que tem no livro do Musgrave, que ele usa para geração de costas de continentes muito bonitas.
-
+\begin{figure}
+\centering
+\resizebox{8cm}{!}{\includegraphics{figuras/dollin_bintree.png}}
+\caption{Subdivisão de células e níveis de detalhe representados por uma árvore binária em 2D. ~\cite{dollins-thesis}}
+\label{fig:dollin_bintree}
+\end{figure}
