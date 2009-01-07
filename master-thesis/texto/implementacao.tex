@@ -22,8 +22,9 @@ Além disso, os algoritmos são sensivelmente afetados pelo fato de que as informa
 
 Para contornar esses problemas e focar os esforços de desenvolvimento em soluções pontuais, a geração do mundo virtual foi dividia em três grandes etapas: terreno infinito, continentes e relevo. A geração de conteúdo sob demanda afeta de forma diferenciada cada uma dessas etapas e a descrição da implementação de cada uma delas, junto com os problemas associados, é descrito nas seções seguintes.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Terreno infinito}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %-- falar que utilizarmos o conceito de view frustum (daquele artigo frances) como base para os trabalhos. Em suma, vou descrever como que a coisa toda funciona: o usuário só enxerga o que está dentro do campo de visão, falar da janela de visualização do mundo, etc
 
@@ -31,7 +32,7 @@ A base para a geração do mundo virtual proposto é a possibilidade do usuário pod
 
 Para solucionar esse problema, utilizou-se uma variação da técnica descrita por ~\cite{infinicity}. Na abordagem dos autores em questão, o mundo virtual pseudo-infinito é divido em células quadradas e, à medida que o usuário anda, as células são adicionadas e/ou removidas do campo de visão. Cada célula possui um conteúdo próprio e auto-contido, ou seja, a célula não precisa de informações de vizinhos para gerar o seu conteúdo. Isso garante que as células não entrem em uma dependência recursiva infinita entre elas para conseguirem gerar o seu conteúdo. Além disso, essa abordagem é vantajosa para garantir o uso racional de recursos, uma vez que só serão carregados para a memória os blocos que o usuário realmente consegue ver.  
 
-Para o posicionamento do usuário no mundo virtual, os autores utilizam um vetor 3D no formato {\tt (x,y,z)}. Conforme o usuário se move horizontalmente pelo mundo, as coordenadas {\tt x} e {\tt y} são atualizadas. Se o usuário se move verticalmente, a coordenada Z é alterada. A abordagem utilizada para a ferramenta dessa dissertação baseou-se nesses conteitos. A figura ~\ref{fig:org_coordenadas} ilustra a organização do mundo virtual.
+Para o posicionamento do usuário no mundo virtual, os autores utilizam um vetor 3D no formato {\tt (x,y,z)}. Conforme o usuário se move horizontalmente pelo mundo, as coordenadas {\tt x} e {\tt y} são atualizadas. Se o usuário se move verticalmente, a coordenada Z é alterada. A abordagem utilizada para a ferramenta dessa dissertação baseou-se nesses conceitos. A figura ~\ref{fig:org_coordenadas} ilustra a organização do mundo virtual.
 
 \begin{figure}
 \centering
@@ -42,7 +43,7 @@ Para o posicionamento do usuário no mundo virtual, os autores utilizam um vetor 
 
 A origem do mundo virtual é o ponto {\tt (0,0,0)} e os eixos que definem o plano horizontal são o {\tt X} e {\tt Z}, sendo a altura controlada pelo eixo {\tt Y}. A distância máxima que o usuário consegue percorrer em qualquer um dos eixos é o número máximo suportado por um inteiro de 32 bits com sinal.
 
-O que o jogador consegue ver na tela em um determinado momento é um pedaço do mundo virtual existente. Esse pedaço foi chamado de {\it view frustum}, ou campo de visão. Diferentemente do que foi feito em  ~\cite{infinicity}, no qual o campo de visão é um cone, o campo de visão da presente ferramenta é um quadrado centrado no usuário. A figura ~\ref{fig:campo_visao} ilustra o funcionamento do campo de visão.
+O que o jogador consegue ver na tela em um determinado momento é um pedaço do mundo virtual existente. Esse pedaço foi chamado de {\it view frustum}, ou campo de visão. Diferentemente do que foi feito em  ~\cite{infinicity}, no qual o campo de visão é um cone, o campo de visão da presente ferramenta é um quadrado centrado no usuário. A figura ~\ref{fig:campo_visao} ilustra o funcionamento do campo de visão. A partir da posição {\tt (x, y, z)} do usuário, a ferramenta calcula qual é o conteúdo visualizável ao redor desse ponto e, então, "recorta" essa fatia do mundo e a desenha na tela. Ao chegar na borda limite do mundo, que pode ser a distância máxima de um eixo, por exemplo, o usuário é impedido de avançar e nenhum conteúdo é mostrado além da borda limite.
 
 \begin{figure}
 \centering
@@ -50,8 +51,6 @@ O que o jogador consegue ver na tela em um determinado momento é um pedaço do mu
 \caption{Campo de visão do usuário: a área visualizada corresponde a uma fatia do mundo virtual existente.}
 \label{fig:campo_visao}
 \end{figure}
-
-A partir da posição {\tt (x, y, z)} do usuário, a ferramenta calcula qual é o conteúdo visualizável ao redor do referido ponto. Ao chegar na borda limite do mundo, que pode ser a distância máxima de um eixo, por exemplo, o usuário é impedido de avançar e nenhum conteúdo é mostrado além da borda limite.
 
 Inicialmente planejou-se a utilização de quadrados para dividir o mundo virtual em células, conforme é feito na outra abordagem citada anteriormente. A utilização de células garantiria que o mundo virtual fosse subdivido em blocos menores, o que viabilizaria um melhor controle sobre o que o usuário consegue ver no seu campo de visão e, também, um melhor controle sobre a geração de conteúdo. O maior problema encontrado nessa abordagem, que foi a razão pela qual ela foi abandonada, é a dependência que as células precisam ter entre si para que o terreno infinito seja gerado.
 
@@ -74,22 +73,39 @@ Depois que o modelo de controle da geração de terrenos infinitos foi definido, i
 
 O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it height map}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao}, quadrado 2. O mapa de altura gerado é renderizado como uma malha triangular.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Continentes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--- falar que utilizamos o  algoritmo maluco do professor dos EUA para fazer a costa. Falar que existe o mundo é gigante o suficiente para fazer com que uma matrix que descreve água/terra seria inviável. Para solucionar esse problema, falar que utilizamos o conceito de isLang local e isLang global. O isLand global dá uma dica se o lugar é água ou terra, e o isLand local utiliza multifractais para fazer o desenho das bordas dos continentes.
+%-- falar que utilizamos o  algoritmo maluco do professor dos EUA para fazer a costa. Falar que existe o mundo é gigante o suficiente para fazer com que uma matrix que descreve água/terra seria inviável. Para solucionar esse problema, falar que utilizamos o conceito de isLang local e isLang global. O isLand global dá uma dica se o lugar é água ou terra, e o isLand local utiliza multifractais para fazer o desenho das bordas dos continentes.
 
--- É importante frisar que essa seção é onde está a nossa contribuição na pesquisa: mundo pseudo-infinito, com relevo gerado on-the-fly e com costas de continentes com multiresolução.
+%-- É importante frisar que essa seção é onde está a nossa contribuição na pesquisa: mundo pseudo-infinito, com relevo gerado on-the-fly e com costas de continentes com multiresolução.
+
+A geração de continentes e oceanos foi proposta para quebrar a monotonia de uma paisagem composta apenas por terra no mundo virtual, bem como para aumentar o nível de semelhança com as paisagens encontradas na natureza. As seções seguintes apresentam as técnicas utilizadas para a geração de continentes no mundo virtual.
 
 
+\subsection{Oceano como um plano azul}
+
+ A primeira abordagem utilizada para a geração de água foi uma semelhantes à proposta por ~\cite{LindaOndrej2007}, que consiste na adição de um plano azul cortando todos os elementos do mundo virtual na altura do nível do mar. Embora essa abordagem seja muito simples, ela reduz consideravelmente a complexidade dos algorítimos de geração de relevo, uma vez que eles não precisam classificar os vértices como sendo "terra" ou "mar" e, como consequência, não são necessários campos extras na estrutura de dados do vértice para informar que ele é um vértice do oceano, por exemplo. Além disso, não existem problemas na colorização de partes de terra que possuem relevo abrupto e tem contato com o mar, como uma falésia; no caso da marcação de vértices como "terra" ou "mar", a falésia teria uma interpolação entre a cor do mar e a sua própria cor, o que poderia resultar em uma montanha azul até a sua metade, por exemplo. 
+
+A utilização de um plano azul para a criação do mar limita a geração de continentes à forma que o relevo possui, ou seja, se houver montanhas largas e com um relevo não pontudo, existirão continentes grandes, caso contrário existirão apenas pequenas ilhas, que podem ser apenas o cume de uma montanha. Em testes realizados, o relevo gerado foi equilibrado o suficiente para produzir continentes grandes e, dentro deles, variações de alturas consideráveis como montanhas e planícies. Todo o relevo que ficou posicionado acima do nível do mar ficou visível ao usuário, porém aquele que ficou abaixo desse nível foi excluído da visualização. A menos que seja interessante que o oceano apresente seu próprio relevo submarino, todas as montanhas e planícies que ficaram debaixo d`água foram perdidas, o que reduz a riqueza de detalhes da cena. Em virtude desse problema, optou-se por utilizar uma abordagem mais controlada para a geração de faixas de terra.
+
+
+\subsection{Pré-processamento de faixas de terra}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Relevo}
 \label{sub:relevo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-A ideia original do presente trabalho foi desenvolver um mundo virtual capaz de apresentar diversos tipos de relevos, como cadeias montanhosas, planícies, vales, desertos, florestas, etc. A complexidade associada à geração de cada um desses elementos varia conforme o nível de realismo esperado, bem como pelo nível de dinamismo do conteúdo gerado. Quanto mais presente for o conceito de geração de conteúdo sob demanda, mais difícil torna-se a tarefa de gerar conteúdos conexos e sem falhas abruptas na malha de relevo.
+A ideia original do presente trabalho foi desenvolver um mundo virtual capaz de apresentar diversos tipos de relevos, como cadeias montanhosas, planícies, vales, desertos, florestas, etc. A complexidade associada à geração de cada um desses elementos varia conforme o nível de realismo esperado e o nível de dinamismo do conteúdo gerado. Quanto mais presente for o conceito de geração de conteúdo sob demanda, mais difícil torna-se a tarefa de gerar conteúdos conexos e sem falhas abruptas na malha de relevo. As seções seguintes apresentam os problemas encontrados e a solução escolhida para a geração de relevo.
 
-Mantendo-se a meta de gerar o conteúdo da forma mais dinâmica possível (sem elementos pré-posicionados, por exemplo), o primeiro grande problema encontrado durante o desenvolvimento do relevo do mundo virtual foi a forma como ele deveria ser gerado. Considerando que a ferramenta é capaz de criar um mundo pseudo-infinito, a geração de uma malha de relevo tão grande, de uma só vez, é fisicamente inviável; a quantidade de vértices que precisariam ser armazenados tornaria o consumo de armazenamento da aplicação muito grande, o que poderia ser um empecilho para a utilização da ferramenta.
+\subsection{Problemas encontrados}
 
-Além do problema de armazenamento, outro tópico importante que foi considerado é a geração de conteúdo contínuo, ou seja, um relevo que não tenha falhas abruptas de continuidade, como uma cadeia montanhosa que termina inesperadamente. Partindo do fato que o mundo virtual não poderia ser divido em células, tendo em vista os diversos problemas de continuidade de conteúdo, a solução para a geração de relevo deveria basear-se apenas nas informações disponíveis no campo de visão. Embora seja possível gerar relevo utilizando-se como valores de entrada somente as informações do campo de visão, novos problemas de continuidade foram encontrados.
+Mantendo-se a meta de gerar o conteúdo da forma mais dinâmica possível (sem elementos pré-posicionados, por exemplo), o primeiro grande problema encontrado durante o desenvolvimento do relevo do mundo virtual foi a forma como ele deveria ser gerado. Considerando que a ferramenta é capaz de criar um mundo pseudo-infinito, a geração de uma malha de relevo tão grande, de uma só vez, é fisicamente inviável; a quantidade de vértices que precisariam ser armazenados tornaria o consumo de armazenamento da aplicação muito grande, o que poderia ser um empecilho para a utilização da ferramenta. Além do problema de armazenamento, outro tópico importante que foi considerado é a geração de conteúdo contínuo, ou seja, um relevo que não tenha falhas abruptas de continuidade, como uma cadeia montanhosa que termina inesperadamente. Partindo do fato que o mundo virtual não poderia ser divido em células, tendo em vista os diversos problemas de continuidade de conteúdo, a solução para a geração de relevo deveria basear-se apenas nas informações disponíveis no campo de visão. Embora seja possível gerar relevo utilizando-se como valores de entrada somente as informações do campo de visão, novos problemas de continuidade foram encontrados.
 
 Supondo que a geração de relevo utilize a posição do vértice no mundo virtual como semente para uma função pseudo-aleatória de cálculo de relevo; supondo também que a geração de montanhas, por exemplo, é definida por pontos chave que indicam a espinha dorsal da cadeia montanhosa. Se o algoritmo se basear apenas nesses pontos chave para calcular as montanhas, o usuário só irá enxergar a montanha quando um desses pontos chave entrar dentro do campo de visão. Isso irá causar falhas abruptas de continuidade, porque se o usuário costear a espinha dorsal da montanha, sem que os pontos chave entrem no campo de visão, ele não verá a cadeia de montanhas, sendo que ele deveria ver um relevo ascendente até o cume dessas montanhas. A figura ~\ref{fig:montanha_fora_campo} ilustra esse problema.
 
@@ -100,7 +116,11 @@ Supondo que a geração de relevo utilize a posição do vértice no mundo virtual co
 \label{fig:montanha_fora_campo}
 \end{figure}
 
-A solução encontrada para a geração de relevo foi utilizar uma função paramétrica que informa a característica de cada um dos vértices do mundo virtual. Nessa abordagem, cada ponto do mundo é utilizado como parâmetro para a função de relevo que, por sua vez, calcula a altura que esse ponto deve ter. Como resultado, tem-se uma função capaz de descrever todo o relevo do mundo virtual, independente do tamanho que ele seja; a quantidade de recursos computacionais que serão utilizados para gerar o conteúdo do campo de visão é diretamente proporcional ao tamanho do campo de visão, não ao tamanho do mundo, visto que a função de relevo utiliza as informações de cada ponto para calcular a sua característica. A figura ~\ref{fig:espectro_func_relevo} ilustra o funcionamento da função de relevo aplicada ao mundo virtual gerado.
+
+\subsection{Solução}
+
+
+A solução encontrada para a geração de relevo foi utilizar uma função paramétrica que informa a característica de cada um dos vértices do mundo virtual. Nessa abordagem, cada ponto do mundo é utilizado como parâmetro para a função de relevo que, por sua vez, calcula a altura que esse ponto deve ter. Como resultado, tem-se uma função capaz de descrever todo o relevo do mundo virtual, independente do tamanho que ele possua; a quantidade de recursos computacionais que serão utilizados para gerar o conteúdo do campo de visão é diretamente proporcional ao tamanho do campo de visão, não ao tamanho do mundo, visto que a função de relevo utiliza as informações de cada ponto para calcular a sua característica. A figura ~\ref{fig:espectro_func_relevo} ilustra o funcionamento da função de relevo aplicada ao mundo virtual gerado.
 
 \begin{figure}
 \centering
@@ -109,11 +129,17 @@ A solução encontrada para a geração de relevo foi utilizar uma função paramétric
 \label{fig:espectro_func_relevo}
 \end{figure}
 
-Para aumentar a heterogeneidade do relevo gerado, a ferramenta utiliza duas funções de relevo, uma para o eixo {\tt X} e outra para o eixo {\tt Z}. Além de garantir que o relevo gerado não seja perfeitamente simétrico nos dois eixos, essa abordagem permite um maior controle sobre a geração de conteúdo. A altura de cada ponto do mapa é definido pela soma dessas duas funções de ruído.
+Para aumentar a heterogeneidade do relevo gerado, a ferramenta utiliza duas funções de relevo, uma para o eixo {\tt X} e outra para o eixo {\tt Z}. Além de garantir que o relevo gerado não seja perfeitamente simétrico nos dois eixos, essa abordagem permite um maior controle sobre a geração de conteúdo. A altura de cada ponto do mapa é definido pela soma dos resultados de cada uma dessas funções. Durante a escolha dos métodos para geração de relevo, inicialmente utilizou-se uma combinação de funções seno e cosseno, porém o resultado obtido foi muito simétrico e artificial em comparação com o relevo encontrado na natureza. Para melhorar a qualidade do relevo gerado, utilizou-se então uma mescla dos conceitos apresentados nas seção ~\ref{sec:relevo} e ~\ref{sec:mundos}. Na abordagem proposta por ~\cite{infinicity}, o relevo apresentado é plano e a geração de conteúdo resume-se a prédios e ruas, o que não se enquadra por completo com a abordagem escolhida para o presente trabalho; aproveitou-se, então, a técnica de parametrização da geração de conteúdo através da utilização do posicionamento dos elementos como semente para uma função estocástica de geração. Buscou-se, então, um método de ruído capaz de gerar um relevo que fosse ao mesmo tempo controlável e semelhante àquele existe no mundo real. Conforme apontado por ~\cite{LindaOndrej2007}, esse objetivo pode ser atingido através da utilização da função de ruído de Perlin isoladamente ou através da combinação dela com outras técnicas; como pode ser visto nos resultados obtidos pela autora, o relevo gerado possui uma boa qualidade gráfica e custo computacional aceitável. Optou-se, então, por utilizar funções de ruído de Perlin para a geração de ruído.
 
-Inicialmente utilizou-se uma combinação de funções seno e cosseno para a geração do relevo.
+Para a geração do relevo através de funções de ruído, uma das possíveis abordagens seria aquela proposta por ~\cite{SkyCastle}, que consiste na sobreposição de um mapa de altura base com mapas de ruído pré-computados. Embora essa abordagem produza um relevo relativamente controlável e aceitável, a sua utilização exigiria algumas mudanças no funcionamento do algorítimo original. Na abordagem do autor, o relevo é gerado de uma só vez e para o mundo virtual inteiro, o que seria proibitivo para a ferramenta proposta no presente trabalho. Para contornar esse problema, substitui-se a sobreposição de mapas de ruído pré-computados pela sobreposição em tempo real apenas do ruído dos pontos que estão dentro do campo de visão do usuário. Em suma, a ferramenta gera em tempo real mapas de ruído do tamanho exato da fatia do mundo virtual que o usuário está vendo e, então, sobrepõe esses mapas com o mapa de altura original (que também é uma fatia do mundo virtual).
 
+Para controlar o nível de perturbação do relevo, como montanhas mais pontudas ou mais suaves, uma possível solução seria a aplicação de efeitos de erosão como foi proposto por ~\cite{terrain_generation}. Partindo do fato que os algorítimos de erosão propostos pelo autor utilizam diversas informações referentes à vizinhança dos pontos, se essa abordagem fosse utiliza para a ferramenta, ela resultaria em má formação do relevo nas bordas da fatia do mundo virtual sendo mostrada. Isso aconteceria porque os vizinhos mais afastados dos pontos que estão na borda não estariam dentro do campo de visão do usuário, o que faria com que o algorítimo de erosão calculasse as alterações com apenas uma parte das informações necessárias; como consequência, toda vez que o usuário se movimentasse, alterações abruptas de relevo poderiam acontecer nas bordas da fatia sendo visualizada. Como saída a essa problema, para garantir um controle sobre o nível de pertubação do relevo utilizou-se apenas as propriedades da função de ruído de Perlin: para a obtenção de relevos mais "enrugados", utilizou-se mais oitavas na função de ruído (o funcionamento das oitas está descrito na seção ~\ref{sec:perlin}).  
 
+Utilizando a sobreposição de funções de ruído de Perlin para a geração da altura do relevo nos eixos {\tt X} {\tt Z}, alterando-se as oitavas de cada função de ruído para atenuar ou aumentar a pertubação dos resultados, foi possível customizar o relevo e obter resultados satisfatórios. A figura ~\ref{fig:relevos_xz_perlin} ilustra os diversos relevos obtidos através dessa abordagem.
 
-%Falar alguma coisa aqui, nada para falar...
-%-- O relevo é gerado on-the-fly por funções matemáticas (explicar essas funções); falar que isso é totalmente customizável e que a qualquer momento o relevo pode ser mostrado.
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/relevos_xz_perlin.png}}
+\caption{Diversos relevos obtidos através da sobreposição de funções de ruído de Perlin.}
+\label{fig:relevos_xz_perlin}
+\end{figure}
