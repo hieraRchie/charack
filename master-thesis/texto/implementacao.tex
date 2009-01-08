@@ -73,28 +73,6 @@ Depois que o modelo de controle da geração de terrenos infinitos foi definido, i
 
 O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it height map}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao}, quadrado 2. O mapa de altura gerado é renderizado como uma malha triangular.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Continentes}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%-- falar que utilizamos o  algoritmo maluco do professor dos EUA para fazer a costa. Falar que existe o mundo é gigante o suficiente para fazer com que uma matrix que descreve água/terra seria inviável. Para solucionar esse problema, falar que utilizamos o conceito de isLang local e isLang global. O isLand global dá uma dica se o lugar é água ou terra, e o isLand local utiliza multifractais para fazer o desenho das bordas dos continentes.
-
-%-- É importante frisar que essa seção é onde está a nossa contribuição na pesquisa: mundo pseudo-infinito, com relevo gerado on-the-fly e com costas de continentes com multiresolução.
-
-A geração de continentes e oceanos foi proposta para quebrar a monotonia de uma paisagem composta apenas por terra no mundo virtual, bem como para aumentar o nível de semelhança com as paisagens encontradas na natureza. As seções seguintes apresentam as técnicas utilizadas para a geração de continentes no mundo virtual.
-
-
-\subsection{Oceano como um plano azul}
-
- A primeira abordagem utilizada para a geração de água foi uma semelhantes à proposta por ~\cite{LindaOndrej2007}, que consiste na adição de um plano azul cortando todos os elementos do mundo virtual na altura do nível do mar. Embora essa abordagem seja muito simples, ela reduz consideravelmente a complexidade dos algorítimos de geração de relevo, uma vez que eles não precisam classificar os vértices como sendo "terra" ou "mar" e, como consequência, não são necessários campos extras na estrutura de dados do vértice para informar que ele é um vértice do oceano, por exemplo. Além disso, não existem problemas na colorização de partes de terra que possuem relevo abrupto e tem contato com o mar, como uma falésia; no caso da marcação de vértices como "terra" ou "mar", a falésia teria uma interpolação entre a cor do mar e a sua própria cor, o que poderia resultar em uma montanha azul até a sua metade, por exemplo. 
-
-A utilização de um plano azul para a criação do mar limita a geração de continentes à forma que o relevo possui, ou seja, se houver montanhas largas e com um relevo não pontudo, existirão continentes grandes, caso contrário existirão apenas pequenas ilhas, que podem ser apenas o cume de uma montanha. Em testes realizados, o relevo gerado foi equilibrado o suficiente para produzir continentes grandes e, dentro deles, variações de alturas consideráveis como montanhas e planícies. Todo o relevo que ficou posicionado acima do nível do mar ficou visível ao usuário, porém aquele que ficou abaixo desse nível foi excluído da visualização. A menos que seja interessante que o oceano apresente seu próprio relevo submarino, todas as montanhas e planícies que ficaram debaixo d`água foram perdidas, o que reduz a riqueza de detalhes da cena. Em virtude desse problema, optou-se por utilizar uma abordagem mais controlada para a geração de faixas de terra.
-
-
-\subsection{Pré-processamento de faixas de terra}
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Relevo}
@@ -143,3 +121,53 @@ Utilizando a sobreposição de funções de ruído de Perlin para a geração da altura
 \caption{Diversos relevos obtidos através da sobreposição de funções de ruído de Perlin.}
 \label{fig:relevos_xz_perlin}
 \end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Continentes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-- falar que utilizamos o  algoritmo maluco do professor dos EUA para fazer a costa. Falar que existe o mundo é gigante o suficiente para fazer com que uma matrix que descreve água/terra seria inviável. Para solucionar esse problema, falar que utilizamos o conceito de isLang local e isLang global. O isLand global dá uma dica se o lugar é água ou terra, e o isLand local utiliza multifractais para fazer o desenho das bordas dos continentes.
+
+%-- É importante frisar que essa seção é onde está a nossa contribuição na pesquisa: mundo pseudo-infinito, com relevo gerado on-the-fly e com costas de continentes com multiresolução.
+
+A geração de continentes e oceanos foi proposta para quebrar a monotonia de uma paisagem composta apenas por terra no mundo virtual, bem como para aumentar o nível de semelhança com as paisagens encontradas na natureza. As seções seguintes apresentam as técnicas utilizadas e os problemas encontrados na geração de continentes.
+
+
+\subsection{Oceano como um plano azul}
+
+ A primeira abordagem utilizada para a geração de água foi uma semelhantes à proposta por ~\cite{LindaOndrej2007}, que consiste na adição de um plano azul cortando todos os elementos do mundo virtual na altura do nível do mar. Embora essa abordagem seja muito simples, ela reduz consideravelmente a complexidade dos algorítimos de geração de relevo, uma vez que eles não precisam classificar os vértices como sendo "terra" ou "mar". Como consequência disso, não são necessários campos extras na estrutura de dados do vértice para informar que ele é um vértice do oceano, por exemplo. Além disso, não existem problemas na colorização de partes de terra que possuem relevo abrupto e tem contato com o mar, como uma falésia; no caso da marcação de vértices como "terra" ou "mar", a falésia teria uma interpolação entre a cor do mar e a sua própria cor, o que poderia resultar em uma montanha azul até a sua metade, por exemplo. 
+
+A utilização de um plano azul para a criação do mar limita a geração de continentes à forma que o relevo possui, ou seja, se houver montanhas largas e com um relevo não pontudo, existirão continentes grandes, caso contrário existirão apenas pequenas ilhas, que podem ser apenas o cume de uma montanha. Em testes realizados, o relevo gerado foi equilibrado o suficiente para produzir continentes grandes e, dentro deles, variações de alturas consideráveis como montanhas e planícies. Todo o relevo que ficou posicionado acima do nível do mar ficou visível ao usuário, porém aquele que ficou abaixo desse nível foi excluído da visualização. A menos que seja interessante que o oceano apresente seu próprio relevo submarino, todas as montanhas e planícies que ficaram debaixo d`água foram perdidas, o que reduz a riqueza de detalhes da cena. Em virtude desse problema, optou-se por utilizar uma abordagem mais controlada para a geração de faixas de terra.
+
+
+\subsection{Pré-processamento de faixas de terra}
+
+A solução encontrada para garantir que os continentes sejam mais customizáveis foi pré-processar as faixas de terra existentes no mundo e, então, armazenar essa informação para os demais cálculos da ferramenta. Com essa abordagem, a geração de conteúdo sob-demanda foi parcialmente quebrada, uma vez que os continentes serão gerados por completo antes de todos os demais conteúdos, porém isso garante um melhor controle sobre o que é oceano e o que é terra.
+
+O algoritmo utilizado para a criação dos continentes é uma versão simplificada do gerador de planetas de ~\cite{torben} que consiste na geração de mundos redondos através da subdivisão recursiva de um tetraedro. Inicialmente um tetraedro irregular que envolve a esfera do mundo é gerado e valores aleatórios de altura e semente são atribuídos a cada um dos vértices. Em seguida, ele é dividido em dois por um plano que corta a figura no ponto médio entre o vértice mais distante e os vértices opostos a esse. Em suma, cada um dos dois tetraedros resultantes terão três vértices a partir do tetraedro original mais um novo vértice posicionado no ponto médio do vértice mais distante. A altura e a semente dos novos vértices são calculados a partir da altitude e semente dos pontos finais da linha que é dividida. O processo é repetido recursivamente para cada um dos dois tetraedros resultantes. O resultado final do gerador é um planeta completo, com demarcação de continentes e oceanos, além de informações sobre altura do relevo e profundidade do mar. Utilizou-se esse gerador de planetas porque ele possui diversas opções de parametrização, como estipulação da semente que será usada para os cálculos aleatórios, definição da altura/largura do mapa gerado, suavidade das curvas e zoom. Isso aumenta o controle da forma como os continentes serão gerados, que foi a razão principal pela qual optou-se por utilizar uma abordagem diferente de um plano azul para gerar os oceanos e continentes. A figura ~\ref{fig:torben}, {\it (a)} e {\it (b)}, ilustra os resultados obtidos com o gerador de planetas de ~\cite{torben}.
+
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/torben.png}}
+\caption{Planetas aleatórios gerados com diferentes sementes de entrada. (a) e (b) mapas com informações de relevo ~\cite{torben}; (c) mapa com informações somente sobre o que é terra/mar.}
+\label{fig:torben}
+\end{figure}
+
+A geração do relevo da ferramenta do presente trabalho é feita através da sobreposição dos resultados da função de ruído de Perlin, como está explicado na seção ~\ref{sub:relevo}, logo as informações de relevo que são criadas através do gerador de planetas citado são dispensáveis. Em virtude disso, o gerador de planetas foi alterado para gerar um mapa apenas com informações sobre o que é terra e o que é água. A figura ~\ref{fig:torben}, ilustração {\it (c)}, mostra uma mapa gerado contendo apenas informações sobre o que é terra (em preto) e o que é água (em branco). 
+
+
+\subsection{Visão micro e macro do mundo}
+
+Quando a ferramenta é iniciada, ela utiliza uma semente definida pelo usuário para gerar todos os continentes que existirão no mundo virtual. Depois que os continentes são gerados, as informações sobre o que é terra e o que é mar são armazenadas em uma matriz, chamada {\bf macro-matriz}, que é utilizada para consulta pelos demais algorítimos da ferramenta. O mundo virtual gerado possui, tecnicamente, altura e largura definidas pelo tamanho máximo que um inteiro pode suportar, o que torna fisicamente inviável a geração de uma macro-matriz com as proporções do mundo inteiro. Uma vez que a macro-matriz é menor que o mundo virtual, uma entrada {\tt (i,j)} dela corresponde a diversos pixels dentro do mundo virtual. Se fosse possível a geração de uma matriz com o tamanho exato do mundo virtual, ela conteria a resolução necessária para a ferramenta decidir com precisão se um determinado píxel é ou não terra, em uma proporção de 1:1 (um pixel da macro-matriz corresponde a um pixel do mundo virtual). É possível definir o tamanho da macro-matriz a ser gerada, porém testes realizados mostraram que um tamanho de {\tt 800x600} é suficiente para informações suficientes sejam processadas pelos demais algorítimos da ferramenta.
+
+Tento em vista que um pixel da macro-matriz é mapeado para diversos pixels do mundo virtual, a costa dos continentes apresenta linhas e quinas retas longas. A figura \ref{fig:mapeamento_macro} ilustra o mapeamento da macro-matriz para o mundo virtual, mostrando as grandes faixas de costa retilíneas resultantes da falta de resolução da matriz.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/mapeamento_macro.png}}
+\caption{Mapeamento da macro-matriz para o mundo virtual. Como consequência da baixa resolução da matriz, a costa dos continentes é em linha reta.}
+\label{fig:mapeamento_macro}
+\end{figure}
+
