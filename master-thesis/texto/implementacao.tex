@@ -74,6 +74,31 @@ Depois que o modelo de controle da geração de terrenos infinitos foi definido, i
 O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it height map}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao}, quadrado 2. O mapa de altura gerado é renderizado como uma malha triangular.
 
 
+\subsection{Otimização através de LOD}
+
+Durante a implementação da malha do terreno, observou-se que o desempenho da aplicação caia consideravelmente à medida que o tamanho da área visível pelo usuário era aumentada. Isso pode ser explicado pelo consumo cada vez maior de processamento necessário para que o grande número de polígonos na tela seja renderizado. Para contornar esse problema, utilizou-se o conceito de LOD ({\it Level of Detail}). A técnica de LOD consiste em aumentar a resolução dos elementos que estão mais próximos da visão do usuário e, em contra-partida, reduzir a resolução dos elementos que estão longe (justamente por estarem distantes do observador, esses elementos não são expressivos). A figura ~\ref{fig:lod} ilustra o funcionamento da técnica de LOD em um terreno virtual; a parte do terreno que está mais próxima do usuário é composta por muito mais triângulos que a parte mais distante (uma espécie de montanha, ao fundo).
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/lod.png}}
+\caption{Exemplo de LOD aplicado a um terreno virtual}
+\label{fig:lod}
+\end{figure}
+
+Uma das melhores abordagens de LOD encontradas para aplicação na ferramenta proposta foi a renderização de terrenos massivos utilizando-se LOD em bloco ~\cite{ulrich}. O trabalho analisado apresenta resultados bons em relação a aumento de desempenho frente a uma grande quantidade de polígonos, que é o caso do terreno do mundo virtual, porém essa técnica é voltada para um conjunto de dados estático. Partindo do fato que a ferramenta utiliza um conjunto de dados mutável (cada vez que o usuário se move, uma nova fatia do mundo virtual é coletada), uma outra abordagem teve de ser utilizada. A solução desejada, então, deveria obrigatoriamente trabalhar com um conjunto variável de dados e, ao mesmo tempo, apresentar um desempenho tão bom quanto ou melhor ao que a solução de LOD analisada previamente. Optou-se, então, pela utilização de um algorítimo de LOD contínuo em tempo real de apenas uma passada ~\cite{pozzer}.
+
+Na abordagem desenvolvida por ~\cite{pozzer}, uma {\it quad-tree } é utilizada para gerenciar os quadrantes que compõem o terreno. Depois que a árvore é construída na memória, ela é atualizada com as informações referentes às alturas de cada um dos pontos do terreno; independente da variação do conjunto de dados, a árvore nunca é destruída, ela é apenas atualizada, o que garante um aumento ainda maior de desempenho. Depois que todos os dados são coletados e catalogados, o algorítimo percorre a árvore recursivamente analisando os pontos da malha que estão em cada um dos quadrantes e, depois que essa análise é finalizada, o quadrante em si é desenhado na tela. Em linhas gerais, o algorítimo verifica a resolução (nível de detalhamento) da malha nos quadrantes vizinhos em comparação com a resolução da malha do quadrante que está sendo analisado e, também, a distância que o quadrante está do observador. Se a resolução do quadrante sendo analisado é muito baixa em relação aos seus vizinhos, ou se a distância entre ele e o observador é próxima o suficiente para exigir mais detalhes, então o quadrante em questão é divido em mais quadrantes e, para cada um dos filhos gerados, o algorítimo é aplicado novamente. Quando a resolução do quadrante sendo analisado estiver em conformidade com os seus vizinhos e com a visão do observador, então a recursão termina. Ao final, os quadrantes que possuíam muitas informações e/ou estavam próximos ao observador sofrem diversas subdivisões e formam uma malha com muitos polígonos, enquanto os quadrantes com poucas informações ou mais distantes do observador formam uma malha com menos polígonos. A figura ~\ref{fig:lod_pozzer} ilustra os resultados obtidos com o algorítimo descrito. Na regiões com maior quantidade de informações (deformações e quinas do desfiladeiro), há uma quantidade muito maior de polígonos do que as regiões com menos informações (as áreas planas ao redor do desfiladeiro).
+
+\begin{figure}
+\centering
+\resizebox{13cm}{!}{\includegraphics{figuras/lod_pozzer.png}}
+\caption{Terreno renderizado com baixa resolução (a) e alta resolução (b), ambos com aplicação de LOD ~\cite{pozzer}}
+\label{fig:lod_pozzer}
+\end{figure}
+
+A árvore utilizada pelo algorítimo é construída e mantida por um vetor, o que garante uma indexação mais eficiente dos elementos e um ganho de desempenho considerável. Aliando-se esse melhoramento com a abordagem de apenas uma passada mais a funcionalidade de que a árvore só precisa ser atualizada, não destruída e reconstruída cada vez que novos dados são coletados, tem-se um algorítimo de LOD flexível e rápido.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Relevo}
 \label{sub:relevo}
@@ -81,7 +106,7 @@ O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o pl
 
 A ideia original do presente trabalho foi desenvolver um mundo virtual capaz de apresentar diversos tipos de relevos, como cadeias montanhosas, planícies, vales, desertos, florestas, etc. A complexidade associada à geração de cada um desses elementos varia conforme o nível de realismo esperado e o nível de dinamismo do conteúdo gerado. Quanto mais presente for o conceito de geração de conteúdo sob demanda, mais difícil torna-se a tarefa de gerar conteúdos conexos e sem falhas abruptas na malha de relevo. As seções seguintes apresentam os problemas encontrados e a solução escolhida para a geração de relevo.
 
-\subsection{Problemas encontrados}
+\subsection{Problemas na geração de relevo sob-demanda}
 
 Mantendo-se a meta de gerar o conteúdo da forma mais dinâmica possível (sem elementos pré-posicionados, por exemplo), o primeiro grande problema encontrado durante o desenvolvimento do relevo do mundo virtual foi a forma como ele deveria ser gerado. Considerando que a ferramenta é capaz de criar um mundo pseudo-infinito, a geração de uma malha de relevo tão grande, de uma só vez, é fisicamente inviável; a quantidade de vértices que precisariam ser armazenados tornaria o consumo de armazenamento da aplicação muito grande, o que poderia ser um empecilho para a utilização da ferramenta. Além do problema de armazenamento, outro tópico importante que foi considerado é a geração de conteúdo contínuo, ou seja, um relevo que não tenha falhas abruptas de continuidade, como uma cadeia montanhosa que termina inesperadamente. Partindo do fato que o mundo virtual não poderia ser divido em células, tendo em vista os diversos problemas de continuidade de conteúdo, a solução para a geração de relevo deveria basear-se apenas nas informações disponíveis no campo de visão. Embora seja possível gerar relevo utilizando-se como valores de entrada somente as informações do campo de visão, novos problemas de continuidade foram encontrados.
 
@@ -95,8 +120,7 @@ Supondo que a geração de relevo utilize a posição do vértice no mundo virtual co
 \end{figure}
 
 
-\subsection{Solução}
-
+\subsection{Solução para geração de relevo sob-demanda}
 
 A solução encontrada para a geração de relevo foi utilizar uma função paramétrica que informa a característica de cada um dos vértices do mundo virtual. Nessa abordagem, cada ponto do mundo é utilizado como parâmetro para a função de relevo que, por sua vez, calcula a altura que esse ponto deve ter. Como resultado, tem-se uma função capaz de descrever todo o relevo do mundo virtual, independente do tamanho que ele possua; a quantidade de recursos computacionais que serão utilizados para gerar o conteúdo do campo de visão é diretamente proporcional ao tamanho do campo de visão, não ao tamanho do mundo, visto que a função de relevo utiliza as informações de cada ponto para calcular a sua característica. A figura ~\ref{fig:espectro_func_relevo} ilustra o funcionamento da função de relevo aplicada ao mundo virtual gerado.
 
@@ -121,6 +145,13 @@ Utilizando a sobreposição de funções de ruído de Perlin para a geração da altura
 \caption{Diversos relevos obtidos através da sobreposição de funções de ruído de Perlin.}
 \label{fig:relevos_xz_perlin}
 \end{figure}
+
+
+\subsection{Otimização através de conservação de dados}
+
+Depois que o mapa de altura correspondente à fatia do mundo virtual sendo visualizada é gerado, ele é armazenado na memória e em seguida renderizado na tela. Enquanto o usuário não se mover no mundo, a fatia sendo visualizada não será alterada, logo nenhum cálculo relacionado a relevo deverá ser realizado. Se o usuário se move, porém, a fatia do mundo que está sendo visualizada é alterada e novas informações de relevo devem ser calculadas. Embora o usuário tenha se movido, apenas uma pequena parcela dos dados que estão no {\it heightmap} que corresponde à fatia do mundo foram alteradas. Imaginando o {\it heightmap} como uma matriz, se o usuário se move para a direita, uma nova coluna (com dados novos) deve ser adicionada ao final da matriz e, também, a primeira coluna deve ser removida (porque ela saiu do campo de visão); as demais informações da matriz não precisam ser alterados.
+
+Tomando vantagem desse fato, a ferramenta utiliza um algorítimo de deslocamento de dados para evitar o reprocessamento de todo o {\it heightmap} cada vez que o usuário se move. Dependendo da direção para a qual o usuário está se movendo, a matriz tem suas linhas e colunas deslocadas, e apenas uma nova linha ou coluna precisa ser calculada para que a nova fatia do mundo seja mostrada. Levando-se em consideração que os cálculos necessários para a geração do relevo são custosos, já que envolvem funções de ruído de Perlin e diversas outras operações, trocar o processamento total da matriz pelo processamento de apenas uma linha ou coluna é uma vantagem que aumenta o desempenho da aplicação drasticamente. Em testes preliminares, no qual nenhum tipo de deslocamento de dados era realizado e a matriz era completamente reprocessada a cada movimentação, a aplicação apresentou um desempenho de 2 a 3 FPS. Depois que a otimização por conservação de dados foi aplicada, o desempenho saltou para 53 FPS.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
