@@ -29,14 +29,14 @@ Partindo do fato de que o armazenamento em memória da malha de polígonos do mund
 
 Além da geração de relevo, a ferramenta também é capaz de gerar oceanos e continentes, todos customizáveis. A forma dos blocos de terra é definida aleatoriamente com base em uma semente global, porém é possível que o usuário especifique se deseja mais terra do que água, maior frequência nas linhas da costa, etc. Para garantir uma boa performance na renderização dos gráficos, a malha do relevo e dos continentes utiliza o conceito de nível de detalhamento (LOD), o que faz com que as montanhas mais próximas do usuário tenham mais polígonos (resolução melhor), ao passo que as montanhas mais distantes apresentam menos detalhes.
 
-A geração dos continentes e do relevo dentro deles são dois elementos distintos dentro da ferramenta. Embora o conceito de continentes e relevo estejam intimamente relacionados, a separação entre eles foi proposital para garantir uma maior flexibilidade no processo de gerar o mundo virtual. Utilizando essa abordagem híbrida, é possível que um planeta com poucos continentes, porém com uma alta frequência de relevo (montanhas pontudas) seja gerado facilmente. Para evitar que o jogador veja relevos atípicos frutos dessa abordagem híbrida, como a junção do continente com o oceano apresentar uma montanha partida pela metade ao invés de uma praia, a ferramenta utiliza um algorítimo para suavizar o relevo da costa. O nível de suavização pode ser customizado pelo usuário, o que garante uma maior flexibilidade ainda na geração de conteúdo. A figura ~\ref{fig:ferramenta_intro} ilustra o mundo virtual obtido com a ferramenta.
+A geração dos continentes e do relevo dentro deles são dois elementos distintos dentro da ferramenta. Embora o conceito de continentes e relevo estejam intimamente relacionados, a separação entre eles foi proposital para garantir uma maior flexibilidade no processo de gerar o mundo virtual. Utilizando essa abordagem híbrida, é possível que um planeta com poucos continentes, porém com uma alta frequência de relevo (montanhas pontudas) seja gerado facilmente. Para evitar que o jogador veja relevos atípicos frutos dessa abordagem híbrida, como a junção do continente com o oceano apresentar uma montanha partida pela metade ao invés de uma praia, a ferramenta utiliza um algorítimo para suavizar o relevo da costa. O nível de suavização pode ser customizado pelo usuário, o que garante uma maior flexibilidade ainda na geração de conteúdo. A figura ~\ref{fig:screen_mundo} ilustra o mundo virtual obtido com a ferramenta.
 
 
 \begin{figure}
 \centering
-\resizebox{12cm}{!}{\includegraphics{figuras/wow_screen1.png}}
+\resizebox{12cm}{!}{\includegraphics{figuras/screen_mundo.png}}
 \caption{Ilustração do mundo virtual gerado}
-\label{fig:ferramenta_intro}
+\label{fig:screen_mundo}
 \end{figure}
 
 
