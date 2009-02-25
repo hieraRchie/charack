@@ -47,7 +47,7 @@ O que o jogador consegue ver na tela em um determinado momento é um pedaço do mu
 
 \begin{figure}
 \centering
-\resizebox{15cm}{!}{\includegraphics{figuras/org_coordenadas.png}}
+\resizebox{8cm}{!}{\includegraphics{figuras/campo_visao.png}}
 \caption{Campo de visão do usuário: a área visualizada corresponde a uma fatia do mundo virtual existente.}
 \label{fig:campo_visao}
 \end{figure}
@@ -62,16 +62,16 @@ Uma saída alternativa para esse problema da recursão infinita é definir um nível
 
 \subsection{Renderização de conteúdo}
 
-Depois que o modelo de controle da geração de terrenos infinitos foi definido, iniciaram-se os trabalhos de computação gráfica para que as informações pudessem ser desenhadas na tela. Embora o mundo virtual tenha coordenadas pseudo-infinitas, o máximo de conteúdo que o usuário enxerga na tela é a área do campo de visão, que possui sempre o mesmo tamanho e coordenadas de desenho. A figura ~\ref{fig:render_campo_visao}, quadrado 1, ilustra as coordenadas envolvidas no desenho do conteúdo do campo de visão.
+Depois que o modelo de controle da geração de terrenos infinitos foi definido, iniciaram-se os trabalhos de computação gráfica para que as informações pudessem ser desenhadas na tela. Embora o mundo virtual tenha coordenadas pseudo-infinitas, o máximo de conteúdo que o usuário enxerga na tela é a área do campo de visão, que possui sempre o mesmo tamanho e coordenadas de desenho. A figura ~\ref{fig:render_campo_visao} (a) ilustra as coordenadas envolvidas no desenho do conteúdo do campo de visão.
 
 \begin{figure}
 \centering
-\resizebox{15cm}{!}{\includegraphics{figuras/render_campo_visao.png}}
+\resizebox{14cm}{!}{\includegraphics{figuras/render_campo_visao.png}}
 \caption{Mapeamento das coordenadas do mundo virtual para as coordenadas de desenho da tela}
 \label{fig:render_campo_visao}
 \end{figure}
 
-O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it height map}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao}, quadrado 2. O mapa de altura gerado é renderizado como uma malha triangular.
+O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it height map}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao} (b). O mapa de altura gerado é renderizado como uma malha triangular.
 
 
 \subsection{Otimização através de LOD}
@@ -114,8 +114,8 @@ Supondo que a geração de relevo utilize a posição do vértice no mundo virtual co
 
 \begin{figure}
 \centering
-\resizebox{15cm}{!}{\includegraphics{figuras/render_campo_visao.png}}
-\caption{Geração de conteúdo com base apenas as informações do campo de visão}
+\resizebox{14cm}{!}{\includegraphics{figuras/montanha_fora_campo.png}}
+\caption{Geração de conteúdo com base apenas nas informações do campo de visão}
 \label{fig:montanha_fora_campo}
 \end{figure}
 
@@ -126,7 +126,7 @@ A solução encontrada para a geração de relevo foi utilizar uma função paramétric
 
 \begin{figure}
 \centering
-\resizebox{15cm}{!}{\includegraphics{figuras/espectro_func_relevo.png}}
+\resizebox{14cm}{!}{\includegraphics{figuras/espectro_func_relevo.png}}
 \caption{Função de geração de relevo parametrizável e o resultado gerado}
 \label{fig:espectro_func_relevo}
 \end{figure}
@@ -137,14 +137,7 @@ Para a geração do relevo através de funções de ruído, uma das possíveis abordage
 
 Para controlar o nível de perturbação do relevo, como montanhas mais pontudas ou mais suaves, uma possível solução seria a aplicação de efeitos de erosão como foi proposto por ~\cite{terrain_generation}. Partindo do fato que os algorítimos de erosão propostos pelo autor utilizam diversas informações referentes à vizinhança dos pontos, se essa abordagem fosse utiliza para a ferramenta, ela resultaria em má formação do relevo nas bordas da fatia do mundo virtual sendo mostrada. Isso aconteceria porque os vizinhos mais afastados dos pontos que estão na borda não estariam dentro do campo de visão do usuário, o que faria com que o algorítimo de erosão calculasse as alterações com apenas uma parte das informações necessárias; como consequência, toda vez que o usuário se movimentasse, alterações abruptas de relevo poderiam acontecer nas bordas da fatia sendo visualizada. Como saída a essa problema, para garantir um controle sobre o nível de pertubação do relevo utilizou-se apenas as propriedades da função de ruído de Perlin: para a obtenção de relevos mais "enrugados", utilizou-se mais oitavas na função de ruído (o funcionamento das oitas está descrito na seção ~\ref{sec:perlin}).  
 
-Utilizando a sobreposição de funções de ruído de Perlin para a geração da altura do relevo nos eixos {\tt X} {\tt Z}, alterando-se as oitavas de cada função de ruído para atenuar ou aumentar a pertubação dos resultados, foi possível customizar o relevo e obter resultados satisfatórios. A figura ~\ref{fig:relevos_xz_perlin} ilustra os diversos relevos obtidos através dessa abordagem.
-
-\begin{figure}
-\centering
-\resizebox{15cm}{!}{\includegraphics{figuras/relevos_xz_perlin.png}}
-\caption{Diversos relevos obtidos através da sobreposição de funções de ruído de Perlin.}
-\label{fig:relevos_xz_perlin}
-\end{figure}
+Utilizando a sobreposição de funções de ruído de Perlin para a geração da altura do relevo nos eixos {\tt X} {\tt Z}, alterando-se as oitavas de cada função de ruído para atenuar ou aumentar a pertubação dos resultados, foi possível customizar o relevo e obter resultados satisfatórios.
 
 
 \subsection{Otimização através de conservação de dados}
