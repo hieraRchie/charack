@@ -184,14 +184,20 @@ A geração do relevo da ferramenta do presente trabalho é feita através da sobrep
 
 \subsection{Visão micro e macro do mundo}
 
-Quando a ferramenta é iniciada, ela utiliza uma semente definida pelo usuário para gerar todos os continentes que existirão no mundo virtual. Depois que os continentes são gerados, as informações sobre o que é terra e o que é mar são armazenadas em uma matriz, chamada {\bf macro-matriz}, que é utilizada para consulta pelos demais algorítimos da ferramenta. O mundo virtual gerado possui, tecnicamente, altura e largura definidas pelo tamanho máximo que um inteiro pode suportar, o que torna fisicamente inviável a geração de uma macro-matriz com as proporções do mundo inteiro. Uma vez que a macro-matriz é menor que o mundo virtual, uma entrada {\tt (i,j)} dela corresponde a diversos pixels dentro do mundo virtual. Se fosse possível a geração de uma matriz com o tamanho exato do mundo virtual, ela conteria a resolução necessária para a ferramenta decidir com precisão se um determinado píxel é ou não terra, em uma proporção de 1:1 (um pixel da macro-matriz corresponde a um pixel do mundo virtual). É possível definir o tamanho da macro-matriz a ser gerada, porém testes realizados mostraram que um tamanho de {\tt 800x600} é suficiente para informações suficientes sejam processadas pelos demais algorítimos da ferramenta.
+Quando a ferramenta é iniciada, ela utiliza uma semente definida pelo usuário para gerar todos os continentes que existirão no mundo virtual. Depois que os continentes são gerados, as informações sobre o que é terra e o que é mar são armazenadas em uma matriz, chamada {\bf macro-matriz}, que é utilizada para consulta pelos demais algorítimos da ferramenta. O mundo virtual gerado possui, tecnicamente, altura e largura definidas pelo tamanho máximo que um inteiro pode suportar, o que torna fisicamente inviável a geração de uma macro-matriz com as proporções do mundo inteiro. Uma vez que a macro-matriz é menor que o mundo virtual, uma entrada {\tt (i,j)} dela corresponde a diversos pixels dentro do mundo virtual. Se fosse possível a geração de uma matriz com o tamanho exato do mundo virtual, ela conteria a resolução necessária para a ferramenta decidir com precisão se um determinado píxel é ou não terra, em uma proporção de 1:1 (um pixel da macro-matriz corresponde a um pixel do mundo virtual). É possível definir o tamanho da macro-matriz a ser gerada, porém testes realizados mostraram que um tamanho de {\tt 800x600} é suficiente para que informações suficientes sejam processadas pelos demais algorítimos da ferramenta.
 
 Tento em vista que um pixel da macro-matriz é mapeado para diversos pixels do mundo virtual, a costa dos continentes apresenta linhas e quinas retas longas. A figura \ref{fig:mapeamento_macro} ilustra o mapeamento da macro-matriz para o mundo virtual, mostrando as grandes faixas de costa retilíneas resultantes da falta de resolução da matriz.
 
 \begin{figure}
 \centering
-\resizebox{15cm}{!}{\includegraphics{figuras/mapeamento_macro.png}}
+\resizebox{8cm}{!}{\includegraphics{figuras/mapeamento_macro.png}}
 \caption{Mapeamento da macro-matriz para o mundo virtual. Como consequência da baixa resolução da matriz, a costa dos continentes é em linha reta.}
 \label{fig:mapeamento_macro}
 \end{figure}
+
+
+\subsection{Quebra de linearidade da costa}
+
+OBS: Os trabalhos em relação a esse assuntos estão em ainda desenvolvimento.
+
 
