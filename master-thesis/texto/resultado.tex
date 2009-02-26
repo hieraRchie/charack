@@ -1,2 +1,38 @@
 \chapter{Resultados} 
 \label{capitulo:resultados}
+
+Através da utilização de técnicas para geração de conteúdo e relevos virtuais, criou-se uma ferramenta capaz de gerar mundos virtuais complexos em tempo real para utilização em jogos 3D. Esse capítulo apresenta uma análise dos resultados obtidos, reforçando-se os pontos positivos e negativos da ferramenta desenvolvida; além disso as principais funcionalidades implementadas são explanas, com imagens dos resultados e análises de desempenho.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Aspectos gerais da ferramenta}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A ferramenta desenvolvida possui como característica principal a capacidade de gerar um mundo virtual pseudo-infinito que pode ser utilizado para a criação de cenários em jogos 3D. Embora a ferramenta tenha suporte para gerar um mundo infinito, sem qualquer limitação de tamanho, ela está condicionada a gerar um mundo contido dentro do tamanho máximo suportado por um inteiro sem sinal.
+
+A aplicação foi projetada para ser utilizada como uma API externa, integrável no código-fonte de um jogo ou {\it engine}, para adicionar funcionalidades relacionadas à geração de cenários. Toda a ferramenta foi encapsulada entro de uma única classe que, por sua vez, é composta de diversos outros componentes menores, acessáveis e customizáveis. Para garantir que a ferramenta não fosse intrusiva ao ponto de modificar o fluxo de dados ou de desenho da aplicação na qual ela está integrada, todas as funcionalidades oferecidas podem ser utilizadas separadamente. Em um exemplo simples, se a ferramenta está sendo utilizada para o desenvolvimento de um jogo de estratégia no qual um pequeno terreno é necessário, o programador não precisa utilizar as funções de desenho da ferramenta para renderizar o terreno gerado; é possível gerar um mundo com as proporções necessárias e, então, acessar somente o mapa de altura criado. Isso fará com que o código do jogo aproveite-se apenas da funcionalidade de geração de um terreno com variações de relevo, porém não irá alterar a forma como o jogo já havia sendo desenhado na tela, por exemplo. Além disso, é possível que o programador acesse outros dados gerados, como a matriz que define o que é continente e o que é oceano, se o interesse estiver apenas em gerar continentes e mares para o jogo.
+
+A utilização parcial dos recursos da ferramenta é uma opção, porém, dependendo dos recursos utilizados, pode-se perder algumas funcionalidades inerentes, como é o caso da otimização da malha de terreno através de LOD. Se os métodos de renderização da ferramenta não forem utilizados para que o mundo virtual seja desenhado, por exemplo, então nenhuma redução de polígonos será feita e o programador deverá aplicar suas próprias técnicas para garantir a redução de polígonos desnecessários.
+
+Visando um escopo de utilização genérico, concentraram-se os esforços de desenvolvimento no método de geração de relevo e nas técnicas de gerenciamento de conteúdo (acesso a um conteúdo infinito criado sob demanda). Excluindo-se as funcionalidades de otimização da malha do terreno virtual através do uso de LOD, a ferramenta não apresenta mecanismos de controle e acesso de dados que não estejam intimamente ligados a terreno. Um exemplo de mecanismo extra é a capacidade de renderização de um céu ao redor do terreno gerado; entende-se que essa tarefa é de responsabilidade da aplicação que está utilizando a ferramenta, uma vez que o propósito da mesma está focado no conteúdo do mundo virtual em si, mais propriamente em seu relevo. Outro exemplo de mecanismo extra é a iluminação da cena, cuja única tarefa que a ferramenta realiza nesse aspecto é calcular a normal de cada um dos triângulos da malha do terreno, o que permite que o programador ilumine-a e obtenha um resultado aceitável. Em relação à texturização do terreno, a ferramenta apresenta meios que permitem ao programador customizar as cores da malha, como aplicar uma função de cor em cada um dos vértices antes que esses sejam desenhados na tela. Além disso, é possível também utilizar uma das funcionalidades já embutidas na própria ferramenta para a aplicação de cores no terreno, como a texturização através da utilização de funções de ruído de Perlin.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Análise de desempenho}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% falar do número de polígonos ser customizável
+% tamanho da quad-tree pode ser customizado
+% utilização de memória e consumo de CPU em virtude dos vértices
+% melhoramento de desempenho com LOD e cache
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Avaliação de técnicas e resultados obtidos}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Avaliação dos continentes}
+
+\subsection{Avaliação do relevo}
+
+\subsection{Avaliação da costa}
+
+
