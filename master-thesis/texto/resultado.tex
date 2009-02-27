@@ -1,7 +1,7 @@
 \chapter{Resultados} 
 \label{capitulo:resultados}
 
-Através da utilização de técnicas para geração de conteúdo e relevos virtuais, criou-se uma ferramenta capaz de gerar mundos virtuais complexos em tempo real para utilização em jogos 3D. Esse capítulo apresenta uma análise dos resultados obtidos, reforçando-se os pontos positivos e negativos da ferramenta desenvolvida; além disso as principais funcionalidades implementadas são explanas, com imagens dos resultados e análises de desempenho.
+Através da utilização de técnicas para geração de conteúdo e relevo, criou-se uma ferramenta capaz de gerar mundos virtuais complexos em tempo real para utilização em jogos 3D. Esse capítulo apresenta uma análise dos resultados obtidos, reforçando-se os pontos positivos e negativos da ferramenta desenvolvida; além disso as principais funcionalidades implementadas são explanas, com imagens dos resultados e análises de desempenho.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,14 +24,84 @@ Visando um escopo de utilização genérico, concentraram-se os esforços de desenvo
 % tamanho da quad-tree pode ser customizado
 % utilização de memória e consumo de CPU em virtude dos vértices
 % melhoramento de desempenho com LOD e cache
+(A análise de desempenho ainda está em desenvolvimento)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Avaliação de técnicas e resultados obtidos}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+Essa seção tem por objetivo avaliar cada uma das técnicas utilizadas na geração de conteúdo da ferramenta, mostrando os resultados que foram obtidos com cada abordagem. Leva-se em consideração a flexibilidade proporcionada pela ferramenta durante a utilização da funcionalidade, o desempenho obtido e o resultado gráfico alcançado.
+
+É importante frisar que o objetivo da ferramenta, no escopo do presente trabalho, não é a geração de conteúdos reais ou foto-realísticos, mas sim de elementos que possam ser utilizados para a criação de um cenário num jogo 3D. Entende-se por graficamente aceitável todo o resultado obtido que se enquadre dentro de um jogo e não destoe daquilo esperado pelo jogador, como uma montanha composta por ondulações senoidais suaves ao invés de um conjunto de cristas piramidais.
+
+Todos os testes de desempenho foram realizados num computador Intel(R) Core(TM)2 Duo 1.66Gz, com 2Gb de RAM e uma placa de vídeo NVidia 8600 GT, utilizando-se o Microsoft Visual C++ 2008 Express Edition como IDE de desenvolvimento e o sistema operacional Windows Vista como ambiente de teste.
+
+
 \subsection{Avaliação dos continentes}
 
+Essa seção tem por objetivo analisar os continentes gerados pela ferramenta, além de analisar a técnica utilizada para que essa funcionalidade fosse implementada. A figura ~\ref{fig:analise_continente} ilustra um dos continentes gerados pela ferramenta.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/torben.png}}
+\caption{Continente gerado pela ferramenta}
+\label{fig:analise_continente}
+\end{figure}
+
+Os continentes gerados não são compostos por partes de terra pré-computados, eles são calculados como resultado de um conjunto de ações aleatórias guiadas por uma semente inicial. Variando-se a semente de entrada, é possível gerar continentes com as mais variadas formas, que vão desde um planeta fortemente tomado por faixas de terra até um cenário com ilhas pequenas e esparsas. Utilizando-se um algorítimo de divisão recursiva de um tetraedro, o módulo de geração de continentes cria um mapa que é uma representação plana de um planeta esférico. Conforme pode ser visto na figura ~\ref{fig:analise_continente}, analisando-se os continentes em uma linha horizontal, pode-se perceber que as faixas de terra casam nas duas extremidades do plano (direita e esquerda), o que produz um fluxo contínuo de terra. Analisando-se o mapa no sentido vertical, nota-se que as duas extremidades do plano não casam, o que é o comportamento esperado para uma projeção plana de uma esfera. Se o plano descrito fosse utilizado para "embrulhar" uma esfera, haveriam distorções nos continentes localizados próximo aos polos, porém o resultado final seria um planeta esférico com uma continuidade em seus elementos.
+
+Essa característica permite que o mundo virtual gerado simule o que existe no mundo real, no qual uma pessoa que caminhe na linha do Equador irá dar voltas ao redor do planeta vendo o seu conteúdo (relevos, oceanos, etc) se repetir ciclicamente ao londo do tempo. Essa funcionalidade de fazer o mundo virtual simular o comportamento esférico do planeta Terra não foi implementada na ferramenta; o usuário pode andar sobre os continentes gerados como se estivesse caminhando sobre um plano e, ao chegar em uma de suas bordas, ele é impedido de prosseguir.
+
+O algorítimo original desenvolvido por ~\cite{torben} para a geração de continentes foi levemente alterado para que pudesse ser integrado à ferramenta. A modificação principal realizada foi a remoção das informações de altura existentes ao longo dos continentes e oceanos, o que poderia ter sido utilizada como base para a geração do relevo. Embora essa fosse uma funcionalidade interessante, ela foi abandonada em favor da geração de relevo completamente parametrizável e independente de elementos pré-computados. O módulo de geração de continentes, porém, baseia-se inteiramente nas alturas calculadas para poder gerar os continentes, o que exigiu que um passo a mais de pós-processamento fosse incluído no algorítimo para transformar o mapa com informações de altura em um mapa somente com valores indicando o que é terra e o que é mar. Como consequência dessa abordagem, a ferramenta gasta um tempo considerável nas divisões recursivas para gerar os continentes e o seu revelo, porém esse último é completamente descartado ao final do processo. Esse fator aumenta o tempo de geração dos continentes e aplica uma perda considerável no conceito de tempo-real proposto pela ferramenta, porém, mesmo assim, os benefícios associados aos continentes gerados (como continuidade de conteúdo) compensam.
+
+O tempo para a geração dos continentes é diretamente proporcional ao tamanho da macro-matriz especificada. Em testes realizados, a redução da macro-matriz para valores inferiores a {\tt 800x600} rendeu aumentos de desempenho consideráveis. Em contra partida, quanto menor o tamanho da macro-matriz, mais quadrados e lineares serão as linhas da costa de cada um dos continentes, o que pode produzir um resultado gráficos não muito aceitável. Para contornar esse problema, é possível ajustar o algorítimo de geração da costa para que ele faça alterações mais agressivas nas bordas dos continentes, o que irá quebrar a linearidade gerada por uma macro-matriz de baixa resolução. O ajuste desses dois elementos abre um leque de possibilidades para o programador, que pode encontrar um ponto de equilíbrio entre tempo de geração dos continentes e linearidade da costa. A figura ~\ref{fig:charack_final_continentes} mostra os resultados obtidos em relação a continentes e oceanos gerados pela ferramenta.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_continentes.png}}
+\caption{Continentes e oceanos gerados pela ferramenta}
+\label{fig:charack_final_continentes}
+\end{figure}
+
+
 \subsection{Avaliação do relevo}
+
+O relevo gerado pela ferramenta é inteiramente parametrizável e customizável pelo programador. Seguindo o protótipo da função esperada pela ferramenta para o cálculo do relevo, o programador pode criar qualquer código para a geração de relevo, o que garante flexibilidade nesse aspecto. A ferramenta possui embutida um gerador de relevo baseado na função de ruído de Perlin, que produz uma paisagem semelhante àquela encontrada no mundo real. A figura ~\ref{fig:charack_final_relevo} ilustra o relevo criado pela ferramenta utilizando-se as funções de geração embutidas.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_relevo.png}}
+\caption{Relevo gerado pela ferramenta ({\it wireframe)}}
+\label{fig:charack_final_relevo}
+\end{figure}
+
+Em relação à malha de relevo gerada, existem dois grandes gargalos que reduzem o desempenho da aplicação: o método de geração de relevo e a quantidade de polígonos a serem mostrados. Ambos os problemas estão intimamente ligados, visto que quanto maior a malha de relevo que será mostrada na tela, maior será o processamento para a sua renderização e geração. Em relação ao gargalo no número de polígonos, esse problema foi amenizado através de otimizações por LOD; sem a remoção dos polígonos pouco relevantes à visão do usuário, o desempenho da aplicação caia drasticamente com o aumento do campo de visão, independente do tipo de relego que estava sendo visualizado (mais planícies, montanhas, etc.). Quando maior o campo de visão, menor é a impressão que o jogador tem de que está vendo uma fatia do mundo virtual e maior é a ideia de que o mundo é realmente infinito. Com a aplicação de LOD, houve um aumento de até 80\% no desempenho da renderização das cenas, especialmente naquelas que apresentam planícies mais distantes da câmera. A tabela ~\ref{tab:lod} mostra um comparativo de desempenho entre o funcionamento da aplicação com diferentes tamanhos de mapa.
+
+\begin{table}[htbp]
+\centering
+\caption{Desempenho da ferramenta com diferentes tamanhos de mapa}
+\label{tab:lod}
+\vspace{2mm}
+\begin{tabular}{|c|c|c|c|}
+ \hline
+ Tamanho (pontos) & Triângulos & Consumo LOD (Mb) & FPS \\
+ \hline
+ \hline
+ ClassAd & Não & Não & Não \\
+ \hline
+ ClassAd & Não & Não & Não \\
+ \hline
+ ClassAd & Não & Não & Não \\
+ \hline
+\end{tabular}
+\end{table}
+
+% 512 -> 31 mil triangulos (17 MB quad) - 60 fps
+%1024 -> 43 mil triangulos (67 MB quad) - 60 fps
+%2048 -> 180 mil triangulos (277 MB quad) - 30fps
+%4096 -> 877 mil triangulos (1109 MB quad) - 7fps
+
+A primeira coluna {\it tamanho} mostrada na tabela é a largura (e altura) da fatia que a ferramenta irá coletar do mundo virtual. Se o tamanho for de 256, por exemplo, então a ferramenta irá alocar uma matriz de tamanho {\tt 256x256} e irá coletar a informação de 65536 pontos do mundo virtual. A segunda coluna mostra o número de triângulos que são desenhados na tela. A terceira coluna mostra quanto de memória o algorítimo de LOD consome para poder aplicar as a redução de políginos (a memória é utilizada na alocação da quad-tree). A quarta e última coluna mostra os quadros por segundo obtidos com a renderização da cena.
 
 \subsection{Avaliação da costa}
 
