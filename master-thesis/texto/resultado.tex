@@ -70,7 +70,7 @@ O relevo gerado pela ferramenta é inteiramente parametrizável e customizável pel
 
 \begin{figure}
 \centering
-\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_relevo.png}}
+\resizebox{12cm}{!}{\includegraphics{figuras/charack_final_relevo.png}}
 \caption{Relevo gerado pela ferramenta ({\it wireframe)}}
 \label{fig:charack_final_relevo}
 \end{figure}
@@ -84,15 +84,17 @@ Em relação à malha de relevo gerada, existem dois grandes gargalos que reduzem o
 \vspace{2mm}
 \begin{tabular}{|c|c|c|c|}
  \hline
- Tamanho (pontos) & Triângulos & Consumo LOD (Mb) & FPS \\
+ Tamanho (pontos) & Triângulos (mil) & Consumo LOD (Mb) & FPS \\
  \hline
  \hline
- ClassAd & Não & Não & Não \\
+ 512 & 31 & 17 & 75 \\
  \hline
- ClassAd & Não & Não & Não \\
+ 1024 & 43 & 67 & 60 \\
  \hline
- ClassAd & Não & Não & Não \\
+ 2048 & 180 & 277 & 30 \\
  \hline
+ 4096 & 877 & 1109 & 7 \\
+ \hline 
 \end{tabular}
 \end{table}
 
