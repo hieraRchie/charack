@@ -88,7 +88,66 @@ Se a função de geração de relevo utilizar frequências muito baixas e o seu espec
 
 \subsection{Avaliação da costa}
 
-% Falar dos problemas da geração da costa: usar 2 matrizes, com o algoritmo de suavização por vizinhança, causa mudanças bruscas de relevo, porque quando o usuário fica longe da costa, a matriz não tem mais informação de água, dai o algoritmo não aplica mais nenhuma suavização (e o relevo de antes, que estava suavizado, volta ao normal, dando um "coice" na tela).
-%
-%
+A geração da costa é composta por dois pilares principais, um de aspecto mais global com poucos detalhes e outro mais local, porém com muítos detalhes. No aspecto global, a ferramenta utiliza apenas dados encontrados na MM para criar as linhas que compoem a costa, conforme descrito na seção ~\ref{sec:visaomicromacro}. O resultado final para essa abordagem são costas completamente retilíneas, o que é irreal do ponto de vista do usuário. A figura ~\ref{fig:charack_final_costa_reta} ilustra duas linhas da costa completamente retilíneas.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_costa_reta.png}}
+\caption{Local de encontro de duas linhas da costa sem a aplicação de qualquer algorítimo de geração de conteúdo extra}
+\label{fig:charack_final_costa_reta}
+\end{figure}
+
+Na abordagem inicial da ferramenta, não planejou-se a adição de conteúdos extra às linhas da costa geradas pelo algorítimo de criação do mundo. A primeira idéia desenvolvida era baseada na utilização integral e exclusiva das informações da MM para a geração das linhas da costa, visto que o algorítimo de geração do mundo é capaz de criar costas suaves e convincentes. As proibições de tamanho da MM, porém, minaram essa abordagem e fizeram com que a geração da costa ficasse limitada a linhas muito retas devido à falta de resolução disponível na MM. Embora seja possível encaixar a utilização de costas tão retas em determinados contextos (como em jogos no qual oceanos não são relevantes), isso limita pelo menos pela metade as opções de utilização da ferramenta. Jogos que precisam apresentar uma interação do jogador com o oceano ficariam impossibilitados de utilizar os recursos criados ou teriam de trabalhar em cima dos resultados da ferramenta para contornar o problema da geração de costas muito retilíneas.
+
+A solução encontrada para contornar esse problema foi a adição de conteúdo utilizando uma abordagem local. Diferentemente da criação global, que se baseia somente nas informações amplas da MM, a geração de conteúdo local se concentra em utilizar as informações da MM como semenetes para algorítmos de geração de conteúdo. A aplicação desses algorítimos supre a ausência de informações que existente entre o mapeamento de coordenadas do mundo para a MM resultantes da diferença de resolução entre elas. Como consequência, a ferramenta é capaz de gerar novos conteúdos em níveis de resolução diferentes, permitindo inclusive que o programador defina a granularidade do conteúdo a ser gerado. Conforme explicado na seção ~\ref{sec:quebralinearidade}, a utilização de uma função baseada em ruído de Perlin para a geração da costa não limita as curvas que podem ser criadas ao londo da borda dos continentes, o que pode resultar nos mais diversos tipos de configurações para a costa. Aliando-se esse comportamento com à geração de praias de tamanho diferenciado, a ferramenta é capaz de adicionar um certo teor de aleatoriedade ao conteúdo criado, o que tende a imigar com mais realidade a natureza vista no dia-a-dia.
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_costa_1.png}}
+\caption{Pequena baía com rochas}
+\label{fig:charack_final_costa_1}
+\end{figure}
+
+As figuras ~\ref{fig:charack_final_costa_1}, ~\ref{fig:charack_final_costa_2} e ~\ref{fig:charack_final_costa_5} ilustram a criação de pequenas baías em certos locais da costa. Isso acontece porque nesses locais o algorítmo de quebra de linearidade da costa criou braços de terra curvos partindo da linha reta do continente e, ao mesmo tempo, o algorítimo de criação de praias reduziu ao máximo a quantidade de areia encontrada no local. A ferramenta também é capaz de criar golfos, que são baías de grandes proporções, porém não é possível prever o local exato que isso irá acontecer, porque tal resultado depende da combinação de valores e coordenadas que variam sensivelmente ao longo do mundo virtual.
+
+As figuras ~\ref{fig:charack_final_costa_3}, ~\ref{fig:charack_final_costa_4} ilustram a adição de conteúdo à costa retilínea do continente, resultando numa paisagem mais convincente para o usuário. As duas figuras mostram com bastante detalhe a combinação da função de geração de relevo, o diversificador de praias e o algorítimo de quebra de linearidade da costa na criação de conteúdo; a figura ~\ref{fig:charack_final_costa_3} apresenta uma rocha imediatamente à esquerda da falésia principal, resultado obtido a partir de um espectro de ruído que gerou dois pontos principais indicando a existência de terra: o maior sendo a falésia e o menor sendo a rocha grande à esquerda. Além disso, o diversificador de praias removeu a areia na parte de baixo da falésia, porém à esquerda ele fez o processo contrário. Em conjunto, o algorítmo de geração de relevo com replicação de valores criou pontas na extremidade esquerda da falésia.
+
+A ~\ref{fig:charack_final_costa_4} apresenta a mesma combinação do algorítmo da figura anterior, porém o resultado obtido variou em função da coordenada do mundo virtual no local. Ao contrário do que aconteceu anteriormente, o diversificador de praias adicionou areia à base da falésia e, à esquerda da imagem, criou uma extensão da praia em forma de "braço". Também à esquerda, o diversificador de praias removeu a areia que fica na base do continente, criando um aspecto menos padronizado de conteúdo. À direita, é possível observar que o algorítmo de geração de relevo criou um declive que termina de forma relativamente suave na praia (relevo de baixa frequência), ao passo que na parte esquerda da imagem o relevo termina de uma forma mais abrupta (relevo de alta frequência).
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_costa_2.png}}
+\caption{Baía de médio porte gerada a partir da criação de um braço de terra originada no continente}
+\label{fig:charack_final_costa_2}
+\end{figure}
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_costa_3.png}}
+\caption{Extremidade de um continente}
+\label{fig:charack_final_costa_3}
+\end{figure}
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_costa_4.png}}
+\caption{Costa de um continente com praias de tamanho variável}
+\label{fig:charack_final_costa_4}
+\end{figure}
+
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/charack_final_costa_5.png}}
+\caption{Baía criada a partir da geração de dois braços de terra originados no continente}
+\label{fig:charack_final_costa_5}
+\end{figure}
+
+
+
+
+
+
+
+
+
 

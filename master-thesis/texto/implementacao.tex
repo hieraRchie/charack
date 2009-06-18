@@ -184,6 +184,7 @@ A geração do relevo da ferramenta do presente trabalho é feita através da sobrep
 
 
 \subsection{Visão micro e macro do mundo}
+\label{sec:visaomicromacro}
 
 Quando a ferramenta é iniciada, ela utiliza uma semente definida pelo usuário para gerar todos os continentes que existirão no mundo virtual. Depois que os continentes são gerados, as informações sobre o que é terra e o que é mar são armazenadas em uma matriz, chamada {\bf macro-matriz} (MM), que é utilizada para consulta pelos demais algorítimos da ferramenta. O mundo virtual gerado possui, tecnicamente, altura e largura definidas pelo tamanho máximo que um inteiro pode suportar, o que torna fisicamente inviável a geração de uma macro-matriz com as proporções do mundo inteiro. Uma vez que a MM é menor que o mundo virtual, uma entrada {\tt (i,j)} dela corresponde a diversos pixels dentro do mundo virtual. A figura \ref{fig:mapeamento_macro} ilustra o mapeamento da MM para o mundo virtual.
 
@@ -211,6 +212,7 @@ A figura mostra claramente o momento em que o mapeamento na MM muda, que é quand
 
 
 \subsection{Quebra de linearidade da costa}
+\label{sec:quebralinearidade}
 
 O mapeamento dos pixels do mundo virtual com as informações da MM em baixa resolução resulta em efeito gráficos muito irreais. As prais naturais possuem uma curvatura característica e dificilmente terão um comprimento de 20Km em um configuração perfeitamente retilínia, como as praias geradas pela ferramenta. Embora o objetivo do presente trabalho não seja criar paisagens fotorrealistas, praias tão irreais não são aceitáveis. Para contornar esse problema, criou-se uma forma de quebrar a lineariedade da costa através da adição de conteúdo aos locais onde o mapeamento da MM é calculado entre dois pontos, um de água e outro de terra. O funcionamento do algorítmo é descrito a seguir.
 
@@ -274,7 +276,7 @@ O \textbf{diferenciador de prais} atua perturbando a distância utilizada para o 
 \begin{figure}
 \centering
 \resizebox{15cm}{!}{\includegraphics{figuras/exemplo_praia_complexa.png}}
-\caption{Resultado obtido com a aplicação do diferenciador de praias. (a) praia original; (b) praia que sofreu efeito do diferenciador}
+\caption{Resultado obtido com a aplicação do diferenciador de praias}
 \label{fig:exemplo_praia_complexa}
 \end{figure}
 
