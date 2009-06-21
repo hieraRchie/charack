@@ -219,7 +219,7 @@ Para ornamentar o mundo virtual, o autor cita a utilização de plantas procedural
 
 \subsection{Planetas procedurais}
 
-Outro trabalho analisado é a geração de planetas procedurais através de fractais e combinações deles com outros métodos~\cite{LindaOndrej2007}. Na abordagem da autora, o mundo gerado não é infinito, porém ele é esférico e simula a visualização do planeta Terra. Partindo da subdivisão recursiva de um octaedro, a autora cria um mundo esférico que serve como base para a aplicação dos algorítimos de relevo. Através de uma interface, o usuário pode estipular qual algorítimo de relevo ele deseja utilizar, e o resultado desse processo é traduzido em uma lista encadeada que descreve todos os vértices do mundo. Uma lista encadeada foi utilizada para garantir que a malha resultante possa ter seus detalhes aumentados e/ou reduzidos facilmente (através das funções de inserção e remoção de elementos da lista), mesmo que essa estrutura de dados não seja a melhor escolha para busca de um elemento em específico, por exemplo. A utilização de listas encadeadas é importante porque a autora utiliza o conceito de LOD ({\it level of detail} ~\cite{lod}) para garantir um bom desempenho da aplicação. Através dessa técnica, nos polígonos que estão longe do campo de visão do usuário são mostrados em resolução baixa (poucos triângulos), enquanto os polígonos que estão próximos ao usuário são mostrados com resolução alta (muitos triângulos), o que aumenta a riqueza de detalhes dos objetos próximos. Com a utilização da lista encadeada, a inserção/remoção de novos vértices como consequência da atuação do algorítimo de LOD torna-se uma tarefa menos complexa.
+Outro trabalho analisado é a geração de planetas procedurais através de fractais e combinações deles com outros métodos ~\cite{LindaOndrej2007}. Na abordagem da autora, o mundo gerado não é infinito, porém ele é esférico e simula a visualização do planeta Terra. Partindo da subdivisão recursiva de um octaedro, a autora cria um mundo esférico que serve como base para a aplicação dos algorítimos de relevo. Através de uma interface, o usuário pode estipular qual algorítimo de relevo ele deseja utilizar, e o resultado desse processo é traduzido em uma lista encadeada que descreve todos os vértices do mundo. Uma lista encadeada foi utilizada para garantir que a malha resultante possa ter seus detalhes aumentados e/ou reduzidos facilmente (através das funções de inserção e remoção de elementos da lista), mesmo que essa estrutura de dados não seja a melhor escolha para busca de um elemento em específico, por exemplo. A utilização de listas encadeadas é importante porque a autora utiliza o conceito de LOD ({\it level of detail} ~\cite{lod}) para garantir um bom desempenho da aplicação. Através dessa técnica, nos polígonos que estão longe do campo de visão do usuário são mostrados em resolução baixa (poucos triângulos), enquanto os polígonos que estão próximos ao usuário são mostrados com resolução alta (muitos triângulos), o que aumenta a riqueza de detalhes dos objetos próximos. Com a utilização da lista encadeada, a inserção/remoção de novos vértices como consequência da atuação do algorítimo de LOD torna-se uma tarefa menos complexa.
 
 \begin{figure}
 \centering
@@ -281,3 +281,48 @@ Para garantir o desempenho no cálculo dos pontos médios da vizinhança, o autor b
 \caption{Subdivisão de células e níveis de detalhe representados por uma árvore binária em 2D. ~\cite{dollins-thesis}}
 \label{fig:dollin_bintree}
 \end{figure}
+
+
+\subsection{Gerador de mapas para planetas}
+\label{sec:geradortorben}
+
+Outro trabalho analisado foi um gerador de mapas para planetas, que consiste na geração de mundos redondos através da subdivisão recursiva de um tetraedro ~\cite{torben}. Embora o trabalho não seja apresentado como uma ferramenta gráfica na qual o usuário pode explorar um ambiente 3D, todas as informações geradas são parte de um mundo virtual completo, com continentes e oceanos altamente customizáveis. A idéia apresentada é criação de um mapa como resultado da projeção de pixels numa esfera, numa abordagem que se assemelha ao {\it ray tracing}. Assim como é feito nesse último, no qual os raios que partem da câmera e colidem com algo geram um pixel visível, cada pixel do mapa a ser gerado é projetado para uma esfera. O algorítmo que faz a projeção atribui uma altura ao pixel encontrado, o que gera um mapa com relevo.
+
+Para renderizar um mapa, inicialmente encontram-se os pontos dele que são visíveis na superfície da esfera. Em seguida, para calcular a altura de cada um desses pontos, aplica-se o seguinte algorítmo:
+
+\begin{itemize}
+ \item Inserir a esfera dentro do tetreadro.
+ \item Cortar o tetraedro em dois tetraedros menores.
+ \item Escolher em qual dos dois tetraedros está localizado o ponto sendo analisado.
+ \item Repetir os passos anteriores até que o tetraedro seja pequeno o suficiente
+ \item Usar a altura média dos vértices do tetraedro para calcular a altura do ponto sendo procurado.
+\end{itemize}
+
+No algorítmo de projeção analisado faz-se uso de um tetraedro para encontrar o ponto correspondente na superfície da esfera. A figura ~\ref{fig:explicacao_torben_tetraedro} ilustra o tetraedo inicial utilizado no processo.
+
+\begin{figure}
+\centering
+\resizebox{3cm}{!}{\includegraphics{figuras/explicacao_torben_tetraedro.png}}
+\caption{Tetraedro inicial utilizado no processo de projeção. ~\cite{torben}}
+\label{fig:explicacao_torben_tetraedro}
+\end{figure}
+
+Inicialmente a esfera é colocada dentro de um tetraedro irregular e informações sobre altura e uma semente para cálculos aleatórios é colocada em cada um dos vértices dele. Em seguida, ele é dividido em dois pelo plano formado entre o ponto médio da aresta mais longa e os dois pontos finais da aresta oposta ao ponto médio. Em suma, cada um dos dois tetraedros resultantes terão três vértices a partir do tetraedro original mais um novo vértice posicionado no ponto médio da maior aresta. A altura e a semente do novo vértice são calculados a partir da altitude e semente dos pontos finais da linha que é dividida (maior aresta). O processo é repetido recursivamente para cada um dos tetraedros até que ele fique pequeno o suficiente para conter apenas o ponto desejado. A figura ~\ref{fig:explicacao_torben_resultado} ilustra alguns mapas obtidos com diferentes tipos de projeção.
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/explicacao_torben_resultado.png}}
+\caption{Mapas obtidos com a aplicação do algorítmo de subdivisão do tetraedro. ~\cite{torben}}
+\label{fig:explicacao_torben_resultado}
+\end{figure}
+
+Pode-se utilizar diferentes tipos de projeção para coleta dos pontos da esfera, como a de Mercator, que é uma das opções que o trabalho analisado disponibiliza. Além disso, é possível que zoom seja aplicado ao mapa sendo gerado, bastando para isso aumentar o número de passos necessários para o cálculo de cada pixel. A figura ~\ref{fig:explicacao_torben_zoom} mostra dois mapas com a aplicação de zoom.
+
+\begin{figure}
+\centering
+\resizebox{12cm}{!}{\includegraphics{figuras/explicacao_torben_zoom.png}}
+\caption{Zoom realizado sobre diferentes mapas. ~\cite{torben}}
+\label{fig:explicacao_torben_zoom}
+\end{figure}
+
+Com pode ser observado nas figuras anteriores, o mapa gerado apresenta continuidade ao longo dos continentes, uma vez que foi originado de uma esfera. Isso quer dizer que se o usuário seguir o trajeto de algum meridiano, ele irá retornar para o extado ponto de partida sem qualquer tipo de quebra de conteúdo ao longo do processo.

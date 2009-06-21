@@ -30,7 +30,7 @@ Essa seção tem por objetivo avaliar cada uma das técnicas utilizadas na geração 
 
 \subsection{Avaliação dos continentes}
 
-Essa seção tem por objetivo analisar os continentes gerados pela ferramenta, além de analisar a técnica utilizada para que essa funcionalidade fosse implementada. A figura ~\ref{fig:analise_continente} ilustra um dos continentes gerados pela ferramenta.
+Essa seção tem por objetivo analisar os continentes gerados pela ferramenta, além de analisar a técnica utilizada para que essa funcionalidade fosse implementada. Os continentes gerados não são compostos por partes de terra pré-computados, eles são calculados como resultado de um conjunto de ações aleatórias guiadas por uma semente inicial. Variando-se a semente de entrada, é possível gerar continentes com as mais variadas formas, que vão desde um planeta fortemente tomado por faixas de terra até um cenário com ilhas pequenas e esparsas. Utilizando-se um algorítimo de divisão recursiva de um tetraedro, o módulo de geração de continentes cria um mapa que é uma representação plana de um planeta esférico. Conforme pode ser visto na figura ~\ref{fig:analise_continente}, analisando-se os continentes em uma linha horizontal, pode-se perceber que as faixas de terra casam nas duas extremidades do plano (direita e esquerda), o que produz um fluxo contínuo de terra. Analisando-se o mapa no sentido vertical, nota-se que as duas extremidades do plano não casam, o que é o comportamento esperado para uma projeção plana de uma esfera. Se o plano descrito fosse utilizado para "embrulhar" uma esfera, haveriam distorções nos continentes localizados próximo aos polos, porém o resultado final seria um planeta esférico com uma continuidade em seus elementos.
 
 \begin{figure}
 \centering
@@ -38,8 +38,6 @@ Essa seção tem por objetivo analisar os continentes gerados pela ferramenta, alé
 \caption{Continente gerado pela ferramenta}
 \label{fig:analise_continente}
 \end{figure}
-
-Os continentes gerados não são compostos por partes de terra pré-computados, eles são calculados como resultado de um conjunto de ações aleatórias guiadas por uma semente inicial. Variando-se a semente de entrada, é possível gerar continentes com as mais variadas formas, que vão desde um planeta fortemente tomado por faixas de terra até um cenário com ilhas pequenas e esparsas. Utilizando-se um algorítimo de divisão recursiva de um tetraedro, o módulo de geração de continentes cria um mapa que é uma representação plana de um planeta esférico. Conforme pode ser visto na figura ~\ref{fig:analise_continente}, analisando-se os continentes em uma linha horizontal, pode-se perceber que as faixas de terra casam nas duas extremidades do plano (direita e esquerda), o que produz um fluxo contínuo de terra. Analisando-se o mapa no sentido vertical, nota-se que as duas extremidades do plano não casam, o que é o comportamento esperado para uma projeção plana de uma esfera. Se o plano descrito fosse utilizado para "embrulhar" uma esfera, haveriam distorções nos continentes localizados próximo aos polos, porém o resultado final seria um planeta esférico com uma continuidade em seus elementos.
 
 Essa característica permite que o mundo virtual gerado simule o que existe no mundo real, no qual uma pessoa que caminhe na linha do Equador irá dar voltas ao redor do planeta vendo o seu conteúdo (relevos, oceanos, etc) se repetir ciclicamente ao londo do tempo. Essa funcionalidade de fazer o mundo virtual simular o comportamento esférico do planeta Terra não foi implementada na ferramenta; o usuário pode andar sobre os continentes gerados como se estivesse caminhando sobre um plano e, ao chegar em uma de suas bordas, ele é impedido de prosseguir.
 
@@ -85,6 +83,17 @@ Se a função de geração de relevo utilizar frequências muito baixas e o seu espec
 \caption{Diversos relevos gerados a partir de diferentes espectros de ruídos. (a) Pouco ruído extendido para o mundo inteiro sem replicação. (b) Pouco ruído replicado 200 vezes. (c) Bastante ruído com replicação de 200 vezes. (d) Bastante ruído sem replicação.}
 \label{fig:charack_final_relevo_comparacao}
 \end{figure}
+
+Durante a implementação da malha do terreno, observou-se que o desempenho da aplicação caia consideravelmente à medida que o tamanho da área visível pelo usuário era aumentada. Isso pode ser explicado pelo consumo cada vez maior de processamento necessário para que o grande número de polígonos na tela seja renderizado. Para contornar esse problema, utilizou-se o conceito de LOD ({\it Level of Detail}). A técnica de LOD consiste em aumentar a resolução dos elementos que estão mais próximos da visão do usuário e, em contra-partida, reduzir a resolução dos elementos que estão longe (justamente por estarem distantes do observador, esses elementos não são expressivos). Dentre as soluções pesquisadas, encontra-se LOD em bloco ~\cite{ulrich}, para malhas estáticas, LOD contínuo em tempo real de apenas uma passada ~\cite{pozzer}. O funcionamento desse último pode ser visto na figura ~\ref{fig:lod_pozzer}. Nas regiões com maior quantidade de informações (deformações e quinas do desfiladeiro), há uma quantidade muito maior de polígonos do que as regiões com menos informações (as áreas planas ao redor do desfiladeiro).
+
+\begin{figure}
+\centering
+\resizebox{13cm}{!}{\includegraphics{figuras/lod_pozzer.png}}
+\caption{Terreno renderizado com baixa resolução (a) e alta resolução (b), ambos com aplicação de LOD ~\cite{pozzer}}
+\label{fig:lod_pozzer}
+\end{figure}
+
+A utilização de LOD foi inicialmente implantada na ferramenta, porém a complexidade que essa abordagem agrega às demais partes da aplicação tornaram proibitiva a sua manutenção. Embora um aumento de desempenho através da utilização de LOD seja benéfico, optou-se por bifurcar o código da aplicação e seguir um ramo sem essa otimização. O ramo de código que possui o LOD funcional ainda está disponível e é uma das sugestões de trabalhos futuros.
 
 \subsection{Avaliação da costa}
 
