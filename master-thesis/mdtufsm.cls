@@ -419,7 +419,7 @@
     \centerline{\textbf{COMISSÃO EXAMINADORA:}}
     \vfill
     \vspace{1,2cm}
-    \@ifundefined{@coadvisor}{}{\centerline{\textbf{\@coadvisor}}}
+    \@ifundefined{@coadvisor}{\centerline{\textbf{\@advisor}}}{\centerline{\textbf{\@coadvisor}}}
     \centerline{(Presidente/Co-orientador)}
     \vspace{1,2cm}
     \@ifundefined{@committeea}{}{\centerline{\textbf{\@committeea}}}
