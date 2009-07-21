@@ -54,175 +54,65 @@ Em jogos {\it massivaly multiplayer online} (MMO) a existência de um mundo virtu
 \contactlist
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introdução}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos anos. Desde o lançamento dos primeiros consoles, o poder de processamento de hardware aumentou e novas tecnologias gráficas foram desenvolvidas, o resultou no desenvolvimento de jogos com os mais variados temas e estilos. No conjunto dos jogos {\it multiplayer}, os jogadores interagem com NPCs e, também, com outros seres humanos representados por personagens virtuais. A popularidade desse gênero é grande e a interação social entre os jogadores é assunto de pesquisas, como em ~\cite{onlineGaming} e ~\cite{ducheneaut}. Dentro da categoria de jogos {\it multiplayer}, exitem os jogos {\it massively multiplayer online} (MMO), que são jogos online no qual uma grande quantidade de jogadores interage uns com os outros dentro de um mundo virtual persistente.
+The computer games market has been evolving considerably over the years. Since the first console, the hardware performance has increased and new graphic technologies were developed, resulting in a wide range of themes and game styles. In the multiplayer games, players interact with other human beings and also with NPCs, which are represented by virtual characters. The kind of game is popular and the social interaction between players is a matter of research ~\cite{onlineGaming,ducheneaut}. In the category of multiplayer games there are the massively multiplayer online (MMO) ones, which are online games featuring large number of players interacting with each other in a persistent virtual world.
 
-A quantidade de jogadores vinculados a um MMO pode chegar a ordem dos milhões, como é o caso do jogo EverQuest~\cite{EverQuest} e World of Warcraft~\cite{Blizzard}, esse último com mais de 6 milhões de inscritos ~\cite{vicioEstrutura}. A existência de um mundo virtual persistente é um tópico importante para manter o jogo atrativo e divertido ao jogador. Quanto maior o mundo a ser explorado, tecnicamente mais tempo o usuário passará jogando para conseguir explorar o maior número possível de lugares.Dada a magnitude de tais mundos virtuais, a criação (e consequente renovação) de cenários torna-se uma tarefa complexa e de proporções consideráveis. Tanto em World of Warcraft quanto em EverQuest, os mundos virtuais apresentam uma diversidade grande de elementos geográficos, como cadeias montanhosas, vales, florestas, campos, cavernas, etc., sendo a grande maioria deles nominados e ligados a história do jogo. A criação manual desses mundos virtuais exige uma equipe apta a modelar relevos, ornamentar paisagens, garantir usabilidade do mapa (não criar lugares inatingíveis, por exemplo), criar lugar interessantes aos jogadores, etc. Em meio a esse contexto, a criação de uma ferramenta capaz de gerar mundos virtuais complexos e de grandes proporções é útil para agilizar o desenvolvimento de jogos 3D ao estilo MMO.
+An MMO can feature millions of players, such as EverQuest ~\cite{EverQuest} and World of Warcraft ~\cite{Blizzard}, the latter with more than 6 million subscribers ~ \cite{vicioEstrutura}. A persistent virtual world is an important topic to keep the game fun and attractive to the player. The bigger is the world to be explored, technically the bigger is the time the player has to spend in order to explore all the places. As a result of such huge virtual worlds, the creation (and subsequent upgrade) of those worlds is a complex task. EverQuest and World of Warcraft present a virtual world with a wide diversity of geographical features such as mountains, valleys, forests, fields, caves, etc.., and the vast majority of them nominated and related the history of the game. The manual creation of those virtual worlds requires a team able to create heightmaps, adorn landscapes, ensure usability of the map (avoid unreachable places, for example), create interesting place for players, etc. To help on that task, the development of a tool able to generate complex virtual worlds is useful to speed up the development of 3D games such as MMOs.
 
-A solução proposta neste trabalho tem por objetivo uma ferramenta capaz de gerar mundos virtuais complexos e de grandes proporções, em tempo real. Através de técnicas de geração de relevo e criação de mapas por interpolação de funções de ruído, a ferramenta proposta é capaz de gerar um mundo virtual completo, com continentes, oceanos, áreas planas, montanhas, etc, sendo que todos esses elementos são processados sob demanda à medida que o jogador caminha pelo ambiente virtual. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Visão geral}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-A ferramenta foi criada para permitir que programadores utilizem suas funcionalidades na criação de terrenos em jogos 3D, principalmente MMOs, com a mínima intervenção humana no processo de geração. O tamanho dos terrenos criados é customizável, porém os mapas gerados tem como principal característica a magnitude de suas dimensões, que podem chegar à casa dos bilhões de pixels. O emprego do termo "pseudo" faz-se necessário devido à limitação física dos computadores atuais, que apresentam um valor máximo possível para números inteiros (sejam eles de 32 ou 64 bits). Se não houvesse limitação física alguma, a ferramenta seria capaz de gerar, de fato, um mundo infinito.
-
-A geração de todos os conteúdo do ambiente é feita sob demanda. À medida que o usuário avança pelo terreno, os elementos que entram para o campo de visão são processados e colocados na memória e, à medida que eles saem do campo de visão, são removidos. Embora a geração dos elementos seja baseada em cálculos aleatórios, se o jogador passar pelo ponto {\tt A} e, em seguida, andar por quilômetros, colocando uma gama completamente diferente de elementos na memória, e ele retornar ao ponto {\tt A}, a mesma paisagem que foi vista na primeira vez será mostrada novamente.
-
-Além da geração de relevo, a ferramenta também é capaz de criar oceanos e continentes, todos customizáveis. Diferentemente do que foi feito nos trabalhos relacionados, nos quais a geração de continentes (e suas costas) é uma consequência da geração de relevo, o presente trabalho apresenta como sua principal contribuição uma nova abordagem para a geração de conteúdos para mundos virtuais. Nessa abordagem, a geração de continentes, relevo e costas é tratada de forma separada, porém com um resultado final interligado.
-
-A forma dos continentes é definida, em um nível macro, através de um algoritmos de criação de mapas que trabalha projetando pixels em uma esfera, o que resulta num mapa contínuo e sem distorções. A criação da costa, por sua vez, trabalha em um nível micro que utiliza as informações de mais alto nível para criar conteúdos mais refinados e ricos em detalhes. Grandes esforços foram aplicados em cima desse tópico, resultando na criação de costas com falésias, praias de tamanhos variados, baias e arquipélagos.
+The solution proposed in this work is a tool able to generate complex virtual worlds in real-time using noise-based techniques of terrain generation. The proposed tool is able to generate complete virtual world featuring continents, oceans, flat areas, mountains, etc, with all those elements generated in real time, on demand as the player moves along the world.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Trabalhos relacionados}
+\section{Overview}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The tool was designed to allow developers to use its features in order to generate 3D terrains for games, particularly MMOs, with minimal human intervention in the generation process. The size of the resulting world is customizable, but it can reach billions of pixels. The use of the term "pseudo" is necessary due physical limitations in computers hardware: an unsigned integer, for instance, can store a certain amount of data; if there were no physical limitations, the tool would be able to generate, in fact, an infinite world. 
+
+The content generation is made on demand. As the user moves along the world, the elements inside the user's view are processed and stored into the memory and the ones away from the user's view are removed. Even though the generation of all elements is based on random calculations, if the player visits an specific the point {\tt A}, then walks for miles generating a completely different set of landscapes, and returns to point {\tt A}, the same previously seen landscape will be shown again.
+
+Besides the heightmap generation, the tool is also able to create oceans and continents, all of them customizable. Unlike other related works which deal with the generation of continents as a consequence of the heightmap generation, this paper presents as its main contribution a new approach for content generation in virtual worlds. In this approach, the generation of continents, topography and coastlines are handled separately.
+
+The shape of continents is defined on a macro level as a result of an algorithm for maps generation that work projecting pixels onto a sphere. The coast line generation is performed on a micro level. As a result, the tool is able to produce cliffs, beaches, bays and islands.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related works}
 \label{sec:related-work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-As seções seguintes apresentam diversas abordagens utilizadas para a criação de mundos virtuais finitos e pseudo-infinitos, bem como formas de geração de conteúdo para eles (criação de relevo).
+%As seções seguintes apresentam diversas abordagens utilizadas para a criação de mundos virtuais finitos e pseudo-infinitos, bem como formas de geração de conteúdo para eles (criação de relevo).
 
-\subsection{Cidade virtual}
+\subsection{Virtual city}
 
-A geração de conteúdos procedimentais é um assunto antigo no campo da computação gráfica. A aplicação desse tipo de técnica na geração de um mundo virtual completo foi utilizada por ~\cite{infinicity}, cujo objetivo era gerar uma cidade virtual que fosse visualmente interessante e composta por construções complexas, porém cada uma delas sendo criada a partir de elementos mais simples.
+The procedural content generation is an old topic in the field of computer graphics. The application of such technique to generate a complete virtual world was used by ~\cite{infinicity}, whose goal was to create a virtual city that was visually interesting and complex.
 
-Na abordagem utilizada, dividiu-se o mundo virtual numa grade composta por diversos quadrados, chamados células. As coordenadas de localização de cada célula, em conjunto com uma semente global, são utilizadas como entrada para uma função de hash ~\cite{wangHash}. O resultado dessa função é utilizado como semente para um pseudo gerador de números aleatórios e irá definir todas as características das construções que estão dentro da célula. Dessa forma, o conteúdo de uma célula é sempre o mesmo, independente de quanto o usuário caminhe pelo mundo virtual e faça a célula em questão entrar ou sair do seu campo de visão.
+In the approach the world were divided into a grid consisting of several squares, called cells. The location of each cell is used with a global seed as an input for a hash function ~\cite{wangHash}. The result of this function is used as a seed for a pseudo random number generator and it will define all the characteristics of the buildings within a cell. As a consequence of that approach the contents of a cell is always the same, no matter how far the user moves or if the cell is removed from memory.
 
-%A figura ~\ref{fig:greuter_grade} ilustra a divisão do mundo virtual em células.
+To ensure acceptable use of memory and CPU, only the elements inside the user's view are generated. As the user moves through the city, new cells are added to the user's view and the new content is generated. Whe the cell leaves the user's view, it is removed from memory and its resources are released. The cells are placed in square loops around the user and are considered inside the user's view if it is close enough and if it is located within a 120° view range. 
 
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/greuter_grade.png}}
-%\caption{Mundo virtual dividido em células. Cada uma delas possui uma semente calculada com base em sua posição e com base uma semente global referente à cidade}
-%\label{fig:greuter_grade}
-%\end{figure}
-%~\cite{infinicity}
+\subsection{Layered generation and texturization}
 
-%Cada uma das construções existentes é gerada pela mescla de polígonos simples escolhidos aleatoriamente. Utilizando um processo iterativo, partindo do topo até a base, em cada iteração o polígono escolhido é mesclado com o polígono anterior e, então, mais um nível (andar) é criado; esse processo garante que a construção, ao longo das iterações, cresça em altura e em largura de uma forma realística. Depois que a geometria da construção está pronta, ela é texturizada com janelas, sendo que o tipo da janela é escolhido aleatoriamente.
+Another related work was a tool used to build the SkyCastle multiplayer game engine~\cite{LandscapeGeneration,SkyCastle}. For the heightmap generation, parameterized procedures and fractal based systems are combined in layered approach: starting with a base map, the application merges a new map with to the base in each iteration. The new maps are pre-calculated and generated using Perlin noise.
 
-%A figura ~\ref{fig:greuter_predios} ilustra a geração de construções.
+One of the texturization methods presented are the use of a large image able to cover the whole world. Although this approach is useful for small scenes, it is not suitable for large scenes nor virtual worlds, since the image size could reach prohibitive proportions. To avoid this problem, an reticulate approach is suggested ~\cite{CSHD03}; using that approacha a texture cell is created so that the a combination of them produces a smooth and continuous and textured plane. The results are acceptable, but it is not visually attractive to the user, because the landscape features an unusual pattern that will never exist in the real world. In order to achieve a better visual result, an approach proposed by ~\cite{LN03} is suggested. In that approach, a set of pre-defined border textures is combined with reticulate textures. The idea is to apply the border textures on an already textured plane, but using transparency in the border textures. As a consequene, border textures will overlap the some reagions of the plane and produce a less homogenous landscape, which creates a better visual result.
 
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/greuter_predios.png}}
-%\caption{Geração de construções: cada andar é gerado pela mescla de polígonos escolhidos e centralizados aleatoriamente}
-%\label{fig:greuter_predios}
-%\end{figure}
-%~\cite{infinicity}
+In order to decorate the virtual world, three procedural plant generation methods are used: L-System ~\cite{PL90}, component-based generation ~\cite{LD98} and parameterized trees ~\cite{WP95}.
 
-Para garantir o uso racional de recursos computacionais, como memória e processamento, utilizou-se o conceito nomeado por eles de preenchimento por {\it view frustum}, que consiste em restringir à geração de conteúdo somente para as células que estão dentro do campo de visão do usuário. A medida que esse anda pela cidade virtual, novas células vão sendo adicionadas ao campo de visão e seu conteúdo é gerado; quando a célula sai do campo de visão, ela é removida da memória e seus recursos são liberados. As células são posicionadas em loops quadrados ao redor do usuário e são consideradas pertencentes ao campo de visão se estão a uma certa distância do usuário e dentro de um ângulo de 120º de visão.
-%A figura ~\ref{fig:greuter_view} ilustra o funcionamento do campo de visão descrito e a figura ~\ref{fig:greuter_cidade} mostra uma cidade virtual gerada.
+\subsection{Procedural planets}
 
-%\begin{figure}
-%\centering
-%\resizebox{3cm}{!}{\includegraphics{images/greuter_view.png}}
-%\caption{Campo de visão do usuário: apenas as células visíveis tem o seu conteúdo gerado}
-%\label{fig:greuter_view}
-%\end{figure}
-%~\cite{infinicity}
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/greuter_cidade.png}}
-%\caption{Exemplo de cidade virtual gerada}
-%\label{fig:greuter_cidade}
-%\end{figure}
-%~\cite{infinicity}
-
-\subsection{Geração e texturização por camadas}
-
-Outro trabalho analisado foi o de ~\cite{LandscapeGeneration} para a construção da ferramenta SkyCastle ~\cite{SkyCastle}, uma {\it engine} para jogos online multijogador com suporte à geração procedimental de mundos virtuais. No referido trabalho, há um enfoque no problema de mundos virtuais cada vez maiores em jogos de computador e aplicações, o que cria a necessidade de desenvolvimento de ferramentas capazes de ajudar na geração de conteúdos realistas para esses mundos. Para a geração de relevo, utiliza-se procedimentos parametrizados e sistemas baseados em fractais em uma abordagem de camadas: a aplicação adiciona um mapa de ruído (com amplitude reduzida) ao mapa de altura base em cada iteração. Os mapas de ruído são pré-computados e criados através de funções de ruído de Perlin.
-
-Depois do assunto de criação de relevo, aborda-se a funcionalidade de texturização da malha gerada. Um dos métodos apresentados é a utilização de uma imagem com proporções muito grandes, que seria capaz de cobrir o mundo inteiro. Embora essa abordagem passa ser útil para cenários pequenos, ela não é viável para terrenos grandes ou mundos virtuais, uma vez que o tamanho da imagem poderia atingir proporções proibitivas. Para contornar esse problema, a abordagem de reticulados é sugerida~\cite{CSHD03}; nessa abordagem, uma célula de textura é criada de tal forma que ao posicionar várias células, uma do lado da outra, o plano gerado apresenta uma texturização contínua e sem falhas. O resultado obtido com essa abordagem é aceitável, porém ele não é visualmente atraente para o usuário final, uma vez que o terreno apresenta uma continuidade que não existiria no mundo real. Para conseguir um resultado visual melhor, sugere-se a utilização de uma abordagem proposta por ~\cite{LN03}, que consiste na utilização de um conjunto de texturas pré-definidas em formato de borda juntamente com a texturização em reticulados já citada. O funcionamento do algoritmo resume-se em aplicar as texturas em borda sobre um plano já uniformemente texturizado, porém utilizando transparência nas áreas não desenháveis das texturas em borda. Dessa forma, a sobreposição das bordas sobre o plano texturizado irá produzir uma paisagem menos homogênea, o que gera um resultado visual melhor.
-
-%A figura ~\ref{fig:tiling} ilustra as texturas em forma de borda e a sua utilização na abordagem descrita.
-
-%\begin{figure}
-%\centering
-%\resizebox{7cm}{!}{\includegraphics{images/tiling.png}}
-%\caption{Terreno texturizado com duas camadas: bloco escuro e um conjunto de texturas em formato de borda com transparência}
-%\label{fig:tiling}
-%\end{figure}
-%~\cite{LandscapeGeneration}
-
-Para ornamentar o mundo virtual, cita-se a utilização de plantas proceduralmente geradas através de três métodos principais: {\it L-System}~\cite{PL90}, geração baseada em componentes ~\cite{LD98} e árvores parametrizadas ~\cite{WP95}.
-
-\subsection{Planetas procedurais}
-
-Outro trabalho analisado é a geração de planetas procedurais através de fractais e combinações deles com outros métodos ~\cite{LindaOndrej2007}. Nessa abordagem, o mundo gerado não é infinito, porém ele é esférico e simula a visualização do planeta Terra. Partindo da subdivisão recursiva de um octaedro, cria-se um mundo esférico que serve como base para a aplicação dos algoritmos de relevo. Através de uma interface, o usuário pode estipular qual algoritmo de relevo ele deseja utilizar, e o resultado desse processo é traduzido em uma lista encadeada que descreve todos os vértices do mundo.
-
-%Uma lista encadeada foi utilizada para garantir que a malha resultante possa ter seus detalhes aumentados e/ou reduzidos facilmente (através das funções de inserção e remoção de elementos da lista), mesmo que essa estrutura de dados não seja a melhor escolha para busca de um elemento em específico, por exemplo. A utilização de listas encadeadas é importante porque o conceito de LOD ({\it level of detail} ~\cite{lod}) é utilizado para garantir um bom desempenho da aplicação. Através dessa técnica, os polígonos que estão longe do campo de visão do usuário são mostrados em resolução baixa (poucos triângulos), enquanto os polígonos que estão próximos ao usuário são mostrados com resolução alta (muitos triângulos), o que aumenta a riqueza de detalhes dos objetos próximos.
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/mundo_esferico_relevo.png}}
-%\caption{Diferentes relevos gerados pela utilização de fractais e suas combinações.}
-%\label{fig:mundo_esferico_relevo}
-%\end{figure}
-%~\cite{LindaOndrej2007}
-
-O relevo gerado é obtido através de diversas técnicas, cada uma com suas peculiaridades e resultados. Dentre as técnicas utilizadas, encontram-se: geração por falhas aleatórias, disposição do ponto médio (incluindo uma variação multifractal) e ruido de Perlin (e suas diversas variações).
-
-%A figura ~\ref{fig:mundo_esferico_relevo} ilustra os relevos obtidos com essas técnicas. Depois que a malha é gerada, utiliza-se uma combinação de técnicas para colorir os pontos da falha; as técnicas variam conforme o resultado desejado, porém todas elas são baseadas na interpolação de cores parametrizada pela altura do ponto sendo analisado. Para garantir um aspecto mais real, utiliza-se em algumas técnicas conjuntamente com ruídos e turbulência, como o ruído de Perlin.
-
-%Tento em vista diversos métodos para geração de relevo são explorados, é importante salientar quais foram os resultados obtidos com a utilização de cada um deles frente ao problema de geração de continentes para um mundo esférico. Uma visão mostrando todos os planetas gerados é mostrada na figura ~\ref{fig:mundos_esfericos}. O algorítimo de geração por {\bf falhas aleatórias} produz terrenos que parecem quebrados e diversas ilhas pequenas; de acordo com a análise feita, os resultados obtidos em sua grande maioria são muito aleatórios e na média o algorítimo produz um grande continente e um grande oceano. O algorítimo de {\bf disposição do ponto médio} e sua variação multifractal geram continentes grandes e compactos sem muitas ilhas pequenas, com as deformações geradas sendo uniformes e concentradas no centro dos continentes; embora a variação multifractal do algoritmo produza uma colorização aceitável (tento em vista que há grandes variações de altitude), segundo a análise os resultados não são bons quanto os obtidos com ruído de Perlin. O algorítimo de {\bf ruído de Perlin} e sua variação multifractal apresentam resultados visuais melhores em comparação com as técnicas citadas anteriormente; a comparação entre o planeta gerado apenas com ruído de Perlin e o planeta gerado pela sua variação multifractal mostram a considerável diferença existente entre essas duas abordagens: enquanto a primeira produz relevos com variações de altitude concentradas em determinados lugares, a segunda produz relevos mais realistas com uma distribuição menos concentrada em determinados pontos. Por último, as variações {\it ridged} da geração por {\bf ruído de Perlin} produzem planetas com continentes estreitos e arredondados, algumas vezes gerando baías fechadas; da mesma forma que os resultados anteriores mostraram, uma abordagem multifractal gera um relevo com variações de altitude mais distribuídas ao longo dos continentes.
-
-%\begin{figure}
-%\centering
-%\resizebox{7cm}{!}{\includegraphics{images/mundos_esfericos.png}}
-%\caption{Planetas gerados com os diversos algorítimos. (a) Falhas aleatórias. (b) Disposição do ponto médio. (c) Disposição do ponto médio multifractal. (d) Ruído de Perlin. (e) Ruído de Perlin Multifractal. (f) Ruído de Perlin {\it Ridged}. (g) Ruído de Perlin {\it Ridged} Multifractal.}
-%\label{fig:mundos_esfericos}
-%\end{figure}
-%~\cite{LindaOndrej2007}
+The use of fractals and their combinations with other methods are also used to proceduraly generate planets ~\cite{LindaOndrej2007}. In this approach, the generated world is not infinite, but it is spherical and simulates the view of the planet Earth. Starting with a recursive subdivision of an octahedron, a spherical world is created and it is used as a first step to sevel algorithms of heighmap generation. The heightmap is obtained as a result of several techniques, each one featuringits peculiarities and results. Among the techniques used are: generation using random failures, midpoint displacement (including a multifractal variation) and Perlin noise (and its many variations).
 
 \subsection{Fractais afetados por erosão}
 
 Outro trabalho analisado foi a geração de terrenos procedimentais em tempo real com a utilização de fractais afetados por erosão ~\cite{terrain_generation}. Conforme ressaltado, o aumento do poder de processamento de computadores domésticos possibilitou que jogos de computador façam uso de simulações de erosão em tempo quase real. Agregou-se à geração de relevo por fractais novas características decorrentes da aplicação de erosão, o que teve como resultado mapas mais reais e, ao mesmo tempo, customizáveis. Primeiramente, um mapa de altura foi criado a partir de um diagrama de Voronoi, sendo cada um dos vértices do diagrama chamados de {\it pontos de funcionalidade}; o valor de cada célula no mapa de altura é obtido através de uma combinação linear das distâncias entre os pontos de funcionalidade mais próximos. Depois que o mapa de altura é gerado, ele é combinado com um algorítimo de geração de ruído para produzir montanhas menos pontiagudas e, para remover as linhas bem definidas criadas pelo diagrama de Voronoi, um filtro de perturbação ainda é aplicado. Para a simulação de erosão no mapa de altura gerado, utiliza-se um método híbrido de duas técnicas de erosão: a termal ~\cite{MusgraveErosao} e a hidráulica. 
 
-%A figura ~\ref{fig:erosao_evolucao} ilustra o processo descrito. 
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/erosao_evolucao.png}}
-%\caption{(a) Mapa de altura gerado a partir de um diagrama de Voronoi. (b) Aplicações de funções de ruído em (a). (c) Mapa resultante da aplicação de um filtro de perturbação em (b).}
-%\label{fig:erosao_evolucao}
-%\end{figure}
-%~\cite{terrain_generation}
-
-%A figura ~\ref{fig:erosao_ilustracao} ilustra o resultado final obtido.
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/erosao_ilustracao.png}}
-%\caption{À direita, renderização de um mapa de altura sem a aplicação de erosão; à esquerda, o mesmo mapa com a aplicação de erosão.}
-%\label{fig:erosao_ilustracao}
-%\end{figure}
-%~\cite{terrain_generation}
-
 \subsection{Divisões estocásticas de uma quadtree}
 
 Outro trabalho analisado foi a geração de mundos virtuais procedimentalmente através de técnicas de subdivisão estocásticas ~\cite{dollins-thesis}. O objetivo foi criar um mundo virtual de grandes proporções, porém gerando o seu conteúdo sob-demanda de forma procedimental e com multi-resolução. Para a geração do relevo do terreno, utilizou-se sub-divisões de uma {\it quadtree} em um processo recursivo. A forma do terreno é definida pelo ponto médio de cada uma das células, que na figura são representados pelos círculos pequenos no centro de cada quadrado. Para cada nível de subdivisão, os novos pontos médios das células filho criadas são definidos em função das nove células pai que estão ao redor da célula sendo dividida. A altura dos demais pontos da malha, como os vértices que estão nos cantos das células, é definida pela interpolação dos pontos médios mais próximos. A cada camada de detalhamento, mais células são subdividias, e a célula que sofreu a subdivisão é substituída pelas novas células filho geradas.
-
-%Na figura ~\ref{fig:dollin_quadtree}, o quadrado localizado no centro representa uma célula que está sofrendo subdivisões e que será substituída pelas quatro células filho resultantes da subdivisão (as células filhos são os quadrados com círculos brancos no centro). Para evitar repetições de números ao longo dos vários níveis de detalhamento, utilizou-se um gerador de números aleatórios alimentado por três elementos: as coordenadas {\tt X} e {\tt Y} da célula e o nível de detalhe sendo mostrado nesse momento; isso garante que um conjunto de números aleatórios seja gerado de forma satisfatória para cada um das células existentes no mundo virtual, independente do nível de detalhes exigido.
-
-%\begin{figure}
-%\centering
-%\resizebox{4cm}{!}{\includegraphics{images/dollin_quadtree.png}}
-%\caption{{\it Quadtree} utilizada para a geração do terreno}
-%\label{fig:dollin_quadtree}
-%\end{figure}
-%~\cite{dollins-thesis}
-
-%Para controlar a instanciação de cada célula, conforme a câmera se movimenta, novas células são instanciadas à frente da câmera e as células atrás da câmera, que estão muito distantes, são removidos. A figura ~\ref{fig:dollin_bintree} ilustra o funcionamento do processo através de uma árvore binária; os nós pai sempre instanciam todos os seus filhos e os nós que estão dentro de um determinada camada (nível da árvore) só serão atualizados quando a câmera atingir o ponto médio da célula pai. Como ilustrado na figura, à medida que a câmera se move para a direita, ultrapassando o ponto médio das células pai, novos nós vão sendo instanciados à direita (à medida que o nó pai entra no campo de visão), ao passo que todos os nós pai que saem do campo de visão são removidos (junto com os seus filhos). A malha final é renderizada a partir das informações conditas nas folhas da árvore, sendo que a altura de cada um desses pontos na malha é definido pela interpolação de seu ponto médio com a vizinhança, como descrito anteriormente.
-
-%\begin{figure}
-%\centering
-%\resizebox{4cm}{!}{\includegraphics{images/dollin_bintree.png}}
-%\caption{Subdivisão de células e níveis de detalhe representados por uma árvore binária em 2D.}
-%\label{fig:dollin_bintree}
-%\end{figure}
-%~\cite{dollins-thesis}
-
 
 \subsection{Gerador de mapas para planetas}
 \label{sec:geradortorben}
@@ -239,47 +129,13 @@ Para renderizar um mapa, inicialmente encontram-se os pontos dele que são visíve
  \item Usar a altura média dos vértices do tetraedro para calcular a altura do ponto sendo procurado.
 \end{itemize}
 
-%No algoritmo de projeção analisado faz-se uso de um tetraedro para encontrar o ponto correspondente na superfície da esfera. A figura ~\ref{fig:explicacao_torben_tetraedro} ilustra o tetraedro inicial utilizado no processo.
-
-%\begin{figure}
-%\centering
-%\resizebox{3cm}{!}{\includegraphics{images/explicacao_torben_tetraedro.png}}
-%\caption{Tetraedro inicial utilizado no processo de projeção.}
-%\label{fig:explicacao_torben_tetraedro}
-%\end{figure}
-%~\cite{torben}
-
 Inicialmente a esfera é colocada dentro de um tetraedro irregular e informações sobre altura e uma semente para cálculos aleatórios é colocada em cada um dos vértices dele. Em seguida, ele é dividido em dois pelo plano formado entre o ponto médio da aresta mais longa e os dois pontos finais da aresta oposta ao ponto médio. Em suma, cada um dos dois tetraedros resultantes terão três vértices a partir do tetraedro original mais um novo vértice posicionado no ponto médio da maior aresta. A altura e a semente do novo vértice são calculados a partir da altitude e semente dos pontos finais da linha que é dividida (maior aresta). O processo é repetido recursivamente para cada um dos tetraedros até que ele fique pequeno o suficiente para conter apenas o ponto desejado.
 
-%A figura ~\ref{fig:explicacao_torben_resultado} ilustra alguns mapas obtidos com diferentes tipos de projeção.
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/explicacao_torben_resultado.png}}
-%\caption{Mapas obtidos com a aplicação do algoritmo de subdivisão do tetraedro.}
-%\label{fig:explicacao_torben_resultado}
-%\end{figure}
-%~\cite{torben}
-
-%Pode-se utilizar diferentes tipos de projeção para coleta dos pontos da esfera, como a de Mercator, que é uma das opções que o trabalho analisado disponibiliza. Além disso, é possível que zoom seja aplicado ao mapa sendo gerado, bastando para isso aumentar o número de passos necessários para o cálculo de cada pixel. A figura ~\ref{fig:explicacao_torben_zoom} mostra dois mapas com a aplicação de zoom.
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/explicacao_torben_zoom.png}}
-%\caption{Zoom realizado sobre diferentes mapas.}
-%\label{fig:explicacao_torben_zoom}
-%\end{figure}
-%~\cite{torben}
-
-%Como pode ser observado nas figuras anteriores, o mapa gerado apresenta continuidade ao longo dos continentes, uma vez que foi originado de uma esfera. Isso quer dizer que se o usuário seguir o trajeto de algum meridiano, ele irá retornar para o exato ponto de partida sem qualquer tipo de quebra de conteúdo ao longo do processo.
- 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Organização da ferramenta}
 \label{sec:generating-pdf-file}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Depois que for inicializada, a ferramenta deve permitir que o usuário caminhe livremente pelo terreno criado. À medida que o usuário se move, a ferramenta adiciona novas paisagens dentro do campo de visão através de um processo de geração de conteúdo sob demanda. Se o usuário caminhar em direção ao norte por vários dias e, em seguida, quiser retornar para à sua primeira posição, ele deve ser capaz de ver, na viagem de volta, extamente a mesma configuração de montanhas e paisagens que ele viu durante a viagem de ida. Além disso, a ferramenta deve ser capaz de gerar 1) continentes com configurações variadas, 2) diferentes tipos de relevo (motanhas, falésias, planícies, etc) e 3) costas que sejam convincentes ao usuário (como praias ao longo da borda dos continentes).
 
 As seções seguintes explicam como a ferramenta, doravante denominada {\it Charack}, foi estruturada para permitir que os objetivos citados fossem atingidos. O texto está organizado de forma a apresentar uma abordagem {\it top-down}: parte-se da explicação sobre a geração de continentes (visão mais ampla) e termina-se com a explicação sobre a geração de relevo para cada um dos pixels a serem desenhados na tela (visão mais específica e pontual).
 
@@ -369,32 +225,6 @@ A base para a geração do mundo virtual proposto é a possibilidade do usuário pod
 
 A solução encontrada foi fazer com que o jogador veja na tela em uma determinado momento um pedaço do mundo virtual existente, porém sem a utilização de células ou quadrantes. Diferentemente do que foi feito em  ~\cite{infinicity}, no qual o campo de visão é um cone, o campo de visão de Charack é um quadrado centrado no usuário. A partir da posição {\tt (x, y, z)} do usuário, calcula-se qual é o conteúdo visualizável ao redor desse ponto e, então, "recorta-se" essa fatia do mundo e a desenha-se ela na tela. Ao chegar na borda limite do mundo, que pode ser a distância máxima de um eixo, por exemplo, o usuário é impedido de avançar e nenhum conteúdo é mostrado além da borda limite.
 
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/campo_visao.png}}
-%\caption{Campo de visão do usuário: a área visualizada corresponde a uma fatia do mundo virtual existente.}
-%\label{fig:campo_visao}
-%\end{figure}
-
-%Utilizando o exemplo da geração de relevo, se o mundo virtual fosse dividido em células, cada uma delas deveria possuir um relevo perfeitamente nivelado com a célula vizinha, caso contrário o relevo gerado teria diversos "degraus". Analisando o problema um pouco mais a fundo, no caso da geração de montanhas, por exemplo, se na metade de uma célula a ferramenta decidisse que uma cadeia montanhosa deveria começar, a célula vizinha deveria obrigatoriamente ter a continuação dessa cadeia montanhosa, caso contrário a montanha em questão seria fatiada pela metade. Uma das formas de corrigir esse problema é adicionar um nível mínimo de dependência entre as células: o conteúdo de uma célula é gerado com base nas informações da própria célula e também com base em alguma "dica" da célula vizinha. No exemplo da cadeia montanhosa, a célula vizinha ao começo da cadeia saberia que o conteúdo que ela deve gerar é a continuação da cadeia montanhosa, visto que a sua célula vizinha possui o começo da cadeia.
-
-%Essa dependência de conteúdo gera um encadeamento recursivo infinito entre as células. Se a célula {\tt A}, por exemplo, for gerar o seu conteúdo, ela irá fazer isso com base nas suas informações e também com base nas informações de sua célula vizinha, {\tt B}. A célula {\tt B}, por sua vez, só poderá informar a {\tt A} o seu próprio relevo quando ela o gerar; para gerar o seu relevo, ela precisa das suas informações e das informações da sua vizinha, {\tt C}, e {\tt C} precisa de {\tt D} e assim por diante. Dessa forma, para gerar o conteúdo de {\tt A}, a ferramenta teria que obrigatoriamente percorrer todas as células do mundo virtual.
-
-%Uma saída alternativa para esse problema da recursão infinita é definir um nível de consulta de informações. Embora essa abordagem limite o nível de consulta entre as células vizinhas, ela não soluciona o problema de continuidade de conteúdo. Se o conteúdo de {\tt A} for gerado com seis níveis de recursão, por exemplo, quando o usuário se mover, novas células vizinhas serão consultadas para a geração do conteúdo; se a última célula que {\tt A} consultou foi {\tt G}, depois que o usuário se mover, {\tt G} terá novas informações para o seu relevo, porque agora ela pode solicitar informações de suas vizinhas. Isso fará com que todas as células dependentes de {\tt G} mudem o seu conteúdo, o que resultaria em um relevo diferente a cada movimentação do usuário. Em virtude da complexidade descrita e dos problemas mapeados, a abordagem de divisão do mundo virtual em células foi abandonada e substituída pelo modelo de campo de visão quadrado.
-
-%\subsubsection{Renderização de conteúdo}
-
-%O mundo virtual gerado tem coordenadas pseudo-infinitas, porém o máximo de conteúdo que o usuário enxerga na tela é a área do campo de visão, que possui sempre o mesmo tamanho e coordenadas de desenho. A figura ~\ref{fig:render_campo_visao}(a) ilustra as coordenadas envolvidas no desenho do conteúdo do campo de visão.
-
-%\begin{figure}
-%\centering
-%\resizebox{8cm}{!}{\includegraphics{images/render_campo_visao.png}}
-%\caption{Mapeamento das coordenadas do mundo virtual para as coordenadas de desenho da tela}
-%\label{fig:render_campo_visao}
-%\end{figure}
-
-%O plano {\tt A} representa o mundo virtual gerado pela ferramenta, enquanto o plano {\tt B} representa a fatia do mundo virtual que o usuário consegue visualizar. A medida que o usuário se move, o centro do campo de visão é alterado e o usuário passa a ver novos conteúdos. Independente da movimentação que o usuário faça, o plano {\tt B} pode sempre ser mapeado como se estivesse na origem, porque ele é apenas uma fatia do mundo virtual. O que a ferramenta faz para desenhar esse conteúdo na tela é extrair essa faria e, então, mapeá-la para um mapa de altura ({\it heightmap}). Depois que o mapa de altura é definido, as coordenadas dos eixos {\tt X} e {\tt Z} do mundo virtual que foram utilizadas durante a extração não são mais relevantes para o processo de desenho. Dessa forma, depois de extraído, o mapa de altura possui sempre as mesmas coordenadas nos eixos {\tt X} e {\tt Z}, que são as coordenadas de desenho da tela. A única informação do mundo virtual que é mantida é a altura de cada um dos pontos da malha do mapa de altura, conforme ilustra a figura ~\ref{fig:render_campo_visao} (b).
-
 Depois que a fatia visível é recortada, ela é desenhada na tela. Para texturizar o conteúdo renderizado, utiliza-se um conjunto de imagens gerenciadas através de GLSL ~\cite{glsl}. Baseado na altura do pixel sendo desenhado, calcula-se o peso que cada uma das texturas possui naquele local e, em seguida, cria-se uma interpolação delas. Cada uma das texturas do conjunto possuem um intervalo de altura na qual podem atuar: areia para alturas baixas, pedra para alturas médias, cascalho para alturas intermediárias e grama para as alturas maiores que as já estipuladas. Um exemplo de funcionamento desse método é a texturização da areia da praia; nesse caso, todos os pixels da praia possuem uma altura que faz com que a textura de areia tenha o peso máximo, ao passo que as demais alturas tenham um peso zero. A figura ~\ref{fig:set_texturas} demonstra o conjunto de texturas existentes.
 
 \begin{figure}
@@ -414,46 +244,13 @@ Considerando que a ferramenta é capaz de criar um mundo pseudo-infinito, a geraç
 
 Para a ilustração do problema de geração de conteúdo contínuo, supõe-se o seguinte cenário: a geração de relevo utiliza a posição do vértice no mundo virtual como semente para uma função pseudo-aleatória de cálculo de relevo; supoe-se também que a geração de montanhas, por exemplo, é definida por pontos chave que indicam a espinha dorsal da cadeia montanhosa. Se o algoritmo se basear apenas nesses pontos chave para calcular as montanhas, o usuário só irá enxergar a montanha quando um desses pontos chave entrar dentro do campo de visão. Isso irá causar falhas abruptas de continuidade, porque se o usuário costear a espinha dorsal da montanha, sem que os pontos chave entrem no campo de visão, ele não verá a cadeia de montanhas, sendo que ele deveria ver um relevo ascendente até o cume dessas montanhas.
 
-%A figura ~\ref{fig:montanha_fora_campo} ilustra esse problema.
-
-%\begin{figure}
-%\centering
-%\resizebox{14cm}{!}{\includegraphics{images/montanha_fora_campo.png}}
-%\caption{Geração de conteúdo com base apenas nas informações do campo de visão}
-%\label{fig:montanha_fora_campo}
-%\end{figure}
-
-
-%\subsubsection{Solução para geração de relevo sob-demanda}
-
-A solução encontrada para a geração de relevo foi utilizar uma função paramétrica que informa a característica de cada um dos vértices do mundo virtual. Nessa abordagem, cada ponto do mundo é utilizado como parâmetro para a função de relevo que, por sua vez, calcula a altura que esse ponto deve ter. Como resultado, tem-se uma função capaz de descrever todo o relevo do mundo virtual, independente do tamanho que ele possua; a quantidade de recursos computacionais que serão utilizados para gerar o conteúdo do campo de visão é diretamente proporcional ao tamanho do campo de visão, não ao tamanho do mundo, visto que a função de relevo utiliza as informações de cada ponto para calcular a sua característica. %A figura ~\ref{fig:espectro_func_relevo} ilustra o funcionamento da função de relevo aplicada ao mundo virtual gerado.
-
-%\begin{figure}
-%\centering
-%\resizebox{6cm}{!}{\includegraphics{images/espectro_func_relevo.png}}
-%\caption{Função de geração de relevo parametrizável e o resultado gerado}
-%\label{fig:espectro_func_relevo}
-%\end{figure}
-
-%Para aumentar a heterogeneidade do relevo gerado, a ferramenta utiliza duas funções de relevo, uma para o eixo {\tt X} e outra para o eixo {\tt Z}. Além de garantir que o relevo gerado não seja perfeitamente simétrico nos dois eixos, essa abordagem permite um maior controle sobre a geração de conteúdo. A altura de cada ponto do mapa é definido pela soma dos resultados de cada uma dessas funções. Durante a escolha dos métodos para geração de relevo, inicialmente utilizou-se uma combinação de funções seno e cosseno, porém o resultado obtido foi muito simétrico e artificial em comparação com o relevo encontrado na natureza. Para melhorar a qualidade do relevo gerado, utilizou-se então uma mescla dos conceitos apresentados nas seção ~\ref{sec:relevo} e ~\ref{sec:mundos}.
-
-%Para a criação da função de relevo, buscou-se um método de ruído capaz de gerar um relevo que fosse ao mesmo tempo controlável e semelhante àquele existe no mundo real. Conforme apontado por ~\cite{LindaOndrej2007}, esse objetivo pode ser atingido através da utilização da função de ruído de Perlin isoladamente ou através da combinação dela com outras técnicas; como pode ser visto nos resultados obtidos pela autora, o relevo gerado possui uma boa qualidade gráfica e custo computacional aceitável. Optou-se, então, por utilizar funções de ruído de Perlin para a geração de ruído.
+A solução encontrada para a geração de relevo foi utilizar uma função paramétrica que informa a característica de cada um dos vértices do mundo virtual. Nessa abordagem, cada ponto do mundo é utilizado como parâmetro para a função de relevo que, por sua vez, calcula a altura que esse ponto deve ter. Como resultado, tem-se uma função capaz de descrever todo o relevo do mundo virtual, independente do tamanho que ele possua; a quantidade de recursos computacionais que serão utilizados para gerar o conteúdo do campo de visão é diretamente proporcional ao tamanho do campo de visão, não ao tamanho do mundo, visto que a função de relevo utiliza as informações de cada ponto para calcular a sua característica. 
 
 Para a criação da função de relevo, utilizou-se o método de geração de ruído de Perlin, que também foi utilizado por ~\cite{LindaOndrej2007}. Para garantir um controle sobre o nível de pertubação do relevo utilizou-se apenas as propriedades da função de ruído de Perlin; para a obtenção de relevos mais "enrugados", utilizou-se mais oitavas na função de ruído.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Continentes}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\subsubsection{Oceano como um plano azul}
-
-%A primeira abordagem utilizada para a geração de água foi uma semelhantes à proposta por ~\cite{LindaOndrej2007}, que consiste na adição de um plano azul cortando todos os elementos do mundo virtual na altura do nível do mar. Embora essa abordagem seja muito simples, ela reduz consideravelmente a complexidade dos algorítimos de geração de relevo, uma vez que eles não precisam classificar os vértices como sendo "terra" ou "mar". Como consequência disso, não são necessários campos extras na estrutura de dados do vértice para informar que ele é um vértice do oceano, por exemplo. Além disso, não existem problemas na colorização de partes de terra que possuem relevo abrupto e tem contato com o mar, como uma falésia; no caso da marcação de vértices como "terra" ou "mar", a falésia teria uma interpolação entre a cor do mar e a sua própria cor, o que poderia resultar em uma montanha azul até a sua metade, por exemplo. 
-
-%A utilização de um plano azul para a criação do mar limita a geração de continentes à forma que o relevo possui, ou seja, se houver montanhas largas e com um relevo não pontudo, existirão continentes grandes, caso contrário existirão apenas pequenas ilhas, que podem ser apenas o cume de uma montanha. Em testes realizados, o relevo gerado foi equilibrado o suficiente para produzir continentes grandes e, dentro deles, variações de alturas consideráveis como montanhas e planícies. Todo o relevo que ficou posicionado acima do nível do mar ficou visível ao usuário, porém aquele que ficou abaixo desse nível foi excluído da visualização. A menos que seja interessante que o oceano apresente seu próprio relevo submarino, todas as montanhas e planícies que ficaram debaixo d`água foram perdidas, o que reduz a riqueza de detalhes da cena. Em virtude desse problema, optou-se por utilizar uma abordagem mais controlada para a geração de faixas de terra.
-
-
-%\subsubsection{Pré-processamento de faixas de terra}
-%\label{sec:faixasterra}
 
 A geração de continentes e oceanos foi proposta para quebrar a monotonia de uma paisagem composta apenas por terra no mundo virtual, bem como para aumentar o nível de semelhança com as paisagens encontradas na natureza. A solução encontrada para garantir que os continentes sejam mais customizáveis foi pré-processar as faixas de terra existentes no mundo e, então, armazenar essa informação para os demais cálculos da ferramenta. Com essa abordagem, a geração de conteúdo sob-demanda foi parcialmente quebrada, uma vez que os continentes serão gerados por completo antes de todos os demais conteúdos, porém isso garante um melhor controle sobre o que é oceano e o que é terra.
 
@@ -466,8 +263,6 @@ A geração dos continentes é baseana na abordagem de ~\cite{torben}, descrita em 
 \label{fig:torben}
 \end{figure}
 %~\cite{torben}
-
-%A geração do relevo em Charack é feita através da sobreposição dos resultados da função de ruído de Perlin, como está explicado na seção ~\ref{sub:relevo}. Por essa razão, as informações de relevo que são criadas através do gerador de planetas citado são dispensáveis. Em virtude disso, o gerador de planetas foi alterado para gerar um mapa apenas com informações sobre o que é terra e o que é água. A figura ~\ref{fig:torben}, ilustração {\it (c)}, mostra uma mapa gerado contendo apenas informações sobre o que é terra (em preto) e o que é água (em branco). 
 
 
 \subsubsection{Problemas na geração de continentes}
@@ -538,13 +333,6 @@ O algoritmo de criação de praias atua pouco antes do conteúdo ser renderizado na
 
 A figura ~\ref{fig:exemplo_praia_simples} ilustra o resultado obtido com a geração de prais.
 
-%Depois que essa abordagem foi colocada em prática, porém, a ferramenta apresentou uma queda brusca de desempenho. A razão dessa degradação são as iterações aplicadas para que água seja encontrada na vizinhança dos pixels. Para cada pixel desenhado na tela, a ferramenta deve fazer quatro iterações, sendo que para alguns pixels todas essas iterações serão executadas até o fim. Além disso, a solução apresentava outro problema ligado à geração de conteúdo sob-demanda, que fazia com que as praias sumissem e aparecessem conforme o usuário se movia. A explicação para o problema é que o algoritmo de geração de praia trabalhava apenas com os pixels que estavam dentro da fatia que a ferramenta recortou do mundo virtual; isso quer dizer que se o usuário se move e a água sai do campo de visão, todos os pixels que estão na fatia não tem mais água como vizinha, o que faz com que a praia seja removida.
-
-%A solução encontrada para esses dois problemas foi utilizar uma nova abordagem para consulta dos pixels vizinhos. Em vez de iterar sobre cada um dos pixels em cada caminho em busca de água, a ferramenta faz um salto de distância {\tt N} a partir do pixel atual em cada um dos caminhos. Em termos práticos, é como se apenas uma iteração fosse realizada para cada uma das direções. Além disso, as informações do pixel consultado não são obtidas da fatia recortada, mas sim do mapeamento direto dele com a MM (ou com o seu respectivo mapeamento, no caso do pixel a ser analisado ser uma costa, caso que exige um mapeamento diferente).
-
-%Utilizando a nova abordagem para geração da praia, o desempenho da aplicação teve um decréscimo em virtude do processamento extra que foi inserido, porém essa perda foi aceitável. Como o resultado obtido com a adição de praias superou a leve perda de desempenho, optou-se por manter essa funcionalidade.
-
-
 \subsubsection{Arquipélagos e praias diferenciadas}
 
 Utilizando os algoritmos de quebra de linearidade e criação de praias ao longo da costa, a ferramenta passou a gerar paisagens mais realistas. O resultado final em relação à costa e à praia, porém, apresentou um padrão muito definido, o que é incomum de acontecer no mundo real, no qual as linhas e paisagens naturais tendem a seguir um princípio aleatório ou menos padronizado. Se o usuário viajasse pelo mundo virtual apenas pela costa, ele veria prais com a mesma configuração (mesmo tamanho) e nenhuma ilha ou arquipélago ao longo do oceano. Para melhorar esse aspecto, criaram-se dois novos algoritmos que atuam na costa: um diferenciador de prais e um gerador de arquipélagos.
@@ -574,45 +362,12 @@ O \textbf{gerador de arquipélagos} atua criando novas faixas de terra em termina
 \label{sec:results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Através da utilização de técnicas para geração de conteúdo e relevo, criou-se uma ferramenta capaz de gerar mundos virtuais complexos em tempo real para utilização em jogos 3D. Esse capítulo apresenta uma análise dos resultados obtidos, reforçando-se os pontos positivos e negativos da ferramenta desenvolvida; além disso as principais funcionalidades implementadas são explanas, com imagens dos resultados e análises de desempenho.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Aspectos gerais da ferramenta}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%A ferramenta desenvolvida possui como característica principal a capacidade de gerar um mundo virtual pseudo-infinito que pode ser utilizado para a criação de cenários em jogos 3D. Embora a ferramenta tenha suporte para gerar um mundo infinito, sem qualquer limitação de tamanho, ela está condicionada a gerar um mundo contido dentro do tamanho máximo suportado por um inteiro sem sinal.
-
-%A aplicação foi projetada para ser utilizada como uma API externa, integrável no código-fonte de um jogo ou {\it engine}, para adicionar funcionalidades relacionadas à geração de cenários. Toda a ferramenta foi encapsulada entro de uma única classe que, por sua vez, é composta de diversos outros componentes menores, acessáveis e customizáveis. Para garantir que a ferramenta não fosse intrusiva ao ponto de modificar o fluxo de dados ou de desenho da aplicação na qual ela está integrada, todas as funcionalidades oferecidas podem ser utilizadas separadamente. Em um exemplo simples, se a ferramenta está sendo utilizada para o desenvolvimento de um jogo de estratégia no qual um pequeno terreno é necessário, o programador não precisa utilizar as funções de desenho da ferramenta para renderizar o terreno gerado; é possível gerar um mundo com as proporções necessárias e, então, acessar somente o mapa de altura criado. Isso fará com que o código do jogo aproveite-se apenas da funcionalidade de geração de um terreno com variações de relevo, porém não irá alterar a forma como o jogo já havia sendo desenhado na tela, por exemplo. Além disso, é possível que o programador acesse outros dados gerados, como a matriz que define o que é continente e o que é oceano, se o interesse estiver apenas em gerar continentes e mares para o jogo.
-
-%Visando um escopo de utilização genérico, concentraram-se os esforços de desenvolvimento no método de geração de relevo e nas técnicas de gerenciamento de conteúdo (acesso a um conteúdo infinito criado sob demanda). A ferramenta não apresenta mecanismos de controle e acesso de dados que não estejam intimamente ligados a terreno. Um exemplo de mecanismo extra é a capacidade de renderização de um céu ao redor do terreno gerado; entende-se que essa tarefa é de responsabilidade da aplicação que está utilizando a ferramenta, uma vez que o propósito da mesma está focado no conteúdo do mundo virtual em si, mais propriamente em seu relevo. Outro exemplo de mecanismo extra é a iluminação da cena, cuja única tarefa que a ferramenta realiza nesse aspecto é calcular a normal de cada um dos triângulos da malha do terreno, o que permite que o programador ilumine-a e obtenha um resultado aceitável. Em relação à texturização do terreno, a ferramenta apresenta meios que permitem ao programador customizar as cores da malha, como aplicar uma função de cor em cada um dos vértices antes que esses sejam desenhados na tela. Além disso, é possível também utilizar uma das funcionalidades já embutidas na própria ferramenta para a aplicação de cores no terreno, como a texturização através da utilização de funções de ruído de Perlin.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Avaliação de técnicas e resultados obtidos}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 Essa seção tem por objetivo avaliar cada uma das técnicas utilizadas na geração de conteúdo da ferramenta, mostrando os resultados que foram obtidos com cada abordagem. Leva-se em consideração a flexibilidade proporcionada pela ferramenta durante a utilização da funcionalidade e o resultado gráfico alcançado.
 
 É importante frisar que o objetivo da ferramenta, no escopo do presente trabalho, não é a geração de conteúdos reais ou foto-realísticos, mas sim de elementos que possam ser utilizados para a criação de um cenário num jogo 3D. Entende-se por graficamente aceitável todo o resultado obtido que se enquadre dentro de um jogo e não destoe daquilo esperado pelo jogador, como uma montanha composta por ondulações senoidais suaves ao invés de um conjunto de cristas piramidais.
 
-%Todos os testes de desempenho foram realizados num computador Intel(R) Core(TM)2 Duo 1.66Gz, com 2Gb de RAM e uma placa de vídeo NVidia 8600 GT, utilizando-se o Microsoft Visual C++ 2008 Express Edition como IDE de desenvolvimento e o sistema operacional Windows Vista como ambiente de teste.
-
 
 \subsection{Avaliação dos continentes}
-
-%Essa seção tem por objetivo analisar os continentes gerados pela ferramenta, além de analisar a técnica utilizada para que essa funcionalidade fosse implementada. Os continentes gerados não são compostos por partes de terra pré-computados; eles são calculados como resultado de um conjunto de ações aleatórias guiadas por uma semente inicial. Variando-se a semente de entrada, é possível gerar continentes com as mais variadas formas, que vão desde um planeta fortemente tomado por faixas de terra até um cenário com ilhas pequenas e esparsas. Utilizando-se um algorítimo de divisão recursiva de um tetraedro, o módulo de geração de continentes cria um mapa que é uma representação plana de um planeta esférico. Os continentes apresentam faixas de terra horizontais que casam nas duas extremidades do plano (direita e esquerda), o que produz um fluxo contínuo de terra.
-
-%\begin{figure}
-%\centering
-%\resizebox{6cm}{!}{\includegraphics{images/torben_simples.png}}
-%\caption{Representação 2D dos continentes gerados pela ferramenta}
-%\label{fig:analise_continente}
-%\end{figure}
-
-%Essa característica permite que o mundo virtual gerado simule o que existe no mundo real, no qual uma pessoa que caminhe na linha do Equador irá dar voltas ao redor do planeta vendo o seu conteúdo (relevos, oceanos, etc) se repetir ciclicamente ao londo do tempo. Essa funcionalidade de fazer o mundo virtual simular o comportamento esférico do planeta Terra não foi implementada na ferramenta; o usuário pode andar sobre os continentes gerados como se estivesse caminhando sobre um plano e, ao chegar em uma de suas bordas, ele é impedido de prosseguir.
-
-%O algorítimo original desenvolvido por ~\cite{torben} para a geração de continentes foi levemente alterado para que pudesse ser integrado à ferramenta. A modificação principal realizada foi a remoção das informações de altura existentes ao longo dos continentes e oceanos, o que poderia ter sido utilizada como base para a geração do relevo. Embora essa fosse uma funcionalidade interessante, ela foi abandonada em favor da geração de relevo completamente parametrizável e independente de elementos pré-computados. O módulo de geração de continentes, porém, baseia-se inteiramente nas alturas calculadas para poder gerar os continentes, o que exigiu que um passo a mais de pós-processamento fosse incluído no algorítimo para transformar o mapa com informações de altura em um mapa somente com valores indicando o que é terra e o que é mar. Como consequência dessa abordagem, a ferramenta gasta um tempo considerável nas divisões recursivas para gerar os continentes e o seu revelo, porém esse último é completamente descartado ao final do processo. Esse fator aumenta o tempo de geração dos continentes e aplica uma perda considerável no conceito de tempo-real proposto pela ferramenta, porém, mesmo assim, os benefícios associados aos continentes gerados (como continuidade de conteúdo) compensam.
 
 O tempo para a geração dos continentes é diretamente proporcional ao tamanho da macro-matriz especificada. Em testes realizados, a redução da macro-matriz para valores inferiores a {\tt 800x800} rendeu aumentos de desempenho consideráveis. Em contra partida, quanto menor o tamanho da macro-matriz, mais quadrados e lineares serão as linhas da costa de cada um dos continentes, o que pode produzir um resultado gráficos não muito aceitável. Para contornar esse problema, é possível ajustar o algorítimo de geração da costa para que ele faça alterações mais agressivas nas bordas dos continentes, o que irá quebrar a linearidade gerada por uma macro-matriz de baixa resolução. O ajuste desses dois elementos abre um leque de possibilidades para o programador, que pode encontrar um ponto de equilíbrio entre tempo de geração dos continentes e linearidade da costa. A figura ~\ref{fig:charack_final_continentes} mostra os resultados obtidos em relação a continentes e oceanos gerados pela ferramenta.
 
@@ -655,18 +410,6 @@ Se a função de geração de relevo utilizar frequências muito baixas e o seu espec
 \label{fig:charack_final_relevo_comparacao}
 \end{figure}
 
-%Durante a implementação da malha do terreno, observou-se que o desempenho da aplicação caia consideravelmente à medida que o tamanho da área visível pelo usuário era aumentada. Isso pode ser explicado pelo consumo cada vez maior de processamento necessário para que o grande número de polígonos na tela seja renderizado. Para contornar esse problema, utilizou-se o conceito de LOD ({\it Level of Detail}). A técnica de LOD consiste em aumentar a resolução dos elementos que estão mais próximos da visão do usuário e, em contra-partida, reduzir a resolução dos elementos que estão longe (justamente por estarem distantes do observador, esses elementos não são expressivos). Dentre as soluções pesquisadas, encontra-se LOD em bloco ~\cite{ulrich}, para malhas estáticas, LOD contínuo em tempo real de apenas uma passada ~\cite{pozzer}. O funcionamento desse último pode ser visto na figura ~\ref{fig:lod_pozzer}. Nas regiões com maior quantidade de informações (deformações e quinas do desfiladeiro), há uma quantidade muito maior de polígonos do que as regiões com menos informações (as áreas planas ao redor do desfiladeiro).
-
-%\begin{figure}
-%\centering
-%\resizebox{5cm}{!}{\includegraphics{images/lod_pozzer.png}}
-%\caption{Terreno renderizado com baixa resolução (a) e alta resolução (b), ambos com aplicação de LOD}
-%\label{fig:lod_pozzer}
-%\end{figure}
-%~\cite{pozzer}
-
-%A utilização de LOD foi inicialmente implantada na ferramenta, porém a complexidade que essa abordagem agrega às demais partes da aplicação tornaram proibitiva a sua manutenção. Embora um aumento de desempenho através da utilização de LOD seja benéfico, optou-se por bifurcar o código da aplicação e seguir um ramo sem essa otimização. O ramo de código que possui o LOD funcional ainda está disponível e é uma das sugestões de trabalhos futuros.
-
 \subsection{Avaliação da costa}
 
 A geração da costa é composta por dois pilares principais, um de aspecto mais global e outro mais local. No aspecto global, a ferramenta utiliza apenas dados encontrados na MM para criar as linhas que compõem a costa, conforme descrito na seção ~\ref{sec:visaomicromacro}. O resultado final para essa abordagem são costas completamente retilíneas, o que é irreal do ponto de vista do usuário. A figura ~\ref{fig:charack_final_costa_reta} ilustra duas linhas da costa completamente retilíneas.
@@ -677,10 +420,6 @@ A geração da costa é composta por dois pilares principais, um de aspecto mais gl
 \caption{Local de encontro de duas linhas da costa sem a aplicação de qualquer algorítimo de geração de conteúdo extra}
 \label{fig:charack_final_costa_reta}
 \end{figure}
-
-%Na abordagem inicial da ferramenta, não planejou-se a adição de conteúdos extra às linhas da costa geradas pelo algorítimo de criação do mundo. A primeira ideia desenvolvida era baseada na utilização integral e exclusiva das informações da MM para a geração das linhas da costa, visto que o algorítimo de geração do mundo é capaz de criar costas suaves e convincentes. As proibições de tamanho da MM, porém, minaram essa abordagem e fizeram com que a geração da costa ficasse limitada a linhas muito retas devido à falta de resolução disponível na MM. Embora seja possível encaixar a utilização de costas tão retas em determinados contextos (como em jogos no qual oceanos não são relevantes), isso limita pelo menos pela metade as opções de utilização da ferramenta. Jogos que precisam apresentar uma interação do jogador com o oceano ficariam impossibilitados de utilizar os recursos criados ou teriam de trabalhar em cima dos resultados da ferramenta para contornar o problema da geração de costas muito retilíneas.
-
-%A solução encontrada para contornar esse problema foi a adição de conteúdo utilizando uma abordagem local. Diferentemente da criação global, que se baseia somente nas informações amplas da MM, a geração de conteúdo local se concentra em utilizar as informações da MM como sementes para algoritmos de geração de conteúdo. A aplicação desses algorítimos supre a ausência de informações que existente entre o mapeamento de coordenadas do mundo para a MM resultantes da diferença de resolução entre elas. Como consequência, a ferramenta é capaz de gerar novos conteúdos em níveis de resolução diferentes, permitindo inclusive que o programador defina a granularidade do conteúdo a ser gerado. Conforme explicado na seção ~\ref{sec:quebralinearidade}, a utilização de uma função baseada em ruído de Perlin para a geração da costa não limita as curvas que podem ser criadas ao londo da borda dos continentes, o que pode resultar nos mais diversos tipos de configurações para a costa. Aliando-se esse comportamento com à geração de praias de tamanho diferenciado, a ferramenta é capaz de adicionar um certo teor de aleatoriedade ao conteúdo criado, o que tende a imitar com mais realidade a natureza vista no dia-a-dia.
 
 Depois que o método para quebra de linearidade da costa foi implantada, a ferramenta passou a apresentar paisagens mais aceitáveis. As figuras ~\ref{fig:charack_final_costa_1}, ~\ref{fig:charack_final_costa_2} e ~\ref{fig:charack_final_costa_5} ilustram a criação de pequenas baías em certos locais da costa resultantes da aplicação do algoritmo. Isso acontece porque nesses locais o algoritmo de quebra de linearidade da costa criou braços de terra curvos partindo da linha reta do continente e, ao mesmo tempo, o algorítimo de criação de praias reduziu ao máximo a quantidade de areia encontrada no local. A ferramenta também é capaz de criar golfos, que são baías de grandes proporções, porém não é possível prever o local exato que isso irá acontecer, porque tal resultado depende da combinação de valores e coordenadas que variam sensivelmente ao longo do mundo virtual.
 
