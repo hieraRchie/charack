@@ -73,7 +73,7 @@ The solution proposed in this work is a tool able to generate complex virtual wo
 
 The tool was designed to allow developers to use its features in order to generate 3D terrains for games, particularly MMOs, with minimal human intervention in the generation process. The size of the resulting world is customizable, but it can reach billions of pixels. The use of the term "pseudo" is necessary due physical limitations in computers hardware: an unsigned integer, for instance, can store a certain amount of data; if there were no physical limitations, the tool would be able to generate, in fact, an infinite world. 
 
-The content generation is made on demand. As the user moves along the world, the elements inside the user's view are processed and stored into the memory and the ones away from the user's view are removed. Even though the generation of all elements is based on random calculations, if the player visits an specific the point {\tt A}, then walks for miles generating a completely different set of landscapes, and returns to point {\tt A}, the same previously seen landscape will be shown again.
+The content generation is made on demand. As the user moves along the world, the elements inside the user's view are processed and stored into the memory and the ones away from the user's view are removed. Even though the generation of all elements is based on random calculations, if the player visits an specific point {\tt A}, then walks for miles generating a completely different set of landscapes, and returns to point {\tt A}, the same previously seen landscape will be shown again.
 
 Besides the heightmap generation, the tool is also able to create oceans and continents, all of them customizable. Unlike other related works which deal with the generation of continents as a consequence of the heightmap generation, this paper presents as its main contribution a new approach for content generation in virtual worlds. In this approach, the generation of continents, topography and coastlines are handled separately.
 
@@ -106,102 +106,97 @@ In order to decorate the virtual world, three procedural plant generation method
 
 The use of fractals and their combinations with other methods are also used to proceduraly generate planets ~\cite{LindaOndrej2007}. In this approach, the generated world is not infinite, but it is spherical and simulates the view of the planet Earth. Starting with a recursive subdivision of an octahedron, a spherical world is created and it is used as a first step to sevel algorithms of heighmap generation. The heightmap is obtained as a result of several techniques, each one featuringits peculiarities and results. Among the techniques used are: generation using random failures, midpoint displacement (including a multifractal variation) and Perlin noise (and its many variations).
 
-\subsection{Fractais afetados por erosão}
+\subsection{Erosion fractals}
 
-Outro trabalho analisado foi a geração de terrenos procedimentais em tempo real com a utilização de fractais afetados por erosão ~\cite{terrain_generation}. Conforme ressaltado, o aumento do poder de processamento de computadores domésticos possibilitou que jogos de computador façam uso de simulações de erosão em tempo quase real. Agregou-se à geração de relevo por fractais novas características decorrentes da aplicação de erosão, o que teve como resultado mapas mais reais e, ao mesmo tempo, customizáveis. Primeiramente, um mapa de altura foi criado a partir de um diagrama de Voronoi, sendo cada um dos vértices do diagrama chamados de {\it pontos de funcionalidade}; o valor de cada célula no mapa de altura é obtido através de uma combinação linear das distâncias entre os pontos de funcionalidade mais próximos. Depois que o mapa de altura é gerado, ele é combinado com um algorítimo de geração de ruído para produzir montanhas menos pontiagudas e, para remover as linhas bem definidas criadas pelo diagrama de Voronoi, um filtro de perturbação ainda é aplicado. Para a simulação de erosão no mapa de altura gerado, utiliza-se um método híbrido de duas técnicas de erosão: a termal ~\cite{MusgraveErosao} e a hidráulica. 
+Another approach for procedural terrain generation in real time uses fractals affected by erosion ~\cite{terrain_generation}. As pointed out, the increasing processing power of home computers has enabled games to make use erosion simulations almost in real time. As a consequence, an approach envolving fractals and erosion is possible to be reached, resulting in more realistic terrain. In order to achieve that, a heightmap was created from a Voronoi diagram, where each vertices of the diagram is called {\it functionality point}; the value of each cell in the heightmap is obtained through a linear combination of distances of the closest functionality points. Once the heightmap is generated, it is combined with a noise algorithm in order to produce mountains. The sharp lines introduced by the well-defined Voronoi diagram are removed with the application of a turbulence filter. For the erosion simulation an hybrid method is used, which is a combination of two techniques: the thermal ~\cite{MusgraveErosao} and the hydraulic erosion.
 
-\subsection{Divisões estocásticas de uma quadtree}
+\subsection{Stochastic subdivision of a quadtree}
 
-Outro trabalho analisado foi a geração de mundos virtuais procedimentalmente através de técnicas de subdivisão estocásticas ~\cite{dollins-thesis}. O objetivo foi criar um mundo virtual de grandes proporções, porém gerando o seu conteúdo sob-demanda de forma procedimental e com multi-resolução. Para a geração do relevo do terreno, utilizou-se sub-divisões de uma {\it quadtree} em um processo recursivo. A forma do terreno é definida pelo ponto médio de cada uma das células, que na figura são representados pelos círculos pequenos no centro de cada quadrado. Para cada nível de subdivisão, os novos pontos médios das células filho criadas são definidos em função das nove células pai que estão ao redor da célula sendo dividida. A altura dos demais pontos da malha, como os vértices que estão nos cantos das células, é definida pela interpolação dos pontos médios mais próximos. A cada camada de detalhamento, mais células são subdividias, e a célula que sofreu a subdivisão é substituída pelas novas células filho geradas.
+Another related work uses stochastic subdivision techniques in order to generate a virtual world ~\cite{dollins-thesis}. The main goal was to create a virtual world of large proportions, however the creation of its content is procedurally made and performed on-demand with a multi-resolution approach. For the heightmap generation a recursive sub-division process is applied to a quadtree. The height of each vertex is defined by the midpoint of each cell in the quadtree. For each level of subdivision, the midpoint of the each new child cell is defined by the parent cells around the cell being divided. The height of all other vertexes, such as the one at the corners, is defined as a result of an interpolation of the closest midpoints. In each level of detail, more cells are divided and replaced with the new generated child cells.
 
-\subsection{Gerador de mapas para planetas}
+\subsection{Map generator}
 \label{sec:geradortorben}
 
-Outro trabalho analisado foi um gerador de mapas para planetas, que consiste na geração de mundos redondos através da subdivisão recursiva de um tetraedro ~\cite{torben}. Embora o trabalho não seja apresentado como uma ferramenta gráfica na qual o usuário pode explorar um ambiente 3D, todas as informações geradas são parte de um mundo virtual completo, com continentes e oceanos altamente customizáveis. A ideia apresentada é criação de um mapa como resultado da projeção de pixels numa esfera, numa abordagem que se assemelha ao {\it ray tracing}. Assim como é feito nesse último, no qual os raios que partem da câmera e colidem com algo geram um pixel visível, cada pixel do mapa a ser gerado é projetado para uma esfera. O algoritmo que faz a projeção atribui uma altura ao pixel encontrado, o que gera um mapa com relevo.
+Another related work focusing on the generation of maps for planets, which is based on the generation of spheric worlds using a recursive subdivision of a tetrahedron ~\cite{torben}. Although the work is not presented as a graphical tool where the user can explore a 3D environment, all generated information is part of a complete virtual world featuring highly customizable continents and oceans. The presented idea is to create a map as a result of a projection of pixels onto a sphere, a method similar to ray tracing~\cite{raytracing}. In the same way it is performed in ray tracing, where rays leaving the camera collide with something and create a visible pixel, each pixel of the map being generated is projected onto sphere. The projection algorithm sets a height value to each pixel found, resulting in a complete heightmap.
+In order to render the map, initially the visible points on the sphere surface are found. After that, the height value for each one of those points is calculated as follows: 
 
-Para renderizar um mapa, inicialmente encontram-se os pontos dele que são visíveis na superfície da esfera. Em seguida, para calcular a altura de cada um desses pontos, aplica-se o seguinte algoritmo:
+\begin{itemize} 
+  \item Insert the sphere inside the tetrahedron.
+  \item Divide tetrahedron into two smaller tetrahedral. 
+  \item Choose which of the two tetrahedral contains the point being analyzed. 
+  \item Repeat the above steps until the tetrahedron is small enough.
+  \item Use the average height of the each tetrahedron vertex in order to calculate the height of the point being analyzed. 
+\end{itemize} 
 
-\begin{itemize}
- \item Inserir a esfera dentro do tetraedro.
- \item Cortar o tetraedro em dois tetraedros menores.
- \item Escolher em qual dos dois tetraedros está localizado o ponto sendo analisado.
- \item Repetir os passos anteriores até que o tetraedro seja pequeno o suficiente
- \item Usar a altura média dos vértices do tetraedro para calcular a altura do ponto sendo procurado.
-\end{itemize}
-
-Inicialmente a esfera é colocada dentro de um tetraedro irregular e informações sobre altura e uma semente para cálculos aleatórios é colocada em cada um dos vértices dele. Em seguida, ele é dividido em dois pelo plano formado entre o ponto médio da aresta mais longa e os dois pontos finais da aresta oposta ao ponto médio. Em suma, cada um dos dois tetraedros resultantes terão três vértices a partir do tetraedro original mais um novo vértice posicionado no ponto médio da maior aresta. A altura e a semente do novo vértice são calculados a partir da altitude e semente dos pontos finais da linha que é dividida (maior aresta). O processo é repetido recursivamente para cada um dos tetraedros até que ele fique pequeno o suficiente para conter apenas o ponto desejado.
+Initially the sphere is placed inside a irregular tetrahedron and information about height and a random seed are set for each of the vertexes. After the tetrahedron is divided in two pieces by a plane formed between the midpoint of the longest edge and the two end points of the edge in front of the midpoint of the longest edge. In short, each of the two resulting tetrahedral have three points from the original tetrahedron and a new vertex placed in the midpoint of the largest edge. The height and the seed of the new vertex is calculated from the height and seed of the end points of longest edge. The process is repeated recursively for each of the tetrahedral until it is small enough to contain only the desired point.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Organização da ferramenta}
-\label{sec:generating-pdf-file}
+\section{Tool organization}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-As seções seguintes explicam como a ferramenta, doravante denominada {\it Charack}, foi estruturada para permitir que os objetivos citados fossem atingidos. O texto está organizado de forma a apresentar uma abordagem {\it top-down}: parte-se da explicação sobre a geração de continentes (visão mais ampla) e termina-se com a explicação sobre a geração de relevo para cada um dos pixels a serem desenhados na tela (visão mais específica e pontual).
+The following sections explain in a top-down approach how the tool was structured to achieve the described goals.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Análise inicial}
+\subsection{Initial analysis}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Existem diversos trabalhos na área de geração de mundos virtuais, sejam eles finitos ou infinitos. O trabalho desenvolvido por ~\cite{infinicity} cria uma cidade infinita que é apresentada ao usuário sob demanda à medida que esse passeia sobre o terreno. Esse foi o trabalho semente de onde nasceu Charack, porém a idéia original foi alterada a fim de que mais conteúdos fossem criados (montanhas, planícies, continentes, etc.), não só ruas e prédios. A criação de conteúdo sob demanda, na qual o usuário só enxerga aquilo que está dentro do seu campo de visão, foi mantida da abordagem original.
+There are several related works concerning the generation of virtual worlds, whether finite or infinite. One of the realted works creates an infinite city ~\cite{infinicity} that is presented to the user on demand as it walks on the ground. This work was the ground zero for Charack development, however the original idea was changed in order to make the tool suitable to generate more types of terrains (mountains, plains, continents, etc.), not only streets and buildings. The approach of content generation made on demand was maintained. 
 
-O mundo procedimental gerado por ~\cite{LindaOndrej2007} aproxima-se muito do conceito buscado para a criação de conteúdo de Charack. No referido trabalho, um planeta esférico é criado a partir da divisão recursiva de uma forma geométrica e, sem seguida, funções de ruído são aplicadas à malha para a geração de conteúdo. Não existem abordagens separadas para a criação dos continentes e do relevo dentro deles, ou seja, os continentes são resultado da inundação do relevo criado pelas funções de ruído; como consequência, a costa dos continentes também não possui um tratamento diferenciado, ela surgirá baseada na altura do nível do mar e da quantidade de ondulações presentes no relevo. O mundo criado é esférico e o jogador pode aproximar ou distanciar a câmera do terreno, porém o conteúdo não é gerado sob demanda. Charack foi criado a partir de uma evolução dessa idéia, porém aplicando-se algumas limitações. O mundo criado por Charack trata de forma completamente diferente a geração de continentes, do relevo dentro deles e da costa. Cada um desses elementos possui sua forma de atuar, que permite ao programador customizar detalhes pontuais sem interferir nas demais áreas do mundo. Esse é o caso da criação de prais mais longas na costa sem modificação da estrutura básica do relevo ou do continente na que essa praia está inserida. Além disso, Charack gera o conteúdo sob demanda num mundo com proporções muito maiores, entretanto sem o uso da abordagem esférica; o mundo criado está contido dentro de um plano.
+The procedurally generated world approach ~\cite{LindaOndrej2007} is very close to the concept of content generation aimed for Charack. In that work, a spherical planet is created as a result of a recursive division of a geometric shape, then noise functions are applied to the mesh to generate the heightmap. There is no distinction between the content generation approache for continents and the content generation for the lands within the continents. As a result the continents are created by flooding the heightmap with a water plane, which will produce the coast lines based on height of the sea level and the amount of ripples in the topography. The content itself is not generated on demand. Charack was created from an evolution of this idea, but subject to some limitations. The world created by Charack handles differently the generation of continents, coast lines and the heighmap within them. Each of these generation processes has its own peculiarities, which can be tweaked in order to customize specific details in the world with no interference in the other processes. This is the case of the creation of long beach on the coast without changing the basic structure or the topography of the continent that the beach is inserted. Charack also generates the content on demand, however it doesn't use a spherical approach, the resulting world contained within a plan.
 
-Em outro trabalho analisado, o terreno criado sofre ação de erosão ~\cite{terrain_generation}. Charack não utiliza esse conceito, porém faz uso de uma idéia semelhante para fazer o casamento dos conteúdos gerados nos diferentes módulos da aplicação. Um exemplo simples é o encontro do relevo do continente com o oceano, no qual as alturas de cada pixel são atenuadas para que um relevo de praia seja criado.
+The generation of a virtual world as a result of recursive subdivisions of a quadtree ~\cite{dollins-thesis} is very similar to the Charack proposal. In that work, a world with huge proportions is created and its content is generated on demand as the user moves. The heighmap is created in a parameterized and multi-resolution way, so the closer the user of place, the greater is the amount of detail there. There is also no distinction in the generation process of continents/coastlines/land content. The heightmap generation proposed is used by Charack, however continents and the coastlines generation process are completely different.
 
-Por fim o trabalho criado por ~\cite{dollins-thesis} aproxima-se muito do objetivo proposto. Nesse trabalho, um mundo virtual de proporções gigantescas é criado e o seu conteúdo é gerado sob demanada à medida que o usuário se move. O relevo é criado de forma parametrizada e com multi-resolução, ou seja, quanto mais próximo o usuário estiver de um determinado local no mundo virtual, maior será a quantidade de detalhes nesse local. Também não são apresentadas abordagens separadas para a criação de continentes/costa/relevo. O funcionamento da geração de relevo de Charack baseia-se nas idéias desse trabalho (geração sob demanda e parametrizável), porém a criação de continentes e costa é completamente diferente.
-
-Analisando-se cada um dos trabalhos citados, é possível constatar que mundos virtuais de diferentes proporções são gerados, porém em nenhum deles há uma preocupação com a separação dos métodos de geração dos conteúdos (continentes, relevo, costa). Embora existam variações na forma como o relevo é criado, a geração de continentes fica a cargo da ação de um plano de água interceptando o plano de terra. Essa abordagem permite que esforços sejam concentrados na geração de conteúdo do miolo do mundo, que são as faixas de terra, porém ela tem um aspecto simples em relação aos demais elementos. No que se refere à heterogeneidade de conteúdo, como diferentes configurações de continentes e costa, o resultado final é pobre. A principal idéia e contribuição de Charack é a geração dos diferentes tipos de conteúdo de forma separada, com abordagens agressivas e pontuais em cada um dos tópicos, entretanto criando um resultado único que contempla todos os tópicos. Como a grande maioria dos trabalhos analisados foca na criação de relevo, entende-se que a contribuição de Charack será maior se os esforços forem focados no que diz respeito à geração de continentes e costa.
+Analyzing the related work, virtual worlds are generated several approaches, but in none of them handles differently the content generation for continents, coastlines and topography. Although there are variations in how the heightmap is created, the generation of continents is a result of a water flooding plane. This approach allows the developers to focus on the content generation for the land, however it has a simple approach concerning continents and coastlines. The main idea and contribution of Charack is the content generation handled differently for each world element (continent, coastline, etc.), with an aggressive and specific approaches for each one. Most of the related work focuses on heightmap generation, so we believe the Charack contribution will be better if the efforts are focused on the generation of continents and coastlines.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Estrutura básica}
+\subsection{Basic structure}
 \label{sec:estrutura-basica}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Para a criação do mundo virtual nos moldes pretendidos, adotou-se uma estratégia hieráquica para a geração de conteúdos. O fluxo de dados de Charack tem início na visão mais ampla do mundo, que são os continentes, evoluindo ao longo do processo até terminar na visão mais específica e pontual, que é a geração de conteúdo para cada um dos pixels que serão desenhados na tela. A figura ~\ref{fig:planejamento_estrutura_basica} ilustra a estrutura básica.
+In order to create a virtual world that reaches the presented proposal, a top-down approach is used for the content generation. The Charack data flow begins in a macro view of the world, which are the continents, evolving to a micro view of the planet, which are the generation of content for each vertex that will be drawn in the screen. Figure ~\ref{fig:planejamento_estrutura_basica} shows Charack basic structure.
 
 \begin{figure}
 \centering
 \resizebox{5cm}{!}{\includegraphics{images/planejamento_estrutura_basica.png}}
-\caption{Estrutura básica para geração de conteúdo}
+\caption{Basic structure for content generation}
 \label{fig:planejamento_estrutura_basica}
 \end{figure}
 
-\subsubsection{Gerador de mapas}
+\subsubsection{Maps generator}
 
-No topo da cadeia encontra-se o gerador de mapas, que é responsável por criar os continentes que existirão ao longo do mundo virtual. Esse módulo é um encapsulamento da solução criada por ~\cite{torben}, que foi descrita na seção ~\ref{sec:geradortorben}. Quando a ferramenta é iniciada, ela utiliza uma semente definida pelo usuário para gerar todos os continentes que existirão no mundo virtual. Depois que os continentes são gerados, as informações sobre os tipos de terreno (terra, agua e costa) são armazenadas em uma matriz, chamada {\bf macro-matriz} (MM), que é utilizada para consulta pelos demais algorítimos da ferramenta. 
+At the top of the chain is the maps generator, which creates the continents that exist throughout the virtual world. This module is an encapsulation of the solution created by ~\cite{torben}, which was described in the section ~\ref{sec:geradortorben}. When the tool is initiated, it uses a user defined seed to generate all the continents. Once the continents are generated, all the information related to terrain types (land, water and coast) are stored in a matrix, called {\bf macro-matrix (MM)}, which is used by all the other algorithms.
 
-\subsubsection{Gerenciador de fatias}
+\subsubsection{Slice manager}
 
-Abaixo da MM e do gerador de mapas existe o gerenciador de fatias (GF). Ele é responsável por recortar uma porção do mundo virtual (campo de visão do usuário) e, em seguida, fornecer essa informação ao desenhista através de um {\it heightmap}. Para obter as informações necessárias para a criação do {\it heightmap}, o gerenciador de fatias faz uso do gerador de costa (GC), que por sua vez faz uso da MM e do gerador de relevos (GR).
+Below the MM and the maps generator is the slice manager (SM). It extracts a portion of the virtual world (the user's view) and provide the render engine with information about the heightmap. In order to obtain the required information to create the heightmap, the slice manager uses the coastline generator (CG), which uses height generator (HG) and the data stored in the MM.
 
-No contexto do GF, não existe informação sobre terra, água ou afins, ele apenas tem conhecimento de um conjunto de pixels do mundo virtual e qual a altura de cada um deles. Utilizando a posição do usuário como guia, o GF realiza o corte do mundo virtual e, para cada um dos pixels coletados, ele faz consultas ao GC para descobrir qual a altura desse pixel.
+In the context of the SM, there is no information about land or water, it only knows a set of pixels of the virtual world and its height values. Using the position of the user as a guide, the SM slices virtual world and, for each collected pixels, it queries the CG in order to find out its height value.
 
-\subsubsection{Gerador de relevo}
+\subsubsection{Height generator}
 
-O gerador de relevo é responsável pela definição da altura que cada pixel do mundo virtual possui. Para garantir que o programador possa criar um relevo customizável baseado em suas necessidades, o gerenciador de relevo permite que novas funções de geração de conteúdo sejam acopladas de forma simples. Com essa abordagem, diferentes tipos de relevo podem ser adicionados à aplicação de forma fácil, basta que as funções adicionadas sigam o protótipo esperado pelo módulo.
+The height generator (HG) defines the height value for each pixel in the virtual world. To ensure that the developers can create a customizable heightmap based on their needs, new functions to generate content can be added to the tool in a simple way.
 
-\subsubsection{Gerador de costa}
+\subsubsection{Coastline generator}
 
-O gerenciador de costa (GC) irá mapear cada pixel do gerenciador de fatias para a MM e descobrir qual é o tipo de terreno associado. Se o pixel em questão é mapeado para um local na MM que é descrito como água, então o GC atribuirá uma altura igual ao nível do mar para o pixel e, em seguida, irá retorná-lo para o GF. Se o pixel em questão é mapeado para um local descrito como terra (simples), então o GC utilizará as informações do GR para descobrir qual a altura desse pixel, o que definirá qual relevo ele representa. Por fim, se o mapeamento terminar em um terreno descrito como costa, então o GC utilizará sua própria estrutura (em conjunto com a MM) para definir o relevo do pixel.
+The coastline generator (CG) will map each pixel of the slice manager to the MM in order to find out the terrain type of that pixel. If the pixel being analyzed is mapped to a location in the MM that is described as water, then the CG assigns a height value equals to sea level for the pixel, after that returing that pixels to the SM. If the pixel is mapped to a place described as (simple) land, then the CG will use the information provided by the HG in order to find out the height value for that pixel. Finally, if the pixels is mapped to a place described as coast, then the CG uses its own structure (together with the MM) to set height value for the that pixel.
 
-O mundo virtual gerado possui, tecnicamente, altura e largura definidas pelo tamanho máximo que um inteiro pode suportar, o que torna fisicamente inviável a geração de uma MM com tais proporções. Uma vez que a MM é menor que o mundo virtual, uma entrada {\tt (i,j)} dela corresponde a diversos pixels dentro do mundo virtual. A figura \ref{fig:mapeamento_macro} ilustra o mapeamento da MM para o mundo virtual.
+The resulting virtual world technically has height and width defined by the maximum size of a signed integer. It is physically impossible to generate a MM with such proportions. Since the MM is smaller than the virtual world, an MM's entry {\tt (i, j)} represents sevel pixels in the virtual world. Figure \ref{fig:mapeamento_macro} illustrates the MM mapping process.
 
 \begin{figure}
 \centering
 \resizebox{4cm}{!}{\includegraphics{images/mapeamento_macro.png}}
-\caption{Mapeamento da MM para o mundo virtual: cada pixel da MM é mapeado para diversos pixels no mundo virtual.}
+\caption{Mapping the MM to the virtual world: each MM pixel represents several pixels in the virtual world.}
 \label{fig:mapeamento_macro}
 \end{figure}
 
-Observando-se a figura é possível constatar que quanto menor for a MM, mais pixels do mundo virtual serão mapeados para uma mesma entrada. Se o mundo virtual tiver dimensões {\tt 1000x1000} e a MM {10x10}, por exemplo, isso quer dizer que para cada pixel da MM existem 100 pixels no mundo virtual; se um desses pixels da MM for do tipo costa, então existirá uma área de {100x100} pixels no mundo virtual que precisa ser uma costa. É exatamente nesse ponto que o GC atua no que diz respeito à geração de conteúdo para a costa; quando qualquer um dos pixels dessa area em especial chegar aos cuidados do GC, ele irá trabalhá-los e retornará ao desenhista informações diferentes das originais, o que permitirá  que uma costa seja desenhada na tela, não uma área inteiramente preenchida por terra ou por água.
-
-\subsubsection{Desenhista}
-
-O desenhista é responsável por renderizar na tela o {\it heightmap} criado nas demais fases do processo. O resultado final é desenhada como uma malha de triângulos que é texturizada conforme a altura de cada vértice.
+As it can be seen in the figure the smaller is the MM, the more pixels in the virtual world will be represented by the same entry in the MM. If the virtual world had {\tt 1000x1000} as its size and the MM had {\tt 10x10} as its size, for instance, it means that for each pixel of the MM represents 100 pixels in the virtual world. If one of these pixels is described in the MM as coast, then there is an area of {\tt 100x100} pixels in the virtual world that must be a coast. To solve this problem the CG acts. When any of those pixels in that particular area of the virtual world is analyzed by the CG, it will work on it and return it with different values, which will result in a coast line for that area, not am area entirely filled withby land or water.
 
 
+\subsubsection{Rendering engine}
+
+The rendering engine draws created heightmap in the screen. The result is rendered as triangles mesh that is textured according to the height value of each vertex in the mesh.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
