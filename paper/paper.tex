@@ -207,7 +207,7 @@ As previously explained in section ~\ref{sec:basic-structure}, each entry of the
 \label{fig:ilustracao_mapeamento_macro}
 \end{figure}
 
-Figure \ref{fig:ilustracao_mapeamento_macro} illustrates the results obtained by the tool when no algorithm is used to generate extra content to fill the rectilinear spaces of the virtual world. This figure illustrates a place in the virtual world that represents the transition between two different points of the MM (a land point and a water point). To explain what is happening, assume the tool is drawing the world at position {\tt (x, y, z)}, which is the mapping result of an entry {\tt (i, j)} in the MM, which is described as land; as the tool increases the coordinate in order to draw the landscape, each new position is mapped to the MM. If the result of the mapping process of teh new coordinate, {\tt (x + 1, y, z))} for instance, is still the entry {\tt (i, j)} in the MM, then the tool will again draw a land pixel on the screen. Assuming that only at point {\tt (x + 10, y, z)} the pixels start being mapped to a different entry in the MM, such as {\tt (i + 1, j)} (and {\tt (i + 1, j)} is described as land), then all points before the position {\tt (x + 10, y, z)} are drawn as water and all pixels after that location are drawn as land.
+Figure \ref{fig:ilustracao_mapeamento_macro} illustrates the results obtained by the tool when no algorithm is used to generate extra content to fill the rectilinear spaces of the virtual world. This figure illustrates a place in the virtual world that represents the transition between two different points of the MM (a land point and a water point). To explain what is happening, assume the tool is drawing the world at position {\tt (x, y, z)}, which is the mapping result of an entry {\tt (i, j)} in the MM, which is described as land; as the tool increases the coordinate in order to draw the landscape, each new position is mapped to the MM. If the result of the mapping process of the new coordinate, {\tt (x + 1, y, z))} for instance, is still the entry {\tt (i, j)} in the MM, then the tool will again draw a land pixel on the screen. Assuming that only at point {\tt (x + 10, y, z)} the pixels start being mapped to a different entry in the MM, such as {\tt (i + 1, j)} (and {\tt (i + 1, j)} is described as land), then all points before the position {\tt (x + 10, y, z)} are drawn as water and all pixels after that location are drawn as land.
 
 Figure \ref{fig:ilustracao_mapeamento_macro} shows clearly when the world coordinates start being mapped to a different entry in the MM, which is when the tool replaces the land rendering with water rendering. As a consequence of no algorithm being applied to generate content for that transition area, the user will move along the coastline and will see only straight lines.
 
@@ -248,7 +248,7 @@ The beach generation algorithm is performed right before the content is rendered
 \begin{itemize}
 	\item If the pixel has {\tt 4N} as its distance, it means the tool has iterated through the four possible directions and found no water. In this case, the height value for the pixel remains the same. It happens to all the pixels that are within the continent or on the coast but away from the water: they do not belong to the beach area and their height value is defined by the height generator; 
  
-	\item If the pixel has a value smaller than {\tt 4N} as its distance, then its height value will be recalculated. The greater the distance from that pixel to the water pixel, the greater is the height value that will be applied. The height variation is calculated within a range of {\tt [T;B]}, where {\tt T} is the maximum height and {\tt B} is a minimum height value of all pixels in the beach. The result of that approach is a beach featuring higher height values near the continent and lower height values near the water.
+	\item If the pixel has a value smaller than {\tt 4N} as its distance, then its height value will be recalculated. The greater is the distance from that pixel to the water pixel, the greater is the height value that will be applied. The height variation is calculated within a range of {\tt [T;B]}, where {\tt T} is the maximum height and {\tt B} is a minimum height value of all pixels in the beach. The result of that approach is a beach featuring higher height values near the continent and lower height values near the water.
 \end{itemize}
  
 
@@ -263,9 +263,9 @@ Figure ~\ref{fig:exemplo_praia_simples} shows the results of the beach generator
 
 \subsubsection{Island generator and beach disturber}
 
-The coastline disturbance and the beach generation algorithms make Charack able to generate more realistic landscapes. The final, however, presents a well definite pattern, which is unusual to happen in the real world, where the lines and landscapes are more likely to follow random patterns. If the player walks in the virtual world only through the coast, he would see beaches with the same configuration and no islands along the path. To avoid that problem, two new algorithms are applied to the coastline pixels: beach disturber and island generator.
+The coastline disturbance and the beach generation algorithms make Charack able to generate more realistic landscapes. The final result, however, presents a well defined pattern, which is unusual to happen in the real world, where the lines and landscapes are more likely to follow a random patterns. If the player walks in the virtual world only through the coast, he would see beaches with the same configuration and no islands along the path. To avoid that problem, two new algorithms are applied to the coastline pixels: beach disturber and island generator.
 
-The \textbf{beach disturber} disturbs the distance used to calculate the water pixels neighboring a certain pixel. Instead of using {\tt N} as value to calculate the distance from the pixel to the water, the beach disturber uses the pixel position as a seed and generates a new value that will be used as the distance. Using this technique, the beach disturber is able to change the size and shape of the beach, so that certain regions have a greater amount of sand than others may have. Figure ~\ref{fig:exemplo_praia_complexa} shows beach disturber results.
+The \textbf{beach disturber} disturbs the distance used to calculate the water pixels neighboring a certain pixel. Instead of using {\tt N} as value to calculate the distance from the pixel to the water, the beach disturber uses the pixel position as a seed and generates a new value that will be used as the distance. Using this technique, the beach disturber is able to change the size and shape of the beaches, so that certain regions may have a greater amount of sand than others. Figure ~\ref{fig:exemplo_praia_complexa} shows the beach disturber results.
 
 \begin{figure}
 \centering
@@ -274,12 +274,12 @@ The \textbf{beach disturber} disturbs the distance used to calculate the water p
 \label{fig:exemplo_praia_complexa}
 \end{figure}
 
-The \textbf{island generator} creates land portions in some MM pixels. After the MM is created and all the pixel descriptors are configured, the generator iterates through all pixels described as coast and for some of them it adds sets a flag describing that region as a place that features islands. Each pixel mapped to that special regions of MM has its position used as a hash that is tested against a spectrum created by a noise function. The noise spectrum used for that are different from that one used in the coastline disturbance algorithm, since the expected outcome are small portions of land (islands). The final result obtained with the island generator is a wide range of beach sizes. Figure ~\ref{fig:exemplo_ilha} shows the island generator results. 
+The \textbf{island generator} creates land portions in some MM entries. After the MM is created and all the descriptors are configured, the generator iterates through all entries described as coast and for some of them it sets a flag describing that region as a place that features islands. Each pixel mapped to that special regions of the MM has its position used as a hash that is tested against a spectrum created by a noise function. According to the test result, the pixel is classified as land, so a group of pixels classified as land will produce a island. The noise spectrum used for that are different from that one used in the coastline disturbance algorithm, since the expected outcome are small portions of land (islands). Figure ~\ref{fig:exemplo_ilha} shows the island generator results. 
 
 \begin{figure}
 \centering
 \resizebox{8cm}{!}{\includegraphics{images/exemplo_ilha.png}}
-\caption{Island generated by the island generator}
+\caption{Island generated by the island generator (beach area has been influenced by the beach disturber)}
 \label{fig:exemplo_ilha}
 \end{figure}
 
@@ -294,7 +294,7 @@ This section aims to evaluate each of the techniques used in the content generat
 
 \subsection{Continents evaluation}
 
-The time spent for the continent generation is directly proportional to the size of the specified MM. The reduction of the MM size to {\tt 800x800} yielded significant performance improvements. As a consequence, the smaller is the MM size, the more linear and square are the coastlines of each continent. To avoid that problem, it is possible to adjust the coastline disturbance algorithm to make it produce more aggressive changes in the coastlines. Figure ~\ref{fig:charack_final_continentes} shows the continents and oceans generated by the Charack.
+The time spent for the continent generation is directly proportional to the size of the specified MM. The reduction of the MM size to {\tt 800x800} yielded significant performance improvements. As a consequence, the smaller is the MM size, the more linear and square are the coastlines of each continent. To avoid that problem, it is possible to adjust the coastline disturbance algorithm in order to make it produce more aggressive changes in the coastlines. Figure ~\ref{fig:charack_final_continentes} shows the continents and oceans generated by the Charack.
 
 \begin{figure}
 \centering
@@ -306,7 +306,7 @@ The time spent for the continent generation is directly proportional to the size
 
 \subsection{Terrain height evaluation}
 
-The terrain height generated by Charack is fully customizable. The tool has a built-in terrain height generator based on Perlin noise designed for testing purposes only. The main focus of the present work is the continents and coastline generation, so any activity related to terrain height generation was very superficial and presents no contribution. Figure ~\ref{fig:charack_final_relevo} shows the terrain height created by the built-in generator.
+The terrain height generated by Charack is fully customizable. The tool has a built-in terrain height generator based on Perlin noise, however it was designed for testing purposes only. The main focus of the present work are the continents and the coastline generation, so any activity related to terrain height generation was very superficial and presents no contribution. Figure ~\ref{fig:charack_final_relevo} shows the terrain height created by the built-in generator.
 
 \begin{figure}
 \centering
@@ -317,7 +317,7 @@ The terrain height generated by Charack is fully customizable. The tool has a bu
 
 \subsection{Coastline evaluation}
 
-The coastline generation is composed of two main elements, a global and a local one. The global one only uses only data available in the MM in order to create the coastlines, as described in section ~ \ref{sec:visaomicromacro}. The final result for that approach is a unreal straight coastline. Figure ~\ref{fig:charack_final_costa_reta} shows two completely straight coastlines. 
+The coastline generation is composed of two main elements, a global and a local one. The global one only uses data available in the MM in order to create the coastlines, as described in section ~ \ref{sec:visaomicromacro}. The final result for that approach is a unreal straight coastline. Figure ~\ref{fig:charack_final_costa_reta} shows two completely straight coastlines which has no content generation algorithm applied to them. 
 
 \begin{figure}
 \centering
@@ -326,7 +326,7 @@ The coastline generation is composed of two main elements, a global and a local 
 \label{fig:charack_final_costa_reta}
 \end{figure}
 
-After the coastline disturbance algorithm was established, Charack started to produce more acceptable landscapes. Figures ~\ref{fig:charack_final_costa_1} and ~\ref{fig:charack_final_costa_5} show small bays in some places of the coast. It happens because at those locations the coastline disturbance algorithm created pieces of land towards the ocean and at the same time the beach disturber reduced the amount of sand found on newly created land pieces. Charack is also able to create gulfs, which are large bays, but it is not possible to predict the exact location where those bays will happen, because it depends on a set of specific values (location, beach size, etc).
+After the coastline disturbance algorithm was introduced, Charack started producing more acceptable landscapes. Figures ~\ref{fig:charack_final_costa_1} and ~\ref{fig:charack_final_costa_5} show small bays in some places of the coast. It happened because at those locations the coastline disturbance algorithm created pieces of land towards the ocean and at the same time the beach disturber reduced the amount of sand on the newly created land pieces. Charack is also able to create gulfs, which are large bays, but it is not possible to predict the exact location where those bays will happen because it depends on a set of specific values (location, beach size, etc).
 
 \begin{figure}
 \centering
@@ -335,7 +335,7 @@ After the coastline disturbance algorithm was established, Charack started to pr
 \label{fig:charack_final_costa_1}
 \end{figure}
 
-Figures ~\ref{fig:charack_final_costa_3} and ~\ref{fig:charack_final_costa_4} show final result obtained with the combination of all the previously described algorithms: coastline disturbance, beach disturber and island generator.
+Figures ~\ref{fig:charack_final_costa_3} and ~\ref{fig:charack_final_costa_4} show the final result obtained with the combination of all the previously described algorithms: coastline disturbance, beach disturber and island generator.
 
 %\begin{figure}
 %\centering
@@ -371,17 +371,17 @@ Figures ~\ref{fig:charack_final_costa_3} and ~\ref{fig:charack_final_costa_4} sh
 \label{sec:conclusion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The automated creation of virtual worlds is one of available methods that can help developers to create games featuring detailed environments in less time and using fewer resources. Unlike the purely non-automated approach where a game designer has to to draw the entirely virtual world, an automated approach is able to generate a complete world with none of almost none human interference. There are several researches on that area using different approaches and focused on a wide range of results. It is possible to highlight the concern to create an infinite virtual without compromising the performance of the application.
+The automated creation of virtual worlds is one of the available methods that can help developers to create games featuring detailed environments in less time and using fewer resources. Unlike the purely non-automated approaches where a game designer has to design the entirely world, an automated approach is able to generate a complete world with almost none human interference. There are several researches on that subject using different approaches and focusing on a wide range of results.
 
 This paper presented a tool able to generate pseudo-virtual worlds featuring different continents, coastlines and landscapes. Using a combination of algorithms and methods for content management, the tool is able to create beaches, islands, bays and coastlines similar to the ones found in the real world.
 
-One of the Charack's contributions is the ability to generate giant pieces of land focusing on the coastline generation. The development of the present work aimed to handle separately the generation of content for all elements in the world (continents, terrains, etc.). The main point in the work is the coastline generation, not the content inside the continents. A player featuring a 100 pixels per second speed in a virtual world generated with the maximum value allowed by a integer will take about 1 year and 3 months to across the whole world.
+One of the Charack's contributions is the ability to generate giant pieces of land focusing on the coastline generation. The development of the present work aimed to handle separately the content generation for all elements in the world (continents, terrains, etc.). The main point in the work is the coastline generation, not the content inside the continents. The final virtual world can be huge: a player with a 100 pixels per second speed in a virtual world generated with the maximum value allowed by a integer will take about 1 year and 3 months to across the whole world.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\section*{Acknowledgements}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%To Cesar and Marilia, for all the support.
+%To Cesar, Marilia and my family for all the support.
 
 \bibliographystyle{sbgames}
 \bibliography{paper}
