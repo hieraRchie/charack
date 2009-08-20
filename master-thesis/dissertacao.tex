@@ -26,7 +26,7 @@
 %==============================================================================
 % Identificação do trabalho
 %==============================================================================
-\title{Ferramenta para geração em tempo real de mundos virtuais pseudo-infinitos para jogos 3D}
+\title{Ferramenta para geração em tempo real de bordas de mapas virtuais pseudo-infinitos para jogos 3D}
 
 \author{Bevilacqua}{Fernando}
 
@@ -36,19 +36,19 @@
 \institute{Centro de Tecnologia}
 \degree{Mestre em Informática}
 
-\trabalhoNumero{Dissertação de Mestrado Nº 2}
+\trabalhoNumero{Dissertação de Mestrado Nº 6}
 
 % orientador e co-orientador são opcionais (não diga isso pra eles :))
 \advisor[Prof.~Dr]{Pozzer (UFSM)}{Cesar Tadeu}
 %\coadvisor[Prof~Dr]{Pozzer (UFSM)}{Cesar Tadeu}
 
 %\committee[Profª.~Drª]{Charão (UFSM)}{Andrea Schwertner}
-\committee[Prof~Dr]{d'Ornellas (UFSM)}{Marcos Cordeiro}
-\committee[Prof~Dr]{Clua (UFF)}{Esteban Walter Gonzalez}
+\committee[Prof.~Dr]{d'Ornellas (UFSM)}{Marcos Cordeiro}
+\committee[Prof.~Dr]{Clua (UFF)}{Esteban Walter Gonzalez}
 
 % a data deve ser a da defesa; se nao especificada, são gerados
 % mes e ano correntes
-\date{20}{Julho}{2009}
+\date{29}{Julho}{2009}
 
 %
 % palavras-chave
@@ -99,10 +99,24 @@
 \makeapprove
 
 %%=============================================================================
+%% Dedicatoria
+%%=============================================================================
+\chapter*{Dedicatória}
+A minha família e a Marília, meu amor.
+
+%%=============================================================================
 %% Agradecimentos
 %%=============================================================================
-%\chapter*{Agradecimentos}
+\chapter*{Agradecimentos}
+Primeiramente gostaria de agradecer a Deus por me amparar, me dar sabedoria e saúde para trilhar esse caminho.
 
+Em seguida, gostaria de agradecer a minha família, por terem me apoiado e lutado para que eu tivesse a oportunidade de chegar aqui. Meu muito obrigado a vocês por tudo!
+
+Meu obrigado especial a Marília, meu amor, que sempre esteve ao meu lado durante todos os momentos, bons e ruins. Sem suas palavras e apoio, os desafios que eu passei teriam me derrubado e impedido que eu concluísse esse trabalho. Obrigado pelo seu amor e carinho, por estar ao meu lado e por trazer felicidade e equilíbrio à minha vida!
+
+Obrigado também ao meu orientador, Prof. Cesar Pozzer, por toda ajuda e horas de dedicação gastas comigo. Sempre entendi a sua preocupação para com a qualidade do trabalho, mesmo quando eu parecia não ter tanto tempo para finalizá-lo. Foi um prazer trabalhar com ele durante esses anos. Obrigado também ao Prof. Marcos d'Ornellas, pela ajuda e pelo seu bom senso, ambos foram muito úteis para mim. Obrigado ao pessoal do LaCA, que de alguma forma ou de outra me ajudaram também.
+
+Por fim, mas não menos importante, agredeço aos meus colegas de trabalho da Decadium. O suporte e dedicação, tanto acadêmico quanto profissional, permitiram que eu concluísse esse trabalho. Obrigado por assumirem minhas responsabilidades quando eu estive ausente. Meu obrigado especial ao Vicentini, que me ajudou muito ao longo do mestrado.
 
 %%=============================================================================
 %% Epígrafe
@@ -120,7 +134,7 @@
 %% Resumo
 %%=============================================================================
 \begin{abstract}
-O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos anos. Dentro da categoria de jogos {\it multiplayer}, exitem os jogos {\it massively multiplayer online} (MMO), que são jogos online no qual uma grande quantidade de jogadores interage uns com os outros dentro de um mundo virtual persistente. Em jogos MMO a existência de um mundo virtual persistente é um tópico importante para manter o jogo atrativo e divertido ao jogador. Quanto maior o mundo a ser explorado, tecnicamente mais tempo o usuário passará jogando para conseguir explorar o maior número possível de lugares. A solução proposta neste trabalho é uma ferramenta capaz de gerar mundos virtuais pseudo-infinitos com diversificação de formas e relevos ao longo de sua extensão. Utilizando uma combinação de algorítimos e métodos de gerenciamento de conteúdo, a ferramenta é capaz de criar praias, ilhas/arquipélagos, baías e costas que imitam as paisagens encontradas na natureza. Além disso, a possibilidade de parametrizar cada um desses elementos dá ao desenvolvedor um controle maior sobre o resultado que será obtido. Dentre as inovações apresentadas, estão a criação de um terreno virtual de vastas proporções com enfoque mais detalhado no que diz respeito à geração da costa. Fruto de um aprofundamento nas pesquisas já realizadas na área, o desenvolvimento da ferramenta foi focado em tratar de forma diferenciada a criação de conteúdo para os diversos elementos existentes (como continentes, relevo, etc). Uma das prioridades do trabalho foi a criação de bordas dos continentes, não a criação de conteúdo para o seu interior; esse relevo está aceitável, porém ainda está muito aleatório e sem grandes resultados. A ferramenta é capaz de gerar continentes contendo falésias, praias e rochedos em suas extremidades.
+O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos anos. Dentro da categoria de jogos {\it multiplayer}, exitem os jogos {\it massively multiplayer online} (MMO), que são jogos online no qual uma grande quantidade de jogadores interage uns com os outros dentro de um mundo virtual persistente. Em jogos MMO a existência de um mundo virtual persistente é um tópico importante para manter o jogo atrativo e divertido ao jogador. Quanto maior o mundo a ser explorado, tecnicamente mais tempo o usuário passará jogando para conseguir explorar o maior número possível de lugares. A solução proposta neste trabalho é uma ferramenta capaz de gerar mundos virtuais pseudo-infinitos com diversificação de formas e relevos ao longo de sua extensão. Utilizando uma combinação de algorítimos e métodos de gerenciamento de conteúdo, a ferramenta é capaz de criar praias, ilhas/arquipélagos, baías e costas que imitam as paisagens encontradas na natureza. Além disso, a possibilidade de parametrizar cada um desses elementos dá ao desenvolvedor um controle maior sobre o resultado que será obtido. Dentre as inovações apresentadas, estão a criação de um terreno virtual de vastas proporções com enfoque mais detalhado no que diz respeito à geração da costa. Fruto de um aprofundamento nas pesquisas já realizadas na área, o desenvolvimento da ferramenta foi focado em tratar de forma diferenciada a criação de conteúdo para os diversos elementos existentes (como continentes, relevo, etc). A ferramenta é capaz de gerar continentes contendo falésias, praias e rochedos em suas extremidades.
 \end{abstract}
 
 %%=============================================================================
@@ -130,11 +144,11 @@ O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos 
 % como parametros devem ser passados o titulo, o nome do curso
 % e as palavras-chave na outra língua, separadas por vírgulas
 \begin{englishabstract}
-{Tool for real-time generation of pseudo-infinite virtual worlds for 3D games}
+{Tool for real-time generation of coastlines for pseudo-infinite virtual worlds for 3D games}
 {Programa de Pós-Graduação em Informática}
 {MMO, virtual worlds, terrain generation, 3D games, noise, procedural generation, multifractal}
 
-The market of computer games has been evolving quickly over the years. In the group of multiplayer games, there are the massively multiplayer online (MMO) ones, which can be described as online games featuring a huge amount of player living in a persistent virtual world. In MMO games the player's experience is mainly influencied by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work proposes a tool able to generate pseudo-infinite virtual worlds with different types of terrain. Using a combination of algorithms and content management methods, the tool is able to create beachs, islands, bays and cost lines that imitates the real world landscapes. One of the contributions of the tool is the hability to generate giant pieces of land focusing on the coast line generation. The development of the present work aimed to handle separately the generation of content for all elements in the world (continents, terrains, etc.). The main point in the work is the coast line generation, not the content inside the continents.
+Massively multiplayer online (MMO) games are multiplayer games featuring a huge amount of player living in a persistent virtual world. In MMO games the player's experience is mainly influenced by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work proposes a tool able to generate pseudo-infinite virtual worlds with different types of terrain. Using a combination of algorithms and content management methods, the tool is able to create beaches, islands, bays and cost lines that imitates the real world landscapes. One of the contributions of the tool is the ability to generate giant pieces of land focusing on the coast line generation. The development of the present work aimed to handle separately the generation of content for all elements in the world (continents, terrains, etc.). The main point in the work is the coast line generation, not the content inside the continents.
 
 \end{englishabstract}
 
