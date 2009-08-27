@@ -45,7 +45,7 @@ No topo da cadeia encontra-se o gerador de mapas, que é responsável por criar os
 
 \subsection{Gerenciador de fatias}
 
-Na metade da hierarquia existe o gerenciador de fatias (GF). Ele é responsável por recortar um trecho do mundo virtual (campo de visão do usuário) e, em seguida, fornecer essa informação ao renderizador através de um {\it heightmap}. O trecho recordado do mundo virtual é descrito descrito como uma \bf{malha regular}. Para obter as informações necessárias para a criação do {\it heightmap}, o gerenciador de fatias faz uso do gerador de costa (GC), que por sua vez faz uso da MM e do gerador de relevos (GR).
+Na metade da hierarquia existe o gerenciador de fatias (GF). Ele é responsável por recortar um trecho do mundo virtual (campo de visão do usuário) e, em seguida, fornecer essa informação ao renderizador através de um {\it heightmap}. O trecho recordado do mundo virtual é descrito descrito como uma \textbf{malha regular}. Para obter as informações necessárias para a criação do {\it heightmap}, o gerenciador de fatias faz uso do gerador de costa (GC), que por sua vez faz uso da MM e do gerador de relevos (GR).
 
 No contexto do GF, não existe informação sobre terra ou água, ele apenas tem conhecimento de um conjunto de vértices do mundo virtual e qual a altura de cada um deles. Utilizando a posição do usuário como guia, o GF realiza o corte do mundo virtual e, para cada um dos vértices coletados, ele faz consultas ao GC para descobrir qual a altura desse vértice.
 

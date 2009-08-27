@@ -16,7 +16,7 @@ Para simular elementos naturais e suas peculiaridades em computação gráfica, pod
 
 \subsection{Fractais}
 
-Fractais são equações matemáticas geradas recursivamente, sendo que a cada nível de recursão mais e mais detalhes da mesma forma são gerados ~\cite{SurveyProcedural}. As formas geradas são auto-similares e geralmente a cada nível de recursão a equação original é vista novamente, com algumas alterações. Fractais possuem um nível de detalhes infinito, então quando mais nos aproximamos, mais detalhes ele apresenta. A figura ~\ref{fig:fractais_snowflake} ilustra o funcionamento de um fractal. É possível que fractais sejam utilizados para a geração de diversos elementos, tanto terrenos como plantas ~\cite{fractaisevery}. A utilização de fractais para a geração de relevo é uma técnica comum em computação gráfica, como pode ser visto na seção ~\ref{sec:relevo}.
+Um fractal é um objeto ou uma medida que apresenta auto-similaridade em qualquer escala\cite{SurveyProcedural}. O objeto não precisa exibir a sua estrutura exata ao longo das várias escalas, porém o mesmo "estilo" de estruturas precisa estar presente. Em um conceito puramente matemático, pode-se classificar fractais como equações que são submetidas a iterações recursivas. Como as formas geradas são auto-similares, geralmente a cada nível de recursão o padrão original é visto novamente, com algumas alterações. Fractais possuem um nível de detalhes infinito, então quanto mais iterações são realizadas, mais detalhes são criados. A figura ~\ref{fig:fractais_snowflake} ilustra o funcionamento de um fractal. É possível que fractais sejam utilizados para a geração de diversos elementos, tanto terrenos como plantas ~\cite{fractaisevery}. A utilização de fractais para a geração de relevo é uma técnica comum em computação gráfica, como pode ser visto na seção ~\ref{sec:relevo}.
 
 \begin{figure}
 \centering
@@ -32,7 +32,7 @@ Conforme já citado, fractais apresentam um padrão de auto-similaridade, o que ga
 \subsection{Ruído de Perlin}
 \label{sec:perlin}
 
-O ruído de Perlin foi desenvolvido por Ken Perlin ~\cite{Perlin85}, cujo objetivo inicial era criar texturas com aparência mais natural. A função de ruído de Perlin gera um intervalo de valores que podem ser utilizados para diversos fins, dentre eles uma forma de adicionar aleatoriedade aos relevos gerados proceduralmente. Os resultados da função de ruído de Perlin são baseados no somatório dos valores de diversas funções redimensionadas, todas elas originadas de uma única função base. Essa função base é obtida a partir da interpolação de valores aleatórios gerados de forma discreta. A figura ~\ref{fig:perlin_espectro} ilustra os pontos gerados e a sua interpolação.
+O ruído de Perlin foi desenvolvido por Ken Perlin ~\cite{Perlin85}, cujo objetivo inicial era criar texturas com aparência mais natural. A função de ruído de Perlin gera um intervalo de valores que podem ser utilizados para diversos fins, dentre eles uma forma de adicionar aleatoriedade aos relevos gerados proceduralmente. Os resultados da função de ruído de Perlin são baseados no somatório dos valores de diversas funções redimensionadas, todas elas originadas de uma única função base. Essa função base é obtida a partir da interpolação de valores aleatórios gerados de forma discreta. A figura ~\ref{fig:perlin_espectro} ilustra os pontos gerados e a sua interpolação. Os pontos pertencentes ao conjunto de valores são igualmente separados entre si, compondo um "lattice". A interpolação entre os pontos é calculada com base num vetor gradiente pré-computado associado a cada ponto.
 
 \begin{figure}
 \centering
@@ -43,7 +43,7 @@ O ruído de Perlin foi desenvolvido por Ken Perlin ~\cite{Perlin85}, cujo objetiv
 
 Partindo de um conjunto de pontos discretamente coletados, um espectro de valores é criado. Em seguida, todos os pontos são interpolados entre si, criando um domínio de valores infinito. Para cada parâmetro de entrada que a função de ruído receber, um valor correspondente será encontrado na curva que foi gerada como resultado da interpolação. Para facilitar os cálculos de geração de terreno, por exemplo, pode-se condicionar a função de ruído para que os valores retornados estejam sempre contidos dentro do intervalo {\tt [-1,1]}.
 
-Alterando-se a amplitude e a frequência da função base, obtém-se um conjunto de novas funções em outra escala. A maneira mais comum de obter novas funções em outra escala é dobrando a frequência e reduzindo a amplitude pela metade; cada nova função gerada é chamada de {\it octava}. O resultado da adição dessas diversas funções (octavas), com diferentes amplitude e frequência, é a função de {\bf ruído de Perlin}. A figura ~\ref{fig:perlin_octavas} ilustra graficamente as funções base utilizadas para a criação da função de ruído; as ilustrações de {\it (a)} até {\it (e)} são oitavas, sendo {\it (a)} a oitava de menor frequência e {\it (e)} a oitava de maior frequência. A ilustração {\it (f)} mostra o resultado da soma de todas as oitavas, que é a função de ruído de Perlin propriamente dita.
+Alterando-se a amplitude e a frequência da função base, obtém-se um conjunto de novas funções em outra escala. A maneira mais comum de obter novas funções em outra escala é dobrando a frequência e reduzindo a amplitude pela metade; cada nova função gerada é chamada de {\it octava}. A figura ~\ref{fig:perlin_octavas} ilustra graficamente as funções base utilizadas para a criação da função de ruído; as ilustrações de {\it (a)} até {\it (e)} são oitavas, sendo {\it (a)} a oitava de menor frequência e {\it (e)} a oitava de maior frequência. A ilustração {\it (f)} mostra o resultado da soma de todas as oitavas anteriores.
 
 \begin{figure}
 \centering
@@ -331,7 +331,7 @@ Inicialmente a esfera é colocada dentro de um tetraedro irregular e informações 
 \label{fig:explicacao_torben_resultado}
 \end{figure}
 
-Pode-se utilizar diferentes tipos de projeção para coleta dos pontos da esfera, como a de Mercator~\cite{mercator}, que é uma das opções que o trabalho analisado disponibiliza. Além disso, é possível aplicar zoom ao mapa sendo gerado, bastando para isso aumentar o número de passos necessários para o cálculo de cada pixel. A figura ~\ref{fig:explicacao_torben_zoom} mostra dois mapas com a aplicação de zoom.
+Pode-se utilizar diferentes tipos de projeção para coleta dos pontos da esfera. Além disso, é possível aplicar zoom ao mapa sendo gerado, bastando para isso aumentar o número de passos necessários para o cálculo de cada pixel. A figura ~\ref{fig:explicacao_torben_zoom} mostra dois mapas com a aplicação de zoom.
 
 \begin{figure}
 \centering
