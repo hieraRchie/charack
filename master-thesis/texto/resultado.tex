@@ -159,12 +159,38 @@ A figura ~\ref{fig:charack_final_costa_4} apresenta a mesma combinação do algori
 
 Todos os testes de desempenho foram realizados num computador Intel(R) Core(TM)2 Duo 1.66Gz, com 2Gb de RAM e uma placa de vídeo NVidia 8600 GT, utilizando-se o Microsoft Visual C++ 2008 Express Edition como IDE de desenvolvimento e o sistema operacional Windows Vista como ambiente de teste.
 
+\begin{figure}
+\centering
+\resizebox{15cm}{!}{\includegraphics{figuras/desempenho_tam_mm.png}}
+\caption{Tempo de geração da MM em função do tamanho da matriz utilizada.}
+\label{fig:desempenho_tam_mm}
+\end{figure}
 
+A figura ~\ref{fig:desempenho_tam_mm} mostra o tempo de geração da MM em função do tamanho da matriz utilizada. O eixo {\tt X} mostra a largura da MM (em pixels) e o eixo {\tt Y} mostra o tempo de processamento necessário para a sua geração (em milisegundos). Observa-se que o algoritmo de geração da MM é sensivelmente afetado pelas dimensões da matriz. O tempo de processamento de uma MM de dimensões {\tt 1300x1300} pixels é próximo a {\tt 17} segundos, ao passo que uma MM de dimensões {\tt 800x800} pixels leva pouco mais de {\tt 6} segundos para ser gerada. Em ambos os casos, tais tempos de processamento não seriam aceitáveis se o processo fosse executado a cada quadro renderizado. O processo de criação da MM, porém, é uma tarefa executada apenas uma vez pela ferramenta, no momento que esta se inicializa. Como consequência pode-se interpretar o gráfico da figura ~\ref{fig:desempenho_tam_mm} como sendo o tempo de inicialização da ferramenta, ou seja, o tempo que ela leva desde que foi iniciada até o ponto na qual ela pode gerar fatias do mundo virtual.
 
+\begin{figure}
+\centering
+\resizebox{14.5cm}{!}{\includegraphics{figuras/desempenho_tam_mm_elementos.png}}
+\caption{Tempo de processamento dos algoritmos envolvidos na geração de uma fatia do mundo virtual (em função do tamanho da MM).}
+\label{fig:desempenho_tam_mm_elementos}
+\end{figure}
 
+A figura ~\ref{fig:desempenho_tam_slice_elementos} mostra o tempo de processamento dos diversos algoritmos envolvidos na geração de uma fatia do mundo virtual, todos em função do tamanho da MM utilizada. Uma nova fatia é gerada toda vez que o usuário se aproxima da borda da fatia gerada previamente, o que obriga a ferramenta a gerar uma fatia nova para que mais conteúdo seja mostrado além do horizonte. As variações de tamanho da MM (mostradas no eixo {\tt X}) afetam diretamente todos os outros algoritmos da ferramenta, tendo em vista que a MM é utilizada como referência para a maioria deles. O tamanho da MM implica, por exemplo, na quantidade de informações que devem ser criadas num terminado local do mundo, como geração de dois blocos contendo uma costa ao invés da geração de conteúdo para apenas um bloco. Os picos presentes no gráfico são provenientes de locais no mundo virtual que possuem grande quantidade de terra. Quanto maior a quantidade de pixels representando terra, maior será o tempo que o algoritmo de geração de praias irá atuar, como no caso do ponto no qual a MM tem tamanho {\tt 700}. Observa-se que o algoritmo de geração de praias é o que mais consome tempo na geração de uma fatia do mundo, visto que para cada pixel analisado, a ferramenta precisa fazer consulta aos pixels vizinhos para determinar se o elemento é ou não uma praia. Observa-se também que o tempo de atuação do algoritmo de geração da costa varia entre {\tt 50} e {\tt 300 ms} e não é drasticamente afetado pelo tamanho da MM, visto que esse algoritmo não é intimamente ligado ao tamanho da MM para a realização de seus cálculos. A linha mais próxima da base do gráfico mostra o tempo que a ferramenta leva para renderizar um quadro gerado pela ferramenta. Esse tempo é constante e em torno de {\tt 17 ms} porque vários quadros são renderizados a partir de uma mesma fatia; além disso o tamanho da fatia selecionada do mundo não varia ao longo do tempo, então a ferramenta possui sempre a mesma quantidade de vértices para renderizar em cada quadro. A linha do algoritmo de geração do relevo mostra o tempo que a ferramenta leva para calcular o relevo de todos os pontos da fatia sendo mostrada. Como não existem cadeias montanhosas ou planícies, o tempo de geração do relevo é constante e em torno de {\tt 190 ms}.
 
+\begin{figure}
+\centering
+\resizebox{14.5cm}{!}{\includegraphics{figuras/desempenho_tam_slice_elementos.png}}
+\caption{Tempo de processamento dos algoritmos envolvidos na geração de uma fatia do mundo virtual (em função do tamanho da fatia).}
+\label{fig:desempenho_tam_slice_elementos}
+\end{figure}
 
+A figura ~\ref{fig:desempenho_tam_slice_elementos} mostra o tempo de processamento dos diversos algoritmos envolvidos na geração de uma fatia do mundo virtual, porém em função do tamanho dessa fatia. Observa-se que todos os algoritmos envolvidos apresentam um aumento quase linear no tempo de processamento à medida que o tamanho da fatia aumenta, visto que uma fatia maior implica mais pontos a serem analisados para a geração de conteúdo. O algoritmo mais afetado pelo tamanho da fatia selecionada é o gerador de praias. Embora seu tempo de processamento seja praticamente linear, quanto maior a fatia, mais pixels precisam ser analisados para a geração da praia, o que faz com que a ferramenta gaste um tempo considerável nesse passo. Tomando como exemplo o caso no qual a fatia possui tamanho {\tt 500} (o que resulta em {\tt 250.000} vértices na tela), o algoritmo de geração de praia leva quase {\tt 1,8} segundos para analisar todos os elementos e decidir se eles são ou não pertencentes à praia. A figura ~\ref{fig:desempenho_slice_total} apresenta os mesmos dados da figura ~\ref{fig:desempenho_tam_slice_elementos}, porém ao invés de mostrar o tempo de cada algoritmo separadamente, o somatório dos tempos de cada algoritmo é apresentado. Tomando como exemplo o ponto {\tt 500} no eixo {\tt X}, no qual a ferramenta fará a geração de uma porção com dimensões de {\tt 500x500} vértices, o tempo de processamento total chega a quase {\tt 3,5} segundos.
 
+\begin{figure}
+\centering
+\resizebox{13.5cm}{!}{\includegraphics{figuras/desempenho_slice_total.png}}
+\caption{Tempo total de processamento dos algoritmos para geração de uma fatia do mundo virtual (em função do tamanho da fatia).}
+\label{fig:desempenho_slice_total}
+\end{figure}
 
-
-
+A ferramenta é afetada diretamente pelo tamanho da MM e da fatia selecionada do mundo virtual, sendo o último o fato mais crítico de desempenho. Quanto maior a fatia a ser renderizada, mais pontos precisam ser analisados e processados, o que consome grande tempo, especialmente para a decisão se esse ponto é ou não praia. Uma MM de tamanho {\tt 800} ou {\tt 900} pixels apresenta um bom desempenho final; uma fatia com tamanho de {\tt 100} a {\tt 200} vértices também apresenta um balanço aceitável entre desempenho e quantidade de conteúdo gerado.
