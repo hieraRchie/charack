@@ -1,0 +1,7 @@
+#labels Featured
+= Introduction =
+
+Charack is a tool able to generate coastlines for pseudo-infinite virtual worlds with different types of terrain. Using a combination of algorithms and content management methods, such as Perlin noise, the tool is able to create beaches, islands, bays and costlines that imitate the real world landscapes. The handles separately the generation of content for all elements the world (continents, terrains, etc.), so each of them can be independently customized.
+
+
+= Screenshots =
