@@ -11,14 +11,17 @@
 % para gerar uma versão frente-e-verso, use a opção 'twoside':
 % \documentclass[twoside]{mdtufsm}
 
-\usepackage[T1]{fontenc}        % pacote para conj. de caracteres correto
-%\usepackage[brazil]{babel}      % pacote para acentuação 
-\usepackage{natbib}
 \usepackage[latin1]{inputenc}   % pacote para acentuação
+%\usepackage[portuges]{babel}      % pacote para acentuação 
+\usepackage[T1]{fontenc}        % pacote para conj. de caracteres correto
+\usepackage{natbib}
 \usepackage{graphicx}           % pacote para importar figuras
 \usepackage{times}              % pacote para usar fonte Adobe Times
 \usepackage{xspace}
 %\usepackage{mathptmx}          % p/ usar fonte Adobe Times nas fórmulas
+%\usepackage{hyperref}
+%\usepackage[alf,bibjustif]{abntcite}
+\usepackage{ae}
 
 \newcommand{\cluster}{\textit{cluster}\xspace}
 \newcommand{\clusters}{\textit{clusters}\xspace}
@@ -134,7 +137,7 @@ Por fim, mas não menos importante, agredeço aos meus colegas de trabalho da Deca
 %% Resumo
 %%=============================================================================
 \begin{abstract}
-O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos anos. Dentro da categoria de jogos {\it multiplayer}, exitem os jogos {\it massively multiplayer online} (MMO), que são jogos online no qual uma grande quantidade de jogadores interage uns com os outros dentro de um mundo virtual persistente. Em jogos MMO a existência de um mundo virtual persistente é um tópico importante para manter o jogo atrativo e divertido ao jogador. Quanto maior o mundo a ser explorado, tecnicamente mais tempo o usuário passará jogando para conseguir explorar o maior número possível de lugares. A solução proposta neste trabalho é uma ferramenta capaz de gerar bordas para mundos virtuais pseudo-infinitos com continentes, ilhas, prais, falésias e baías ao longo de sua extensão. Utilizando uma combinação de algorítimos e métodos de gerenciamento de conteúdo, como funções de ruído de Perlin, a ferramenta é capaz de criar praias, ilhas/arquipélagos, baías e costas que imitam as paisagens encontradas na natureza. Além disso, a possibilidade de parametrizar cada um desses elementos dá ao desenvolvedor um controle maior sobre o resultado que será obtido. Dentre as inovações apresentadas, estão a criação de um terreno virtual de vastas proporções com enfoque mais detalhado no que diz respeito à geração da costa. Fruto de um aprofundamento nas pesquisas já realizadas na área, o desenvolvimento da ferramenta foi focado em tratar de forma diferenciada a criação de conteúdo para os diversos elementos existentes (como continentes, relevo e costas). A ferramenta é capaz de gerar continentes contendo falésias, praias e rochedos em suas extremidades.
+O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos anos. Dentro da categoria de jogos {\it multiplayer}, exitem os jogos {\it massively multiplayer online} (MMO), que são jogos online no qual uma grande quantidade de jogadores interage uns com os outros dentro de um mundo virtual persistente. Em jogos MMO a existência de um mundo virtual persistente é um tópico importante para manter o jogo atrativo e divertido ao jogador. Quanto maior o mundo a ser explorado, tecnicamente mais tempo o usuário passará jogando para conseguir explorar o maior número possível de lugares. A solução proposta neste trabalho é uma ferramenta capaz de gerar bordas para mundos virtuais pseudo-infinitos com continentes, ilhas, prais, falésias e baías ao longo de sua extensão. Utilizando uma combinação de algoritmos e métodos de gerenciamento de conteúdo, como funções de ruído de Perlin, a ferramenta é capaz de criar praias, ilhas/arquipélagos, baías e costas que imitam as paisagens encontradas na natureza. Além disso, a possibilidade de parametrizar cada um desses elementos dá ao desenvolvedor um controle maior sobre o resultado que será obtido. Dentre as inovações apresentadas, estão a criação de um terreno virtual de vastas proporções com enfoque mais detalhado no que diz respeito à geração da costa. Fruto de um aprofundamento nas pesquisas já realizadas na área, o desenvolvimento da ferramenta foi focado em tratar de forma diferenciada a criação de conteúdo para os diversos elementos existentes (como continentes, relevo e costas). A ferramenta é capaz de gerar continentes contendo falésias, praias e rochedos em suas extremidades.
 \end{abstract}
 
 %%=============================================================================
@@ -146,9 +149,9 @@ O mercado de jogos para computador vem evoluindo consideravelmente ao longo dos 
 \begin{englishabstract}
 {Tool for real-time generation of coastlines for pseudo-infinite virtual worlds for 3D games}
 {Programa de Pós-Graduação em Informática}
-{MMO, virtual worlds, terrain generation, 3D games, noise, procedural generation, multifractal}
+{MMO, virtual worlds, terrain generation, 3D games, noise, multifractal}
 
-Massively multiplayer online (MMO) games are multiplayer games featuring a huge amount of player living in a persistent virtual world. In MMO games the player's experience is mainly influenced by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work proposes a tool able to generate coastline for pseudo-infinite virtual worlds with different types of terrain. Using a combination of algorithms and content management methods, such as Perlin noise, the tool is able to create beaches, islands, bays and cost lines that imitates the real world landscapes. One of the contributions of the tool is the ability to generate giant pieces of land focusing on the coast line generation. The development of the present work aimed to handle separately the generation of content for all elements in the world (continents, terrains, etc.). The main point in the work is the coast line generation, not the content inside the continents.
+Massively multiplayer online (MMO) games are multiplayer games featuring a huge amount of player living in a persistent virtual world. In MMO games the player's experience is mainly influenced by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work proposes a tool able to generate coastline for pseudo-infinite virtual worlds with different types of terrain. Using a combination of algorithms and content management methods, such as Perlin noise, the tool is able to create beaches, islands, bays and cost lines that imitates the real world landscapes. One of the contributions of the tool is the ability to generate giant pieces of land focusing on the coastline generation. The development of the present work aimed to handle separately the generation of content for all elements in the world (continents, terrains, etc.). The main point in the work is the coast line generation, not the content inside the continents.
 
 \end{englishabstract}
 
