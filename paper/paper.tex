@@ -45,7 +45,7 @@
 %% Abstract section.
 
 \begin{abstract}
-In MMO games the player's experience is mainly influenced by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work presents a tool (named Charack) able to generate pseudo-infinite virtual worlds with different types of terrains. Using a combination of algorithms and content management methods, Charack is able to create beaches, islands, bays and coastlines that imitates real world landscapes. The tool clearly distinguish the generation of each type of content. The contribution of the tool is the ability to generate giant pieces of land (or landscape) focusing on detailed coastline generation, by means of using procedural algorithms.
+In MMO games the player's experience is mainly influenced by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work presents a tool (named Charack) able to generate pseudo-infinite virtual worlds with different types of terrains. Using a combination of algorithms and content management methods, Charack is able to create beaches, islands, bays and coastlines that imitates real world landscapes. The tool clearly distinguish the generation of each type of content. The contribution of the tool is the ability to generate arbitrarily large pieces of land (or landscape) focusing on detailed coastline generation, by means of using procedural algorithms.
 \end{abstract}
 
 %% The ``\keywordlist'' command prints out the keywords.
@@ -60,9 +60,7 @@ The computer games market has been evolving considerably over the years. Since t
 
 An MMO can feature millions of players, such as EverQuest ~\cite{EverQuest} and World of Warcraft ~\cite{Blizzard}, the latter with more than 6 million subscribers ~ \cite{vicioEstrutura}. A persistent virtual world is an important topic to keep the game fun and attractive to the player. The bigger is the world to be explored, technically the bigger is the time the player has to spend in order to explore all the places. As a result of such huge virtual worlds, their creation and subsequent upgrade are a complex task. EverQuest and World of Warcraft present a virtual world with a wide diversity of geographical features such as mountains, valleys, forests, fields, caves, etc, and most of them have specific names  and are related to the game story. The manual creation of those virtual worlds requires a team able to design heightmaps, adorn landscapes, ensure usability of the map (avoid unreachable places, for instance), create interesting places for players, etc. To help on that task, the development of a tool able to generate complex virtual worlds is useful to speed up the development of 3D games such as MMOs.
 
-The solution proposed in this work is the development of a tool, called Charack, able to generate complex virtual worlds in real-time using noise-based techniques for terrain generation. Charack was designed to allow developers to use its features in order to generate 3D terrains for games, particularly MMOs, with minimal human intervention in the generation process. The content generation is made on demand. As the user moves along the world, the elements inside the user's view are processed and stored into the memory and the ones away from the user's view are removed. Even though the generation of all elements is based on random numbers, if the player visits an specific point {\tt A}, then walks for miles generating a completely different set of landscapes, and returns to point {\tt A}, the same previously seen landscape will be shown again.
-
-Charack handles separately the content generation of continents, topography and coastlines, so each of those elements can be independently adjusted in order to produce highly customized results. The use of the term "pseudo" is necessary due physical limitations in computers hardware: an unsigned integer, for instance, can store a certain amount of data; if there were no physical limitations, the tool would be able to generate, in fact, an infinite world.
+The solution proposed in this work is the development of a tool, called Charack\footnote{Charack is available at http://code.google.com/p/charack}, able to generate complex virtual worlds in real-time using noise-based techniques for terrain generation. Charack was designed to allow developers to use its features in order to generate 3D terrains for games, particularly MMOs, with minimal human intervention in the generation process. The content generation is made on demand. As the user moves along the world, the elements inside the user's view are processed and stored into the memory and the ones away from the user's view are removed. Even though the generation of all elements is based on random numbers, if the player visits an specific point {\tt A}, then walks for miles generating a completely different set of landscapes, and returns to point {\tt A}, the same previously seen landscape will be shown again. Charack handles separately the content generation of continents, topography and coastlines, so each of those elements can be independently adjusted in order to produce highly customized results.
 
 This paper is organized as follows. Section ~\ref{sec:related-work} describes related work concerning the generation of finite or infinite virtual worlds. Section ~\ref{sec:tool-organization} presents the tool structure and the techniques used in the content generation process. Section ~\ref{sec:results} describes and illustrates the results that Charack produced. Finally section ~\ref{sec:conclusion} presents a conclusion and ideas for future work.
 
@@ -100,7 +98,7 @@ The planet map creator based on the generation of a spheric world using a recurs
 \label{sec:basic-structure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Analyzing the related works, virtual worlds are generated through several approaches, but none of them handles differently the content generation for continents, coastlines and topography. Although there are variations in how the heightmap is created, the generation of continents is a result of a water flooding plane. This method allows the developers to focus on the content generation for the land, however it has a simple approach concerning continents and coastlines. The main idea and contribution of Charack is the content generation handled differently for each world element (continent, coastline, etc.), with an aggressive and specific approach for each one. This is a new approach for the content generation process, which is different from the the related works that focuses on content generation as a unified process.
+Analyzing the related works, virtual worlds are generated through several approaches, but none of them handles differently the content generation for continents, coastlines and topography. Although there are variations in how the heightmap is created, the generation of continents is a result of a water flooding plane. This method allows the developers to focus on the content generation for the land, however it has a simple approach concerning continents and coastlines. The main idea and contribution of Charack is the content generation handled differently for each world element (continent, coastline, etc.), with an aggressive and specific approach for each one. This is a new approach for the content generation process, which is different from the the related works that focuses on content generation as a unified process. The term {\it pseudo infinite} used in the paper title is necessary due to physical limitations in computers hardware: an unsigned integer, for instance, can store a certain amount of data; if there were no physical limitations, the tool would be able to generate, in fact, an infinite world.
 
 In order to create a virtual world that reaches the presented proposal, a top-down plan is used for the content generation. The Charack data flow begins in a macro view of the world, which are the continents, evolving to a micro view of the planet, which are the content generation for each vertex that will be drawn in the screen. Figure ~\ref{fig:planejamento_estrutura_basica} shows Charack basic structure.
 
@@ -117,7 +115,7 @@ At the top of the chain is the map generator, which creates the continents that 
 
 \subsubsection{Slice manager}
 
-Below the MM and the map generator is the slice manager (SM). It extracts a portion of the virtual world (the user's view) and provide the rendering engine with information about the heightmap. In order to obtain the required information to create the heightmap, the slice manager uses the coastline generator (CG), which uses the height generator (HG) and the data stored in the MM.
+Below the MM and the map generator is the slice manager (SM). It extracts a portion of the virtual world (the user's view described as a regular mesh) and provide the rendering engine with information about the heightmap. In order to obtain the required information to create the heightmap, the slice manager uses the coastline generator (CG), which uses the height generator (HG) and the data stored in the MM.
 
 In the context of the SM, there is no information about land or water, only a set of vertexes and their height values. Using the position of the user as a guide, the SM slices the virtual world and, for each collected vertex, it queries the CG in order to find out the height value for that vertex.
 
@@ -134,7 +132,7 @@ The resulting virtual world technically has height and width defined by the maxi
 \begin{figure}
 \centering
 \resizebox{8cm}{!}{\includegraphics{images/english/mapeamento_macro.png}}
-\caption{Mapping the MM to the virtual world: each MM vertex represents several vertices in the virtual world.}
+\caption{Mapping the MM to the virtual world: each MM vertex represents several vertices in the virtual world}
 \label{fig:mapeamento_macro}
 \end{figure}
 
@@ -163,8 +161,14 @@ To circumvent these problems the content generation was divided into three main 
 \subsection{Infinite terrain}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The main idea for the content generation is allow the user to walk in an infinite way, looking at new content each time a significant movement is performed. As the user walks, the tool must be able to identify where the observer is located in the world in order to generate the content around that position. To solve this problem, the player is able to look at the screen and see a slice of the virtual world, but with no explicit divisions, such as cells.
-%~\cite{infinicity}.
+The main idea for the content generation is to allow the user look at new content each time a significant movement is performed. As the user walks, the tool must be able to identify where the observer is located in the world in order to generate the content around that position. To solve this problem, the player is able to look at the screen and see a slice of the virtual world, however it has no explicit divisions such as cells. The slice is described as a regular mesh as figure ~\ref{fig:charack_merge_wireframe} shows.
+
+\begin{figure}
+\centering
+\resizebox{8cm}{!}{\includegraphics{images/charack_merge_wireframe.png}}
+\caption{Regular mesh describing the virtual world. At the right a wireframe rendering}
+\label{fig:charack_merge_wireframe}
+\end{figure}
 
 In order to texturize the sliced data a set of images is interpolated and managed by the shading language GLSL ~\cite{glsl}. The height value of the vertex defines the interpolation weight of each texture. As a consequence, a sand texture has higher weight for vertices featuring a low height value, for instance. Figure ~\ref{fig:set_texturas} shows all the available textures.
 
@@ -195,7 +199,7 @@ The continents generation is based on the planet map creator described in sectio
 \begin{figure}
 \centering
 \resizebox{8.2cm}{!}{\includegraphics{images/torben_gray.png}}
-\caption{Random planets generated with different seeds. (a) and (b) maps featuring height value information; (c) map featuring only information about what is water/land.}
+\caption{Random planets generated with different seeds. (a) and (b) maps featuring height value information; (c) map featuring only information about what is water/land}
 \label{fig:torben}
 \end{figure}
 %~\cite{torben}
@@ -239,7 +243,7 @@ The implementation of that process is based on a noise function and random numbe
 
 \begin{figure}
 \centering
-\resizebox{5cm}{!}{\includegraphics{images/plot_ruido_quebra_linearidade.png}}
+\resizebox{5cm}{!}{\includegraphics{images/plot_ruido_quebra_linearidade_simples.png}}
 \caption{Small heightmap generated by the coastline disturbance algorithm}
 \label{fig:plot_ruido_quebra_linearidade}
 \end{figure}
@@ -378,17 +382,33 @@ Figures ~\ref{fig:charack_final_costa_3} and ~\ref{fig:charack_final_costa_4} sh
 \label{fig:charack_final_costa_5}
 \end{figure}
 
+\subsection{Performance evaluation}
+
+All tests were performed running Charack on Windows Vista on a Intel(R) Core(TM)2 Duo 1.66Gz, with 2Gb RAM and a graphics card NVidia 8600 GT, using Microsoft Visual C++ 2008 Express Edition to compile the source code. Figure ~\ref{fig:desempenho_tam_slice_elementos} shows the time that Charack takes to process each step on the virtual world generation: height calculation for each vertex, coastline generation, beach generation and the rendering process. The {\tt X} axis shows the world slice size in vertexes, e.g. 200 means a regular mesh of {\tt 200x200} vertexes. The {\tt Y} axis shows the time in miliseconds that Charack takes to generate the respective world slice.
+
+\begin{figure}
+\centering
+\resizebox{8.5cm}{!}{\includegraphics{images/english/desempenho_tam_slice_elementos.png}}
+\caption{Time that Charack takes to process each step on the virtual world generation}
+\label{fig:desempenho_tam_slice_elementos}
+\end{figure}
+
+If the world slice visible to the user has a size of {\tt 100x100} pixels, then Charack takes about {\tt 200 ms} to generate a complete landscape (the sum of times for all steps). This process is not executed for each rendered frame, it is only performed when the user moves too far from his initial position, what makes Charack remove the old content from the memory and replace it with new data. If a slice with size {\tt 300x300} pixels is used, then Charack takes about {\tt 1000 ms} to generate the landscape. Most of the time is spent on the beach creation because Charack has to analyze each vertex on the screen and its four neighbours to decide if it is a beach point or not.
+
+The coastline generation is not significantly affected by the slice size because the algorithm does not analyze an arbitrary amount of vertexes to generate the content. It uses a combination of noise functions and MM meta data in order to generate the required information.
+
+According to the chart the slowest step performed by Charack is the beach generation. The second slowest step is the coastline generation, closely followed by the height generation for each vertex.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and future work}
 \label{sec:conclusion}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The automated creation of virtual worlds is one of the available methods that can help developers to create games featuring detailed environments in less time and using fewer resources. Unlike the purely non-automated approaches where a game designer has to design the entirely world, an automated approach is able to generate a complete world with almost none human interference. There are several researches on that subject using different approaches and focusing on a wide range of results.
+The automated creation of virtual worlds is one of the available methods that can help developers to create games featuring detailed environments in less time and using fewer resources. Unlike the purely non-automated approaches where a game designer has to design the entirely world, an automated approach is able to generate a complete world with almost no human interference. There are several researches on that subject using different approaches and focusing on a wide range of results.
 
 This paper presented a tool able to generate pseudo-virtual worlds featuring different continents, coastlines and landscapes. Using a combination of algorithms and methods for content management, the tool is able to create beaches, islands, bays and coastlines similar to the ones found in the real world.
 
-One of the Charack's contributions is the ability to generate giant pieces of land focusing on the coastline generation. The development of the present work aimed to handle separately the content generation for all elements in the world (continents, terrains, etc.). The main point in the work is the coastline generation, not the content inside the continents. The final virtual world can be huge: a player with a 100 vertices per second speed in a virtual world generated with the maximum value allowed by a integer will take about 1 year and 3 months to across the whole world.
+One of the Charack's contributions is the ability to generate arbitrarily large pieces of land focusing on coastline generation. The development of the present work aimed to handle separately the content generation for all elements in the world (continents, terrains, etc.). The main point in the work is the coastline generation, not the content inside the continents. The final virtual world can be huge: a player with a 100 vertices per second speed in a virtual world generated with the maximum value allowed by a integer will take about 1 year and 3 months to across the whole world.
 
 One suggestion of future work is the enhancement of the height generator, which currently produces a very simple result. Another suggestion is the addition of new types to the MM's descriptors, such as deserts, forests and cities. All the new content can be created tweaking Charack's content generator algorithm in order to produce variations in the current results, such as lowering the height values of all vertices in an area described as a desert, or increasing them in a volcanic area. Another suggestion is to port all the content generation algorithms to the CUBA platform ~\cite{CUDA}. The generation of each world vertex can be calculated separately, so the CUBA parallelism capabilities can be fully used. It will drastically improve Charack's performance and it will allow the generation of a bigger world slice to be displayed in the screen. Another suggestion is the addition of rivers, which can be done with a new MM descriptor and some changes in the content generation algorithm.
 
