@@ -1,0 +1,996 @@
+
+%% bare_conf.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE conference paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+\documentclass[10pt, conference, compsocconf]{IEEEtran}
+% Add the compsocconf option for Computer Society conferences.
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[conference]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+   \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+   \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../images/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.png}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later 
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Charack: tool for real-time generation of pseudo-infinite virtual worlds for 3D games}
+
+
+% author names and affiliations
+% use a multiple column layout for up to two different
+% affiliations
+
+%\author{\IEEEauthorblockN{Fernando Bevilacqua}
+%\IEEEauthorblockA{Programa de Pos-graduacao em Informatica\\
+%Universidade Federal de Santa Maria (UFSM)\\
+%Santa Maria, Brazil\\
+%Email: fernando@inf.ufsm.br}
+%\and
+%\IEEEauthorblockN{Cesar Tadeu Pozzer}
+%\IEEEauthorblockA{Programa de Pos-graduacao em Informatica\\
+%Universidade Federal de Santa Maria (UFSM)\\
+%Santa Maria, Brazil\\
+%Email: pozzer@inf.ufsm.br}
+%\and
+%\IEEEauthorblockN{ Marcos Cordeiro d Ornellas}
+%\IEEEauthorblockA{Programa de Pos-graduacao em Informatica\\
+%Universidade Federal de Santa Maria (UFSM)\\
+%Santa Maria, Brazil\\
+%Email: pozzer@inf.ufsm.br}
+%}
+
+% conference papers do not typically use \thanks and this command
+% is locked out in conference mode. If really needed, such as for
+% the acknowledgment of grants, issue a \IEEEoverridecommandlockouts
+% after \documentclass
+
+% for over three affiliations, or if they all won't fit within the width
+% of the page, use this alternative format:
+% 
+%\author{\IEEEauthorblockN{Fernando Bevilacqua\IEEEauthorrefmark{1},
+%Cesar Tadeu Pozzer\IEEEauthorrefmark{1} and
+ %Marcos Cordeiro d Ornellas\IEEEauthorrefmark{1}}
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}{Programa de Pos-graduacao em Informatica\\
+%Universidade Federal de Santa Maria,Santa Maria, Brazil\\
+%Email: fernando,pozzer,ornellas@inf.ufsm.br}}}
+
+\author{\IEEEauthorblockN{Fernando Bevilacqua,
+Cesar Tadeu Pozzer and
+Marcos Cordeiro d Ornellas}
+\IEEEauthorblockA{Programa de Pos-graduacao em Informatica\\
+Universidade Federal de Santa Maria,
+Santa Maria, Brazil\\ Email: \{fernando,pozzer,ornellas\}@inf.ufsm.br}}
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+In MMO games the player's experience is mainly influenced by the size and details of the virtual world. Technically the bigger the world is, the bigger is the time the player takes to explore all the places. This work presents a tool (named Charack) able to generate pseudo-infinite virtual worlds with different types of terrains. Using a combination of algorithms and content management methods, Charack is able to create beaches, islands, bays and coastlines that imitates real world landscapes. The tool clearly distinguish the generation of each type of content. The contribution of the tool is the ability to generate arbitrarily large pieces of land (or landscape) focusing on detailed coastline generation, by means of using procedural algorithms.
+\end{abstract}
+
+\begin{IEEEkeywords}
+MMO; virtual worlds; terrain generation; 3D games; noise; procedural generation; multifractal;
+
+\end{IEEEkeywords}
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+% no \IEEEPARstart
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The computer games market has been evolving considerably over the years. Since the first console, the hardware performance has increased and new graphic technologies were developed, resulting in a wide range of themes and game styles. In the multiplayer games, players interact with other human beings and also with NPCs, which are represented by virtual characters. That kind of game is popular and the social interaction between players is a matter of research ~\cite{onlineGaming,ducheneaut}. In the category of multiplayer games there are the massively multiplayer on-line (MMO) ones, which are on-line games featuring large number of players interacting with each other in a huge virtual world.
+
+An MMO can feature millions of players, such as EverQuest ~\cite{EverQuest} and World of Warcraft ~\cite{Blizzard}, the latter with more than 6 million subscribers ~ \cite{vicioEstrutura}. A persistent virtual world is an important topic to keep the game fun and attractive to the player. The bigger is the world to be explored, technically the bigger is the time the player has to spend in order to explore all the places. As a result of such huge virtual worlds, their creation and subsequent upgrade are a complex task. EverQuest and World of Warcraft present a virtual world with a wide diversity of geographical features such as mountains, valleys, forests, fields, caves, etc, and most of them have specific names  and are related to the game story. The manual creation of those virtual worlds requires a team able to design heightmaps, adorn landscapes, ensure usability of the map (avoid unreachable places, for instance), create interesting places for players, etc. To help on that task, the development of a tool able to generate complex virtual worlds is useful to speed up the development of 3D games such as MMOs.
+
+The solution proposed in this work is the development of a tool, called Charack\footnote{Charack is available at http://code.google.com/p/charack}, able to generate complex virtual worlds in real-time using noise-based techniques for terrain generation. Charack was designed to allow developers to use its features in order to generate 3D terrains for games, particularly MMOs, with minimal human intervention in the generation process. The content generation is made on demand. As the user moves along the world, the elements inside the user's view are processed and stored into the memory and the ones away from the user's view are removed. Even though the generation of all elements is based on random numbers, if the player visits an specific point {\tt A}, then walks for miles generating a completely different set of landscapes, and returns to point {\tt A}, the same previously seen landscape will be shown again. Charack handles separately the content generation of continents, topography and coastlines, so each of those elements can be independently adjusted in order to produce highly customized results.
+
+This paper is organized as follows. Section ~\ref{sec:related-work} describes related work concerning the generation of finite or infinite virtual worlds. Section ~\ref{sec:tool-organization} presents the tool structure and the techniques used in the content generation process. Section ~\ref{sec:results} describes and illustrates the results that Charack produced. Finally section ~\ref{sec:conclusion} presents a conclusion and ideas for future work.
+
+% You must have at least 2 lines in the paragraph with the drop letter
+% (should never be an issue)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related works}
+\label{sec:related-work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+There are several related works concerning the generation of finite or infinite virtual worlds. One of them creates an infinite city that is presented to the user on demand as it walks on the ground~\cite{infinicity}. The world were divided into a grid composed of several squares, called cells. The location of each cell is used with a global seed as an input for a hash function ~\cite{wangHash}. The result of this function is used as a seed for a pseudo random number generator and it defines all the characteristics of the buildings within a cell. As a consequence of that approach the contents of a cell is always the same, no matter if the user moves and that cell is removed from the memory. That work was the ground zero for Charack development, however the original idea was changed in order to make the tool suitable to generate more types of terrains (mountains, plains, continents, etc.), not only streets and buildings. The approach of content generation made on demand was maintained, but the cells organization was removed.
+
+The use of a procedurally generated world approach ~\cite{LindaOndrej2007} is very close to the concept of content generation aimed for Charack. In that work, a spherical planet is created as a result of a recursive division of a geometric shape, then noise functions are applied to the mesh to generate the heightmap. There is no distinction between the content generation approach for continents and the content generation for the terrain within the continents. As a result the continents are created by flooding the heightmap with a water plane, which will produce the coastlines based on the sea level height and the amount of ripples in the topography. The content itself is not generated on demand. Charack was created from an evolution of that idea, but with limitations. The world created by Charack handles differently the content generation of continents, coastlines and the heightmap and it also generates the content on demand, however it does not use a spherical approach.
+
+Another related work was a tool used to build the SkyCastle multiplayer game engine~\cite{LandscapeGeneration,SkyCastle}. For the heightmap generation, parameterized procedures and fractal based systems are combined in a layered approach: starting with a base map, the application merges a new map with the base one in each iteration. The new maps are pre-calculated and generated using Perlin noise~\cite{Perlin85}. To texturize the landscape and to adorn it with plants, several techniques are used ~\cite{CSHD03,PL90,LD98,WP95}. Charack uses a similar noise approach in order to create the terrain height, however it was not initially designed to generate extra content such as trees and plants.
+
+The generation of a virtual world as a result of recursive subdivisions of a quadtree ~\cite{dollins-thesis} is very similar to the Charack proposal. In that work, a world with huge proportions is created and its content is generated on demand as the user moves. The heightmap is created in a parameterized and multi-resolution way, so the closer the user is of place, the greater is the amount of detail there. There is also no distinction in the content generation process of continents, coastlines and land. The proposed heightmap generation is used by Charack, however continents and the coastlines generation process are completely different.
+
+Another approach uses fractals affected by erosion for real-time, procedural generation of terrains ~\cite{terrain_generation}. For the erosion simulation, thermal ~\cite{MusgraveErosao} and hydraulic methods are used. Charack has no feature connected with the weather influence, even though it produces some sort of very basic erosion simulation when all sharp edges of the heightmap are removed by a smoothing algorithm.
+
+The planet map creator based on the generation of a spheric world using a recursive subdivision of a tetrahedron is another approach concerning procedural content generation~\cite{torben}. All the generated information is part of a complete virtual world featuring highly customizable continents and oceans created as a result of a projection of pixels onto a sphere. That planet map creator is used by Charack as a starting point on the continent generation process. Figure ~\ref{fig:explicacao_torben_resultado} illustrates the planet map creator results.
+
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the 
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals/conferences use top floats
+% exclusively. Note that, LaTeX2e, unlike IEEE journals/conferences, places
+% footnotes above bottom floats. This can be corrected via the \fnbelowfloat
+% command of the stfloats package.
+
+
+%\begin{figure}
+%\centering
+%\resizebox{8cm}{!}{\includegraphics{images/explicacao_torben_resultado.png}}
+%\caption{Results of the planet map creator used by Charack}
+%\label{fig:explicacao_torben_resultado}
+%\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=8cm]{images/explicacao_torben_resultado.png}
+\caption{Results of the planet map creator used by Charack}
+\label{fig:explicacao_torben_resultado}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Tool organization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:tool-organization}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Basic structure}
+\label{sec:basic-structure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Analyzing the related works, virtual worlds are generated through several approaches, but none of them handles differently the content generation for continents, coastlines and topography. Although there are variations in how the heightmap is created, the generation of continents is a result of a water flooding plane. This method allows the developers to focus on the content generation for the land, however it has a simple approach concerning continents and coastlines. The main idea and contribution of Charack is the content generation handled differently for each world element (continent, coastline, etc.), with an aggressive and specific approach for each one. This is a new approach for the content generation process, which is different from the the related works that focuses on content generation as a unified process. The term {\it pseudo infinite} used in the paper title is necessary due to physical limitations in computers hardware: an unsigned integer, for instance, can store a certain amount of data; if there were no physical limitations, the tool would be able to generate, in fact, an infinite world.
+
+In order to create a virtual world that reaches the presented proposal, a top-down plan is used for the content generation. The Charack data flow begins in a macro view of the world, which are the continents, evolving to a micro view of the planet, which are the content generation for each vertex that will be drawn in the screen. Figure ~\ref{fig:planejamento_estrutura_basica} shows Charack basic structure.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=7cm]{images/english/planejamento_estrutura_basica.png}
+\caption{Charack's basic structure}
+\label{fig:planejamento_estrutura_basica}
+\end{figure}
+
+\subsubsection{Maps generator}
+
+At the top of the chain is the map generator, which creates the continents that exist throughout the virtual world. This module is an encapsulation of the solution created by ~\cite{torben}. When the tool is initiated, it uses a user defined seed to generate all the continents. Once the continents are generated, all the information related to terrain types (land, water and coast) are stored in a matrix called {\bf macro-matrix (MM)}, which is used by all the other algorithms.
+
+\subsubsection{Slice manager}
+
+Below the MM and the map generator is the slice manager (SM). It extracts a portion of the virtual world (the user's view described as a regular mesh) and provide the rendering engine with information about the heightmap. In order to obtain the required information to create the heightmap, the slice manager uses the coastline generator (CG), which uses the height generator (HG) and the data stored in the MM.
+
+In the context of the SM, there is no information about land or water, only a set of vertexes and their height values. Using the position of the user as a guide, the SM slices the virtual world and, for each collected vertex, it queries the CG in order to find out the height value for that vertex.
+
+\subsubsection{Height generator}
+
+The height generator (HG) defines the height value for each vertex in the virtual world. To ensure that the developers can create a customizable heightmap based on their needs, new functions to generate content can be added to the tool in a simple way.
+
+\subsubsection{Coastline generator}
+
+The coastline generator (CG) will map each vertex of the slice manager to the MM in order to find out the terrain type of that vertex. If the vertex being analyzed is mapped to a location in the MM that is described as water, then the CG assigns a height value equals to sea level for that vertex and returns it to the SM. If the vertex is mapped to a place described as (simple) land, then the CG will use the information provided by the HG in order to set the height value for that vertex. Finally, if the vertex is mapped to a place described as coast, then the CG uses its own structure (together with the MM) to set the height value for the that vertex.
+
+The resulting virtual world technically has height and width defined by the maximum size of a signed integer, however it is physically impossible to generate a MM with such proportions. Since the MM is smaller than the virtual world, an MM's entry {\tt (i, j)} represents several vertices in the virtual world. Figure \ref{fig:mapeamento_macro} illustrates the MM mapping process.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/english/mapeamento_macro.png}
+\caption{Mapping the MM to the virtual world: each MM vertex represents several vertices in the virtual world}
+\label{fig:mapeamento_macro}
+\end{figure}
+
+The smaller is the MM size, the more vertices in the virtual world will be represented by the same entry in the MM. If the virtual world had {\tt 1000x1000} as its size and the MM had {\tt 10x10} as its size, for instance, it means that each entry of the MM represents 100 vertices in the virtual world. If one of these entries is described in the MM as coast, then there is an area of {\tt 100x100} vertices in the virtual world that must be a coast. When any of those vertices in that particular area of the virtual world is analyzed by the CG, it will work on it and return it with different values, which will result in a coastline for that area, not an area entirely filled with land or water.
+
+
+\subsubsection{Rendering engine}
+
+The rendering engine draws the created heightmap in the screen. The result is rendered as a triangles mesh that is texturized according to the height value of each vertex in the mesh.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Implementation}
+\label{sec:implementation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The main problem concerning Charack's implementation was the content generation performed on demand. Based on the fact the user can only see what is inside the visible area, all the content generation algorithms need to take into account {\it only} the information that is available in the user's view. Even though this approach is efficient for resources management (process only the visible elements), it increases the complexity of the content generation algorithms.
+
+The algorithm that generates mountains, for instance, has no way to determine where the mountain ends, because the world outside the user's view technically does not exist yet, it will be generated as the user moves. One approach to solve that problem would be the use of a function that describes the mountain backbone, but this function should not rely on begin/end points, because they could not exist in a certain time. If that function does not need any begin/end points, at least it would have to rely on the position of the user in the virtual world. If the function must be aware of some special points, those points have to be previously processed, which would break the on demand content generation concept.
+
+In addition the algorithms are drastically affected by the fact that the information they receive in a certain time may disappear altogether in the next iteration, since the user can move and change the visible content. Using the example of the mountain generation, a mountain could present an abrupt end, because the points being used for the content generation left the user's view. 
+
+To circumvent these problems the content generation was divided into three main stages: infinite terrain, continents and height generation. The on demand content generation affects differently each of these stages and the problems and solutions related to each stage are described in the following sections. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Infinite terrain}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The main idea for the content generation is to allow the user look at new content each time a significant movement is performed. As the user walks, the tool must be able to identify where the observer is located in the world in order to generate the content around that position. To solve this problem, the player is able to look at the screen and see a slice of the virtual world, however it has no explicit divisions such as cells. The slice is described as a regular mesh as figure ~\ref{fig:charack_merge_wireframe} shows.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_merge_wireframe.png}
+\caption{Regular mesh describing the virtual world. At the right a wireframe rendering}
+\label{fig:charack_merge_wireframe}
+\end{figure}
+
+In order to texturize the sliced data a set of images is interpolated and managed by the shading language GLSL ~\cite{glsl}. The height value of the vertex defines the interpolation weight of each texture. As a consequence, a sand texture has higher weight for vertices featuring a low height value, for instance. Figure ~\ref{fig:set_texturas} shows all the available textures.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/set_texturas.png}
+\caption{Set of image used for terrain texturization}
+\label{fig:set_texturas}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Height generation}
+\label{sub:relevo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The main idea for the terrain height generation is the use of a parametric function that informs the height value of each vertex. The function is seeded with the point location in the world. As a consequence, the function is able to describe all the height information in the world with no limitation concerning the world size. The processing time is related to the size of the user's view because the function uses the point information to calculate its height value. The height values are generated with a Perlin noise function.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Continents}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The generation of continents and oceans has been proposed in order to break the monotony of a landscape composed only by land and to increase the similarity of the virtual world with real world landscapes. The solution for the continents generation consists in pre-process the land areas and store that information for later calculations. With that approach, the on demand content generation has been partially broken, since the continents are generated before all the other content, but it ensures a better control over water/land areas. 
+
+The continents generation is based on the planet map creator described in section ~\ref{sec:related-work}. That planet generator was used because it has several parameterization options, such as the possibility to use a seed to manage all the random calculations. Figure ~\ref{fig:torben} {\it (a)}, {\it (b)} and {\it (c)} illustrates the results obtained with the planet generator.
+
+\begin{figure}
+\centering
+\includegraphics[width=8.2cm]{images/torben_gray.png}
+\caption{Random planets generated with different seeds. (a) and (b) maps featuring height value information; (c) map featuring only information about what is water/land}
+\label{fig:torben}
+\end{figure}
+~\cite{torben}
+
+
+\subsubsection{Problems with continent generation}
+\label{sec:visaomicromacro}
+
+As previously explained in section ~\ref{sec:basic-structure}, each entry of the MM is mapped to several vertices in the virtual world. A direct consequence of that mapping process is the generation of large areas featuring straight land lines, as illustrated by figure \ref{fig:ilustracao_mapeamento_macro}. If there were no hardware limitation and if it were possible to generate a MM featuring the exact size of the virtual world, the matrix would contain the necessary resolution for the tool to accurately determine whether a vertex is land or not land, in a ratio of 1:1 (one MM entry is mapped to one world vertex). This approach, however, is not suitable because a matrix with such proportions consumes many resources and processing time. Although the tool allows customization of the MM size, tests showed that a MM featuring {\tt 800x800} as its size has enough information to be processed by all the other algorithms.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/ilustracao_mapeamento_macro.png}
+\caption{The result of no algorithm to generate extra content to fill the discrepancies in the MM mapping process}
+\label{fig:ilustracao_mapeamento_macro}
+\end{figure}
+
+All images showing Charack results were generated from a world with {\tt 3x3} million vertices and a MM with size of {\tt 800x800}. It means that each MM entry represents 3750 vertices in the virtual world. Figure \ref{fig:ilustracao_mapeamento_macro} illustrates the results obtained by the tool when no algorithm is used to generate extra content to fill the empty spaces in the virtual world. This figure illustrates a place in the virtual world that represents the transition between two different points of the MM (a land point and a water point). To explain what is happening, assume the tool is drawing the world at position {\tt (x, y, z)}, which is the mapping result of an entry {\tt (i, j)} in the MM, which is described as land; as the tool increases the coordinate in order to draw the landscape, each new position is mapped to the MM. If the result of the mapping process of the new coordinate, {\tt (x + 1, y, z))} for instance, is still the entry {\tt (i, j)} in the MM, then the tool will again draw a land vertex on the screen. Assuming that only at point {\tt (x + 10, y, z)} the vertices start being mapped to a different entry in the MM, such as {\tt (i + 1, j)} (assuming it is described as land), then all points before the position {\tt (x + 10, y, z)} are drawn as water and all vertices after that location are drawn as land.
+
+Figure \ref{fig:ilustracao_mapeamento_macro} shows clearly when the world coordinates start being mapped to a different entry in the MM, which is when the tool replaces the land rendering with the water rendering. As a consequence of no algorithm being applied to generate content for that transition area, the user will move along the coastline and will see only straight lines.
+
+\subsubsection{Coastline disturbance}
+\label{sec:coastline-disturbance}
+
+The mapping process of the vertices of the virtual world to the MM produces very unrealistic landscapes. A real world beach has a natural curvature and is not likely to have a length of 20 Km in a perfectly straight configuration. Although the objective of this work is not to create photo-realistic landscapes, such unreal beaches are not acceptable. To circumvent this problem, a coastline disturbance is applied to the locations where the mapping process is made between two MM points, one of them described as land and the other one described as water. The algorithm is described below.
+
+The MM has a complete description of what is land and what is water in the virtual world. Each of its entries has a descriptor, which tells the other algorithms what type of terrain one vertex of the virtual world is after it is mapped to the MM. Charack features three types of terrain: water, land (continent) and offshore (land in contact with water). After the continents are pre-processed and stored in the MM, it only contains information about land (continents) and water.
+
+From that moment, the first step of the coastline disturbance algorithm is performed. Using the current MM as its input, the algorithm scan each MM's entries updating the descriptor of all entries that represents coasts. A entry is classified as coast when at least one of its neighbors is water. After the algorithm ends, the MM contains the three types of terrain described before (water, land and offshore). The next step to apply disturbance to the coastline is the content generation based on the descriptor of each MM entry. When the tool is creating content to be drawn on the screen, each vertex being drawn is tested against its descriptor in the MM. If the vertex is mapped to a land entry in the MM, then the function will set a height value for that point. If the vertex is mapped to a water entry in the MM, then the function will set the sea level height to that point. Finally if the vertex is mapped to a offshore entry in the MM, then the function will disturb the land/water information of that vertex, which will result on a non-straight coastline. Figure ~\ref{fig:funcionamento_quebra_linearidade} illustrates the algorithm. 
+
+\begin{figure}
+\centering
+\includegraphics[width=7.2cm]{images/english/funcionamento_quebra_linearidade.png}
+\caption{Coastline disturbance algorithm}
+\label{fig:funcionamento_quebra_linearidade}
+\end{figure}
+
+The MM entries {\tt A} and {\tt B} have a descriptor indicating that they are classified as a coast. Plan {\tt M} describes the MM and plan {\tt V} describes the result of the mapping process between them. It is not described in the figure, but each block of plan {\tt V} is composed of several vertices, while each block of plan {\tt M} represents only one MM entry. The MM entry {\tt C} is mapped to a massive block of land in the plan {\tt V}, as its descriptor tells the tool that it is a entry described as land. The entry {\tt A} would also be mapped to a massive block of land, but with the intervention of the coastline disturbance algorithm it is mapped to a different configuration. During the content generation for the vertices that are inside the block {\tt RA}, the coastline disturbance algorithm alters the land/water information for each vertex, so that the block will not be composed of land or water vertices only, but a combination of them instead.
+
+The implementation of that process is based on a noise function and random numbers with a parametric function deciding what is land and what is water for all vertices described as a coast in the MM. Using the vertex position in the block {\tt RA}, the function maps that information into a spectrum of values created by a Perlin noise function. What the parametric function does is check if the hash of the vertex being analyzed is inside or outside of the spectrum. The process can be illustrated as a height test of a value against a small heightmap (which is created as a result of the noise spectrum): if the return of the noise function for that vertex is greater than a certain value (which is the granularity of the block being analyzed), then it is classified as land, otherwise it is classified as water. The higher is the granularity of the block, the greater is the amount of land on that location. Figure ~\ref{fig:plot_ruido_quebra_linearidade} illustrates the small heightmap generated by the coastline disturbance algorithm when block {\tt RA} is being processed. 
+
+\begin{figure}
+\centering
+\includegraphics[width=5cm]{images/plot_ruido_quebra_linearidade_simples.png}
+\caption{Small heightmap generated by the coastline disturbance algorithm}
+\label{fig:plot_ruido_quebra_linearidade}
+\end{figure}
+
+
+\subsubsection{Beaches}
+
+The coastline disturbance algorithm minimizes the problem of unrealistic coastlines, but the outcome is not quite good enough. When Charack is rendering a slice of the world, for each vertex described as land a height value is set it; the same applies to the vertices that are described as water, but in that case the height value is always the same (the sea level). As a direct result of that approach if the tool is rendering a set of vertices which belongs to a mountain and the next vertices are described as water at the MM, the landscape will features a "step". It happens because the mountain backbone was generated very close to the water, which means that its rendering is abruptly interrupted when Charack finds vertices described as water. Although there are cliffs in the real world, they are not present in all coasts. To solve this problem, a special algorithm is applied in order to create beaches in certain locations of the world, which makes the generated landscape looks more realistic.
+
+The beach generation algorithm is performed right before the content is rendered on the screen. After Charack maps the vertices to the MM and after the coastline disturbance algorithm is performed, the result is a heightmap ready to be rendered. The heightmap is treated by the beach creator algorithm before being drawn on the screen, as figure ~\ref{fig:funcionamento_algoritmo_praia}. The procedure scans all the vertices in the map and for each one its distance to a near water vertex is checked. The vertices around the target are mapped directly to the MM, so the only information that is used from the heightmap is the vertex location in the world (which is necessary to map it to the MM). The checking process is performed in four directions (right, left, up and down) and it ends when a water vertex is found or when {\tt N} vertices were analyzed. After that, the four distances are added and used to calculate the height of the beach. The possible results are:
+
+\begin{itemize}
+	\item If the vertex has {\tt 4N} as its distance (Figure ~\ref{fig:funcionamento_algoritmo_praia}, point {\tt B}), it means the tool has iterated through the four possible directions and found no water. In this case, the height value for the vertex remains the same. It happens to all the vertices that are within the continent or on the coast but away from the water: they do not belong to the beach area and their height value is defined by the height generator; 
+ 
+	\item If the vertex has a value smaller than {\tt 4N} as its distance (Figure ~\ref{fig:funcionamento_algoritmo_praia}, point {\tt A}), then its height value will be recalculated, because the vertex is located at the beach. The greater is the distance from that vertex to the water vertex, the greater is the height value that will be applied. The height variation is calculated within a range of {\tt [T,B]}, where {\tt T} is the maximum height and {\tt B} is a minimum height value of all vertices in the beach. The result of that approach is a beach featuring higher height values near the continent and lower height values near the water.
+\end{itemize}
+ 
+ \begin{figure}
+\centering
+\includegraphics[width=8.1cm]{images/english/funcionamento_algoritmo_praia.png}
+\caption{Beach generation algorithm}
+\label{fig:funcionamento_algoritmo_praia}
+\end{figure}
+ 
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/exemplo_praia_complexa.png}
+\caption{Results of the beach generator algorithm}
+\label{fig:exemplo_praia_simples}
+\end{figure}
+
+Figure ~\ref{fig:exemplo_praia_simples} shows the results of the beach generator algorithm.
+
+\subsubsection{Island generator and beach disturber}
+
+The coastline disturbance and the beach generation algorithms make Charack able to generate more realistic landscapes. The final result, however, presents a well defined pattern, which is unusual to happen in the real world, where the lines and landscapes are more likely to follow a random patterns. If the player walks in the virtual world only through the coast, he would see beaches with the same configuration and no islands along the path. To avoid that problem, two new algorithms are applied to the coastline vertices: beach disturber and island generator.
+
+The \textbf{beach disturber} disturbs the distance used to calculate the water vertices neighboring a certain vertex. Instead of using {\tt N} as value to calculate the distance from the vertex to the water, the beach disturber uses the vertex position as a seed and generates a new value that will be used as the distance. Using this technique, the beach disturber is able to change the size and shape of the beaches, so that certain regions may have a greater amount of sand than others. Figure ~\ref{fig:exemplo_praia_complexa} shows the beach disturber results.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/screen_mundo.png}
+\caption{Results of the beach disturber algorithm}
+\label{fig:exemplo_praia_complexa}
+\end{figure}
+
+The \textbf{island generator} creates land portions in some MM entries. After the MM is created and all the descriptors are configured, the generator iterates through all entries described as coast and for some of them it sets a flag describing that region as a place that features islands. Each vertex mapped to that special regions of the MM has its position used as a hash that is tested against a spectrum created by a noise function. According to the test result, the vertex is classified as land, so a group of vertices classified as land will produce an island. The noise spectrum used for that are different from that one used in the coastline disturbance algorithm, since the expected outcome are small portions of land (islands). Figure ~\ref{fig:exemplo_ilha} shows the island generator results. 
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/exemplo_ilha.png}
+\caption{Island generated by the island generator (beach area has been influenced by the beach disturber)}
+\label{fig:exemplo_ilha}
+\end{figure}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+\label{sec:results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section aims to evaluate each of the techniques used in the content generation process, explaining the obtained results for each approach. It is important to highlight that Charack's purpose is not the generation of real or photo-realistic content, but elements that can be used to create a 3D game scene. A result is classified as graphically acceptable if it can be integrated into a game and not surprise the player in a negative way, such as a pyramidal mountain instead of a smooth mountain.
+
+\subsection{Continents evaluation}
+
+The time spent for the continent generation is directly proportional to the size of the specified MM. The reduction of the MM size to {\tt 800x800} yielded significant performance improvements. As a consequence, the smaller is the MM size, the more linear and square are the coastlines of each continent. To avoid that problem, it is possible to adjust the coastline disturbance algorithm in order to make it produce more aggressive changes in the coastlines. Figure ~\ref{fig:charack_final_continentes} shows the continents and oceans generated by the Charack.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_continentes.png}
+\caption{Continents and oceans generated by Charack}
+\label{fig:charack_final_continentes}
+\end{figure}
+
+
+\subsection{Terrain height evaluation}
+
+The terrain height generated by Charack is fully customizable. The tool has a built-in terrain height generator based on Perlin noise, however it was designed for testing purposes only. The main focus of the present work are the continents and the coastline generation, so any activity related to terrain height generation was very superficial and presents no contribution. Figure ~\ref{fig:charack_final_relevo} shows the terrain height created by the built-in generator.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_relevo.png}
+\caption{Terrain heightmap created by Charack's built-in generator}
+\label{fig:charack_final_relevo}
+\end{figure}
+
+\subsection{Coastline evaluation}
+
+The coastline generation is composed of two main elements, a global and a local one. The global one only uses data available in the MM in order to create the coastlines, as described in section ~ \ref{sec:visaomicromacro}. The final result for that approach is a unreal straight coastline. Figure ~\ref{fig:charack_final_costa_reta} shows two completely straight coastlines which has no content generation algorithm applied to them. 
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_costa_reta.png}
+\caption{The interception of two coastlines with no extra content being applied to them}
+\label{fig:charack_final_costa_reta}
+\end{figure}
+
+After the coastline disturbance algorithm was introduced, Charack started producing more acceptable landscapes. Figures ~\ref{fig:charack_final_costa_1} and ~\ref{fig:charack_final_costa_5} show small bays in some places of the coast. It happened because at those locations the coastline disturbance algorithm created pieces of land towards the ocean and at the same time the beach disturber reduced the amount of sand on the newly created land pieces. Charack is also able to create gulfs, which are large bays, but it is not possible to predict the exact location where those bays will happen because it depends on a set of specific values (location, beach size, etc).
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_costa_1.png}
+\caption{Small bay featuring rocks}
+\label{fig:charack_final_costa_1}
+\end{figure}
+
+Figures ~\ref{fig:charack_final_costa_3} and ~\ref{fig:charack_final_costa_4} show the final result obtained with the combination of all the previously described algorithms: coastline disturbance, beach disturber and island generator.
+
+%\begin{figure}
+%\centering
+%\resizebox{8cm}{!}{\includegraphics{images/charack_final_costa_2.png}
+%\caption{Small bay featuring no beach area}
+%\label{fig:charack_final_costa_2}
+%\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_costa_3.png}
+\caption{Coastline featuring almost no beach area}
+\label{fig:charack_final_costa_3}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_costa_4.png}
+\caption{Coastline featuring beaches with different sizes}
+\label{fig:charack_final_costa_4}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/charack_final_costa_5.png}
+\caption{Result of the coastline disturbance algorithm}
+\label{fig:charack_final_costa_5}
+\end{figure}
+
+\subsection{Performance evaluation}
+
+All tests were performed running Charack on Windows Vista on a Intel(R) Core(TM)2 Duo 1.66Gz, with 2Gb RAM and a graphics card NVidia 8600 GT, using Microsoft Visual C++ 2008 Express Edition to compile the source code. Figure ~\ref{fig:desempenho_tam_slice_elementos} shows the time that Charack takes to process each step on the virtual world generation: height calculation for each vertex, coastline generation, beach generation and the rendering process. The {\tt X} axis shows the world slice size in vertexes, e.g. 200 means a regular mesh of {\tt 200x200} vertexes. The {\tt Y} axis shows the time in miliseconds that Charack takes to generate the respective world slice.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{images/english/desempenho_tam_slice_elementos.png}
+\caption{Time that Charack takes to process each step on the virtual world generation}
+\label{fig:desempenho_tam_slice_elementos}
+\end{figure}
+
+If the world slice visible to the user has a size of {\tt 100x100} pixels, then Charack takes about {\tt 200 ms} to generate a complete landscape (the sum of times for all steps). This process is not executed for each rendered frame, it is only performed when the user moves too far from his initial position, what makes Charack remove the old content from the memory and replace it with new data. If a slice with size {\tt 300x300} pixels is used, then Charack takes about {\tt 1000 ms} to generate the landscape. Most of the time is spent on the beach creation because Charack has to analyze each vertex on the screen and its four neighbours to decide if it is a beach point or not.
+
+The coastline generation is not significantly affected by the slice size because the algorithm does not analyze an arbitrary amount of vertexes to generate the content. It uses a combination of noise functions and MM meta data in order to generate the required information.
+
+According to the chart the slowest step performed by Charack is the beach generation. The second slowest step is the coastline generation, closely followed by the height generation for each vertex.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion and future work}
+\label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The automated creation of virtual worlds is one of the available methods that can help developers to create games featuring detailed environments in less time and using fewer resources. Unlike the purely non-automated approaches where a game designer has to design the entirely world, an automated approach is able to generate a complete world with almost no human interference. There are several researches on that subject using different approaches and focusing on a wide range of results.
+
+This paper presented a tool able to generate pseudo-virtual worlds featuring different continents, coastlines and landscapes. Using a combination of algorithms and methods for content management, the tool is able to create beaches, islands, bays and coastlines similar to the ones found in the real world.
+
+One of the Charack's contributions is the ability to generate arbitrarily large pieces of land focusing on coastline generation. The development of the present work aimed to handle separately the content generation for all elements in the world (continents, terrains, etc.). The main point in the work is the coastline generation, not the content inside the continents. The final virtual world can be huge: a player with a 100 vertices per second speed in a virtual world generated with the maximum value allowed by a integer will take about 1 year and 3 months to across the whole world.
+
+One suggestion of future work is the enhancement of the height generator, which currently produces a very simple result. Another suggestion is the addition of new types to the MM's descriptors, such as deserts, forests and cities. All the new content can be created tweaking Charack's content generator algorithm in order to produce variations in the current results, such as lowering the height values of all vertices in an area described as a desert, or increasing them in a volcanic area. Another suggestion is to port all the content generation algorithms to the CUBA platform ~\cite{CUDA}. The generation of each world vertex can be calculated separately, so the CUBA parallelism capabilities can be fully used. It will drastically improve Charack's performance and it will allow the generation of a bigger world slice to be displayed in the screen. Another suggestion is the addition of rivers, which can be done with a new MM descriptor and some changes in the content generation algorithm.
+
+% use section* for acknowledgement
+\section*{Acknowledgment}
+
+The author would like to thank Cesar, Marilia and his family for all the support.
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+\begin{thebibliography}{21}
+
+\bibitem{ducheneaut}
+N. ~Ducheneaut, N. ~Yee, E. ~Nickell and R.~J. Moore, ``Alone Together Exploring the Social Dynamics of Massively Multiplayer Online Games,'' in \emph{Proc.CHI 2006 Proceedings},1997.
+
+\bibitem{Perlin85}
+K. ~Perlin, `An image synthesizer,'' in \emph{Proc.SIGGRAPH}, 1985, pp.
+  287-296.
+
+\bibitem{CSHD03}
+M. ~Cohen, J.~ Shade, S. ~Hiller and O. ~Deussen, ``Wang tiles for image and texture generation,'' in \emph{Proc. Siggraph 03 Conference proceedings}, 2003.
+
+\bibitem{vicioEstrutura}
+N.~L. Clark, `Addiction and the Structural Characteristics of Massively Multiplayer Online Games,''
+  Master's thesis, University of Hawai, Hawai, 2006.
+
+\bibitem{LandscapeGeneration}
+H. ~Hoggstrom, ``Real-time generation and rendering of realistic landscapes,''
+  Master's thesis, University of Helsinki, Finland, 2006.
+
+\bibitem{dollins-thesis}
+S.~C. Dollins, ``Modeling for the Plausible Emulation of Large Worlds,'' Ph.D. dissertation, Brown University, EUA, 2002.
+
+\bibitem{LindaOndrej2007}
+O.~Linda, ``Generation of planetary models by means of fractal algorithms,'' Czech Technical University, Tech. Rep., 2007.
+
+\bibitem{EverQuest}
+Sony Entertainment, ``EverQuestr,''  http://everquest2.station.sony.com/. 2007
+
+\bibitem{Blizzard}
+Blizzard Entertainment, ``World of Warcraft,'' http://www.blizzard.com. 2007.
+
+\bibitem{infinicity}
+S. ~Greuter,J.~ Parker, S.~ Nigel and G.~ Leach, ``Real\-time Procedural Generation of 'Pseudo Infinite' Cities,'' Tech. Rep., Australia. 2005.
+
+\bibitem{wangHash}
+T. ~Wang, ``Integer hash function,'' http://www.concentric.net/~Ttwang/tech/inthash.htm. 2000.
+
+\bibitem{terrain_generation}
+J.~Olsen, ``Realtime Synthesis of Eroded Fractal Terrain for Use in Computer Games,'' University of Southern Denmark, Tech. Rep., 2004.
+
+\bibitem{MusgraveErosao}
+F.~K. Musgrave, C.~E. Kolb and  R.~S. Mace, ``The Synthesis and Rendering of Eroded Fractal Terrains,''Computer Graphics, Volume 23, Number 3, July 1989, pp. 41-50.
+
+\bibitem{torben}
+T.~Mogensen, ``Instant Planet Generator,' 'http://www.eldritch.org/erskin/roleplaying/planet.php, 2009.
+
+\bibitem{glsl}
+OpenGL, ``OpenGL Shading Languager,''http://www.opengl.org/documentation/glsl/, 2007.
+
+\bibitem{CUDA}
+nVidea, ``Congestion avoidance in computer
+  networks with a connectionless network layer,'' http://www.nvidia.com/cuda, 2009.
+
+\bibitem{onlineGaming}
+M.~D. Griffiths, M.~N.O. Davies, D.~Chappell, ``Breaking the Stereotype The Case of Online Gaming,'' Tech. Rep., 2003.
+
+\bibitem{SkyCastle}
+H. ~Hoggstrom, ``Skycastle - Free multiplayer game engine focusing on player creativity and world simulation,''http://www.skycastle.org/, 2009.
+
+\bibitem{PL90}
+P.~Przemyslaw and A.~Lindenmayer, ``The Algorithmic Beauty of Plants,'', 1990.
+
+\bibitem{LD98}
+B.~Lintermann and O.~Deussen, ``A modelling method and user interface for creating plants,'' Computer Graphics Forum, Tech. Rep., 1998.
+
+\bibitem{WP95}
+R.~Jain, K.~K. Ramakrishnan, and D.~M. Chiu, ``Creation and rendering of realistic trees,'' Tech. Rep., 1995.
+
+\end{thebibliography}
+
+%\bibliographystyle{IEEEtran}
+%\bibliography{IEEEabrv,IEEEexample}
+
+% that's all folks
+\end{document}
+
+
